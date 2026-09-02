@@ -1,0 +1,43 @@
+fragment MediaFields on Media {
+  id
+  isAdult
+  status(version: 2)
+  season
+  seasonYear
+  averageScore
+  siteUrl
+  title {
+    english
+    native
+    romaji
+  }
+  synonyms
+  format
+  description
+  startDate {
+    day
+    month
+    year
+  }
+  endDate {
+    day
+    month
+    year
+  }
+  updatedAt
+  episodes
+  countryOfOrigin
+  coverImage {
+    large
+  }
+  genres
+  studios {
+    edges {
+      isMain
+      node {
+        name
+        siteUrl
+      }
+    }
+  }
+}

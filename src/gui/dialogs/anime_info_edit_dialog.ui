@@ -1,0 +1,1177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AnimeInfoEditDialog</class>
+ <widget class="QDialog" name="AnimeInfoEditDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>950</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>950</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::FocusPolicy::ClickFocus</enum>
+  </property>
+  <property name="windowTitle">
+   <string>Anime info</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="spacing">
+        <number>8</number>
+       </property>
+       <property name="leftMargin">
+        <number>8</number>
+       </property>
+       <property name="topMargin">
+        <number>9</number>
+       </property>
+       <property name="rightMargin">
+        <number>8</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="labelCoverImage">
+         <property name="text">
+          <string>Image</string>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop</set>
+         </property>
+         <property name="textInteractionFlags">
+          <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="spacing">
+        <number>8</number>
+       </property>
+       <property name="topMargin">
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="labelTitleHeader">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Title</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+         <property name="openExternalLinks">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTabWidget" name="tabWidgetInfoEdit">
+         <property name="focusPolicy">
+          <enum>Qt::FocusPolicy::NoFocus</enum>
+         </property>
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="infoPage">
+          <attribute name="title">
+           <string>Info</string>
+          </attribute>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label_13">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+               <underline>true</underline>
+              </font>
+             </property>
+             <property name="text">
+              <string>Alternative titles</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_3">
+             <property name="sizeConstraint">
+              <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+             </property>
+             <property name="leftMargin">
+              <number>15</number>
+             </property>
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_12">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Native:</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_21">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Other:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_11">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>English:</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLabel" name="labelTitleNative">
+               <property name="cursor">
+                <cursorShape>IBeamCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Native</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLabel" name="labelTitleRomaji">
+               <property name="cursor">
+                <cursorShape>IBeamCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Romaji</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLabel" name="labelTitleEnglish">
+               <property name="cursor">
+                <cursorShape>IBeamCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>English</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_10">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Romaji:</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QPlainTextEdit" name="plainTextEditSynonyms">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>80</height>
+                </size>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::FocusPolicy::ClickFocus</enum>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPlainTextEdit {
+    background: transparent;
+    border: none;
+}</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::Shape::NoFrame</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Shadow::Plain</enum>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_9">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+               <underline>true</underline>
+              </font>
+             </property>
+             <property name="text">
+              <string>Details</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_2">
+             <property name="leftMargin">
+              <number>15</number>
+             </property>
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item row="5" column="0">
+              <widget class="QLabel" name="label_6">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Studios:</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+               </property>
+              </widget>
+             </item>
+             <item row="9" column="1">
+              <widget class="QLabel" name="labelOrigin">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>IBeamCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Origin</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QLabel" name="labelStudios">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>IBeamCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Studios</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="openExternalLinks">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_2">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Episodes:</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_5">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Genres:</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLabel" name="labelFormat">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>IBeamCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Format</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+               </property>
+              </widget>
+             </item>
+             <item row="9" column="0">
+              <widget class="QLabel" name="label_17">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Origin:</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+               </property>
+              </widget>
+             </item>
+             <item row="10" column="0">
+              <widget class="QLabel" name="label_8">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Score:</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <widget class="QLabel" name="labelProducers">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>IBeamCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Producers</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="openExternalLinks">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLabel" name="labelEpisodes">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>IBeamCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Episodes</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="0">
+              <widget class="QLabel" name="label_16">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Ended:</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="1">
+              <widget class="QLabel" name="labelEnded">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>IBeamCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Ended</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLabel" name="labelGenres">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>IBeamCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Genres</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Format:</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_3">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Status:</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="label_7">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Producers:</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLabel" name="labelSeason">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>IBeamCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Season</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_4">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Season:</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+               </property>
+              </widget>
+             </item>
+             <item row="10" column="1">
+              <widget class="QLabel" name="labelScore">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>IBeamCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Score</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLabel" name="labelStatus">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>IBeamCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Status</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="0">
+              <widget class="QLabel" name="label_15">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Started:</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="1">
+              <widget class="QLabel" name="labelStarted">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>IBeamCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Started</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_14">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+               <underline>true</underline>
+              </font>
+             </property>
+             <property name="text">
+              <string>Synopsis</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_4">
+             <property name="leftMargin">
+              <number>15</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item row="1" column="0">
+              <widget class="QTextEdit" name="textEditSynopsis">
+               <property name="focusPolicy">
+                <enum>Qt::FocusPolicy::NoFocus</enum>
+               </property>
+               <property name="acceptDrops">
+                <bool>false</bool>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QTextEdit {
+    background: transparent;
+    border: none;
+}</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::Shape::NoFrame</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Shadow::Plain</enum>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="editPage">
+          <attribute name="title">
+           <string>Edit</string>
+          </attribute>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <layout class="QGridLayout" name="gridLayout">
+             <item row="2" column="0">
+              <widget class="QSpinBox" name="spinBoxEpisodesWatched">
+               <property name="focusPolicy">
+                <enum>Qt::FocusPolicy::WheelFocus</enum>
+               </property>
+               <property name="maximum">
+                <number>999999999</number>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_18">
+               <property name="text">
+                <string>Episodes watched</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLabel" name="label_19">
+               <property name="text">
+                <string>Times rewatched</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QSpinBox" name="spinBoxRewatches">
+               <property name="focusPolicy">
+                <enum>Qt::FocusPolicy::WheelFocus</enum>
+               </property>
+               <property name="maximum">
+                <number>999999999</number>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_5">
+             <item row="1" column="0">
+              <layout class="QHBoxLayout" name="horizontalLayout_2">
+               <item>
+                <widget class="QLabel" name="label_25">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Score:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="labelFormattedScore">
+                 <property name="text">
+                  <string>-</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="3" column="1">
+              <widget class="AnimeStatusComboBox" name="comboBoxStatus">
+               <property name="focusPolicy">
+                <enum>Qt::FocusPolicy::ClickFocus</enum>
+               </property>
+               <property name="placeholderText">
+                <string>Status</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QSpinBox" name="spinBoxScore">
+               <property name="focusPolicy">
+                <enum>Qt::FocusPolicy::WheelFocus</enum>
+               </property>
+               <property name="buttonSymbols">
+                <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
+               </property>
+               <property name="maximum">
+                <number>100</number>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLabel" name="label_20">
+               <property name="text">
+                <string>Status</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_7">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_22">
+               <property name="text">
+                <string>Date started</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="DatePicker" name="widgetCompletedDatePicker" native="true"/>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLabel" name="label_23">
+               <property name="text">
+                <string>Date completed</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="DatePicker" name="widgetStartedDatePicker" native="true"/>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_6">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_24">
+               <property name="text">
+                <string>Notes</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QPlainTextEdit" name="plainTextEditNotes">
+               <property name="focusPolicy">
+                <enum>Qt::FocusPolicy::ClickFocus</enum>
+               </property>
+               <property name="placeholderText">
+                <string>Your notes for this anime</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="focusPolicy">
+      <enum>Qt::FocusPolicy::ClickFocus</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DatePicker</class>
+   <extends>QWidget</extends>
+   <header>gui/widgets/date_picker.hpp</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AnimeStatusComboBox</class>
+   <extends>QComboBox</extends>
+   <header>gui/widgets/anime_status_combo_box.hpp</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>AnimeInfoEditDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>474</x>
+     <y>576</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>474</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>AnimeInfoEditDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>474</x>
+     <y>576</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>474</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

@@ -1,0 +1,9 @@
+query ($userId: Int) {
+  MediaListCollection(userId: $userId, type: ANIME) {
+    lists {
+      entries {
+        ...EntryFields
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+<RCC>
+  <qresource prefix="images">
+    <file alias="no-image">images/no-image.png</file>
+  </qresource>
+  <qresource prefix="icons">
+    <file alias="history">icons/history.svg</file>
+    <file alias="account-info-update">icons/account-info-update.svg</file>
+    <file alias="account">icons/account.svg</file>
+    <file alias="calendar">icons/calendar.svg</file>
+    <file alias="check">icons/check.svg</file>
+    <file alias="db-health">icons/db-health.svg</file>
+    <file alias="db-setup">icons/db-setup.svg</file>
+    <file alias="edit">icons/edit.svg</file>
+    <file alias="eye-off">icons/eye-off.svg</file>
+    <file alias="eye-on">icons/eye-on.svg</file>
+    <file alias="hide">icons/hide.svg</file>
+    <file alias="info">icons/info.svg</file>
+    <file alias="link">icons/link.svg</file>
+    <file alias="list">icons/list.svg</file>
+    <file alias="logs">icons/logs.svg</file>
+    <file alias="minus">icons/minus.svg</file>
+    <file alias="numbers">icons/numbers.svg</file>
+    <file alias="playing">icons/playing.svg</file>
+    <file alias="plus">icons/plus.svg</file>
+    <file alias="point-blue">icons/point-blue.svg</file>
+    <file alias="point-gray">icons/point-gray.svg</file>
+    <file alias="point-orange">icons/point-orange.svg</file>
+    <file alias="point-red">icons/point-red.svg</file>
+    <file alias="redo">icons/redo.svg</file>
+    <file alias="restore">icons/restore.svg</file>
+    <file alias="search">icons/search.svg</file>
+    <file alias="settings">icons/settings.svg</file>
+    <file alias="show">icons/show.svg</file>
+    <file alias="statistics">icons/statistics.svg</file>
+    <file alias="sync">icons/sync.svg</file>
+    <file alias="trash">icons/trash.svg</file>
+    <file alias="undo">icons/undo.svg</file>
+    <file alias="user">icons/user.svg</file>
+    <file alias="web">icons/web.svg</file>
+    <file alias="x">icons/x.svg</file>
+  </qresource>
+  <qresource prefix="database">
+    <file alias="InsertEntry">queries/database/InsertEntry.sql</file>
+    <file alias="SelectAllAnime">queries/database/SelectAllAnime.sql</file>
+    <file alias="CleanupUnusedMedia">queries/database/CleanupUnusedMedia.sql</file>
+    <file alias="CountAnimeEntries">queries/database/CountAnimeEntries.sql</file>
+    <file alias="DeleteEntry">queries/database/DeleteEntry.sql</file>
+    <file alias="SelectAllPending">queries/database/SelectAllPending.sql</file>
+    <file alias="UpsertEntry">queries/database/UpsertEntry.sql</file>
+    <file alias="UpsertMedia">queries/database/UpsertMedia.sql</file>
+    <file alias="CreateEntryTable">queries/database/CreateEntryTable.sql</file>
+    <file alias="CreateMediaTable">queries/database/CreateMediaTable.sql</file>
+  </qresource>
+  <qresource prefix="anilist">
+    <file alias="EntryFields">queries/anilist/EntryFields.graphql</file>
+    <file alias="DeleteMediaListEntry">queries/anilist/DeleteMediaListEntry.graphql</file>
+    <file alias="SaveMediaListEntry">queries/anilist/SaveMediaListEntry.graphql</file>
+    <file alias="MediaSearch">queries/anilist/MediaSearch.graphql</file>
+    <file alias="MediaFields">queries/anilist/MediaFields.graphql</file>
+    <file alias="MediaListCollection">queries/anilist/MediaListCollection.graphql</file>
+    <file alias="Viewer">queries/anilist/Viewer.graphql</file>
+  </qresource>
+  <qresource prefix="application">
+    <file alias="tray-icon">icons/application/tray-icon.png</file>
+    <file alias="application-icon">icons/application/application-icon.png</file>
+  </qresource>
+</RCC>

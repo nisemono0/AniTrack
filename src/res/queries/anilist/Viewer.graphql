@@ -1,0 +1,24 @@
+query {
+  Viewer {
+    id,
+    name
+    avatar {
+      medium
+    }
+    mediaListOptions {
+      scoreFormat
+    }
+    options {
+      titleLanguage
+    }
+    statistics {
+      anime {
+        count
+        episodesWatched
+        meanScore
+        minutesWatched
+        standardDeviation
+      }
+    }
+  }
+}

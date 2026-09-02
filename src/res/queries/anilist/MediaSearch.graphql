@@ -1,0 +1,7 @@
+query Page($search: String) {
+  Page {
+    media(type: ANIME, search: $search) {
+      ...MediaFields
+    }
+  }
+}

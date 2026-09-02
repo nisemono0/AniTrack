@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AnimeListWidget</class>
+ <widget class="QWidget" name="AnimeListWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>617</width>
+    <height>472</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Anime list</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="AnimeListView" name="treeViewAnimeList">
+     <property name="focusPolicy">
+      <enum>Qt::FocusPolicy::NoFocus</enum>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Plain</enum>
+     </property>
+     <property name="autoScroll">
+      <bool>false</bool>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::EditTrigger::CurrentChanged|QAbstractItemView::EditTrigger::DoubleClicked|QAbstractItemView::EditTrigger::SelectedClicked</set>
+     </property>
+     <property name="showDropIndicator" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SelectionMode::ExtendedSelection</enum>
+     </property>
+     <property name="indentation">
+      <number>0</number>
+     </property>
+     <property name="rootIsDecorated">
+      <bool>false</bool>
+     </property>
+     <property name="uniformRowHeights">
+      <bool>true</bool>
+     </property>
+     <property name="itemsExpandable">
+      <bool>false</bool>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="expandsOnDoubleClick">
+      <bool>false</bool>
+     </property>
+     <attribute name="headerShowSortIndicator" stdset="0">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="headerStretchLastSection">
+      <bool>false</bool>
+     </attribute>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>AnimeListView</class>
+   <extends>QTreeView</extends>
+   <header>gui/views/anime_list_view.hpp</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

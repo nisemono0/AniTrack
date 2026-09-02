@@ -1,0 +1,23 @@
+fragment EntryFields on MediaList {
+  id
+  private
+  status
+  progress
+  repeat
+  notes
+  score(format: POINT_100)
+  startedAt {
+    day
+    month
+    year
+  }
+  completedAt {
+    day
+    month
+    year
+  }
+  updatedAt
+  media {
+    ...MediaFields
+  }
+}
