@@ -39,7 +39,6 @@ private:
     int current_anime_ = 0;
 
     bool sync_in_progress_ = false;
-    bool is_final_fetch_ = false;
 
     void startSync();
     void resetSync();
@@ -51,8 +50,13 @@ private:
 
     void processNextEntry();
 
-    void handleInitialFetch(const QList<AnilistAnime> &anime_list);
-    void handleFinalFetch(const QList<AnilistAnime> &anime_list);
+    void resolveLocalToRemote(const QList<AnilistAnime> &local_anime,
+                              const QList<AnilistAnime> &remote_anime,
+                              QList<AnilistAnime> &upserts,
+                              QList<int> &deletions);
+    void resolveRemoteToLocal(const QList<AnilistAnime> &local_anime,
+                              const QList<AnilistAnime> &remote_anime,
+                              QList<AnilistAnime> &upserts);
 
     void resolveMissingAnime(const AnilistAnime &local, QList<AnilistAnime> &upserts, QList<int> &deletions);
     void resolveExistingAnime(const AnilistAnime &local, const AnilistAnime &remote, QList<AnilistAnime> &upserts);

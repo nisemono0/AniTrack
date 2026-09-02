@@ -31,7 +31,6 @@ void SyncManager::startSync() {
     }
 
     this->sync_in_progress_ = true;
-    this->is_final_fetch_ = false;
 
     this->current_anime_ = 0;
     this->pending_anime_.clear();
@@ -48,7 +47,6 @@ void SyncManager::resetSync() {
     this->current_anime_ = 0;
     this->pending_anime_.clear();
 
-    this->is_final_fetch_ = false;
     this->sync_in_progress_ = false;
 }
 
@@ -73,7 +71,6 @@ void SyncManager::startPendingSync() {
     if (!this->sync_in_progress_) {
         return;
     }
-    this->is_final_fetch_ = false;
 
     auto pending_anime = this->database_->selectAllPendingEntries();
     if (!pending_anime) {
@@ -101,12 +98,7 @@ void SyncManager::startPendingSync() {
 
 void SyncManager::processNextEntry() {
     if (this->current_anime_ >= this->pending_anime_.size()) {
-        this->is_final_fetch_ = true;
-        emit listFetchStarted(
-            QStringLiteral("Sync"),
-            QStringLiteral("Fetching anime list...")
-        );
-        this->anilist_api_->fetchList();
+        this->finishSync();
         return;
     }
 
@@ -141,83 +133,64 @@ void SyncManager::processNextEntry() {
     }
 }
 
-void SyncManager::handleInitialFetch(const QList<AnilistAnime> &anime_list) {
-    auto local_anime = this->database_->selectAllEntries();
-    if (!local_anime) {
-        this->failSync(QStringLiteral("Failed to load local anime"));
-        return;
-    }
-
-    // No local anime, just upsert the ones from anilist
-    if (local_anime->isEmpty()) {
-        if (!this->database_->upsertAnime(anime_list)) {
-            this->failSync(QStringLiteral("Failed to import Anilist anime"));
-            return;
-        }
-
-        this->finishSync();
-        return;
-    }
-
-    // Always upsert medias, since they could've been updated
-    // NOTE: If i keep the final fetch this might not be needed at all
-    //       since the final fetch does upsertAnime (both media and entry)
-    if (!this->database_->upsertMedias(anime_list)) {
-        this->failSync(QStringLiteral("Failed to update Anilist medias"));
-        return;
-    }
+void SyncManager::resolveLocalToRemote(const QList<AnilistAnime> &local_anime,
+                          const QList<AnilistAnime> &remote_anime,
+                          QList<AnilistAnime> &upserts,
+                          QList<int> &deletions) {
 
     // anilist media_id -> index in anime
-    QHash<int, int> anime_idx_by_media_id;
-    anime_idx_by_media_id.reserve(anime_list.size());
-    for (int i = 0; i < anime_list.size(); i++) {
-        anime_idx_by_media_id.insert(
-            anime_list.at(i).media.id,
+    QHash<int, int> idx_by_media_id;
+    idx_by_media_id.reserve(remote_anime.size());
+    for (int i = 0; i < remote_anime.size(); i++) {
+        idx_by_media_id.insert(
+            remote_anime.at(i).media.id,
             i
         );
     }
 
-    QList<AnilistAnime> upserts;
-    QList<int> deletions;
-
-    for (const auto &local : local_anime.value()) {
-        const auto entry_idx = anime_idx_by_media_id.constFind(
+    // Resolve local -> remote
+    for (const auto &local : local_anime) {
+        const auto entry_idx = idx_by_media_id.constFind(
             local.media.id
         );
 
         // Local anime has no matching anilist entry
-        if (entry_idx == anime_idx_by_media_id.constEnd()) {
+        if (entry_idx == idx_by_media_id.constEnd()) {
             this->resolveMissingAnime(local, upserts, deletions);
             continue;
         }
 
         // Local anime has an existing anilist entry
-        const auto &remote = anime_list.at(entry_idx.value());
+        const auto &remote = remote_anime.at(entry_idx.value());
         this->resolveExistingAnime(local, remote, upserts);
     }
-
-    // Apply the above resolves in the database
-    if (!this->database_->upsertEntries(upserts)) {
-        this->failSync(QStringLiteral("Failed to resolve Anilist<->Local updates"));
-        return;
-    }
-
-    if (!this->database_->deleteEntries(deletions)) {
-        this->failSync(QStringLiteral("Failed to resolve Anilist<->Local deletions"));
-        return;
-    }
-
-    emit listFetchFinished();
-
-    this->startPendingSync();
 }
 
-void SyncManager::handleFinalFetch(const QList<AnilistAnime> &anime_list) {
-    if (!this->database_->upsertAnime(anime_list)) {
-        this->failSync(QStringLiteral("Failed to update local anime"));
-        return;
+void SyncManager::resolveRemoteToLocal(const QList<AnilistAnime> &local_anime,
+                          const QList<AnilistAnime> &remote_anime,
+                          QList<AnilistAnime> &upserts) {
+
+    // local media_id -> index in local anime
+    QHash<int, int> idx_by_media_id;
+    idx_by_media_id.reserve(local_anime.size());
+    for (int i = 0; i < local_anime.size(); i++) {
+        idx_by_media_id.insert(
+            local_anime.at(i).media.id,
+            i
+        );
     }
-    this->finishSync();
+
+    // Resolve remote -> local
+    for (const auto &remote : remote_anime) {
+        const auto entry_idx = idx_by_media_id.constFind(
+            remote.media.id
+        );
+
+        // Remote anime has no matching local one
+        if (entry_idx == idx_by_media_id.constEnd()) {
+            upserts.append(remote);
+        }
+    }
 }
 
 void SyncManager::resolveMissingAnime(const AnilistAnime &local, QList<AnilistAnime> &upserts, QList<int> &deletions) {
@@ -319,13 +292,38 @@ void SyncManager::handleApiFailure(const QString &message) {
 }
 
 void SyncManager::onFetchListFinished(const QList<AnilistAnime> &anime_list) {
-    if (this->is_final_fetch_) {
-        // NOTE: The final fetch is probably not needed
-        //       It's here just to be safe
-        this->handleFinalFetch(anime_list);
-    } else {
-        this->handleInitialFetch(anime_list);
+    auto local_anime = this->database_->selectAllEntries();
+    if (!local_anime) {
+        this->failSync(QStringLiteral("Failed to load local anime"));
+        return;
     }
+
+    // Always upsert medias, since they could've been updated
+    if (!this->database_->upsertMedias(anime_list)) {
+        this->failSync(QStringLiteral("Failed to update Anilist medias"));
+        return;
+    }
+
+    QList<AnilistAnime> upserts;
+    QList<int> deletions;
+
+    this->resolveLocalToRemote(local_anime.value(), anime_list, upserts, deletions);
+    this->resolveRemoteToLocal(local_anime.value(), anime_list, upserts);
+
+    // Apply the above resolves in the database
+    if (!this->database_->upsertEntries(upserts)) {
+        this->failSync(QStringLiteral("Failed to resolve Anilist<->Local updates"));
+        return;
+    }
+
+    if (!this->database_->deleteEntries(deletions)) {
+        this->failSync(QStringLiteral("Failed to resolve Anilist<->Local deletions"));
+        return;
+    }
+
+    emit listFetchFinished();
+
+    this->startPendingSync();
 }
 
 void SyncManager::onAddAnimeFinished(const AnilistAnime &anime) {
