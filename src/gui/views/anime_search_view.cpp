@@ -17,33 +17,11 @@ struct HeaderSettings {
     int resize;
     bool hidden;
 };
-static const QList<HeaderSettings> header_settings{
-    // column, resize mode, padding, resize, hidden
-    { AnimeSearchModel::Columns::Title,     QHeaderView::Interactive, 15, 350, false },
-    { AnimeSearchModel::Columns::Format,    QHeaderView::Interactive, 15, 75,  false },
-    { AnimeSearchModel::Columns::Episodes,  QHeaderView::Interactive, 15, 80,  false },
-    { AnimeSearchModel::Columns::Score,     QHeaderView::Interactive, 15, 55,  false },
-    { AnimeSearchModel::Columns::Season,    QHeaderView::Interactive, 15, 90,  false },
-    { AnimeSearchModel::Columns::Status,    QHeaderView::Interactive, 15, 100, false },
-    { AnimeSearchModel::Columns::InList,    QHeaderView::Interactive, 15, 45,  false },
-    { AnimeSearchModel::Columns::IsAdult,   QHeaderView::Interactive, 15, 45,  false },
-    { AnimeSearchModel::Columns::StartDate, QHeaderView::Interactive, 15, 90,  true },
-    { AnimeSearchModel::Columns::EndDate,   QHeaderView::Interactive, 15, 90,  true },
-};
-
 // Used to initialize the context menu
 struct MediaAddAction {
     QString name;
     AnilistEntry::Status status;
     QString icon;
-};
-static const QList<MediaAddAction> media_add_actions{
-    { QStringLiteral("Watching"),   AnilistEntry::Status::CURRENT,   AppResources::Icons::Edit },
-    { QStringLiteral("Planning"),   AnilistEntry::Status::PLANNING,  AppResources::Icons::Edit },
-    { QStringLiteral("Completed"),  AnilistEntry::Status::COMPLETED, AppResources::Icons::Edit },
-    { QStringLiteral("Dropped"),    AnilistEntry::Status::DROPPED,   AppResources::Icons::Edit },
-    { QStringLiteral("Paused"),     AnilistEntry::Status::PAUSED,    AppResources::Icons::Edit },
-    { QStringLiteral("Rewatching"), AnilistEntry::Status::REPEATING, AppResources::Icons::Edit },
 };
 } // namespace
 
@@ -129,7 +107,21 @@ void AnimeSearchView::setupDelegates() {
 }
 
 void AnimeSearchView::setupHeader() {
-    for (const auto setting : header_settings) {
+    static const QList<HeaderSettings> header_settings{
+        // column, resize mode, padding, resize, hidden
+        { AnimeSearchModel::Columns::Title,     QHeaderView::Interactive, 15, 350, false },
+        { AnimeSearchModel::Columns::Format,    QHeaderView::Interactive, 15, 75,  false },
+        { AnimeSearchModel::Columns::Episodes,  QHeaderView::Interactive, 15, 80,  false },
+        { AnimeSearchModel::Columns::Score,     QHeaderView::Interactive, 15, 55,  false },
+        { AnimeSearchModel::Columns::Season,    QHeaderView::Interactive, 15, 90,  false },
+        { AnimeSearchModel::Columns::Status,    QHeaderView::Interactive, 15, 100, false },
+        { AnimeSearchModel::Columns::InList,    QHeaderView::Interactive, 15, 45,  false },
+        { AnimeSearchModel::Columns::IsAdult,   QHeaderView::Interactive, 15, 45,  false },
+        { AnimeSearchModel::Columns::StartDate, QHeaderView::Interactive, 15, 90,  true },
+        { AnimeSearchModel::Columns::EndDate,   QHeaderView::Interactive, 15, 90,  true },
+    };
+
+    for (const auto &setting : header_settings) {
         this->anime_search_header_->setSectionResizeMode(static_cast<int>(setting.column), setting.resize_mode);
         this->anime_search_header_->setSectionPadding(static_cast<int>(setting.column), setting.padding);
         this->anime_search_header_->resizeSection(static_cast<int>(setting.column), setting.resize);
@@ -188,6 +180,15 @@ void AnimeSearchView::onCustomContextMenuRequested(const QPoint &pos) {
     if (is_single_media && selected_media.constFirst().in_list) {
         add_to_list_menu->setEnabled(false);
     } else {
+        static const QList<MediaAddAction> media_add_actions{
+            { QStringLiteral("Watching"),   AnilistEntry::Status::CURRENT,   AppResources::Icons::Edit },
+            { QStringLiteral("Planning"),   AnilistEntry::Status::PLANNING,  AppResources::Icons::Edit },
+            { QStringLiteral("Completed"),  AnilistEntry::Status::COMPLETED, AppResources::Icons::Edit },
+            { QStringLiteral("Dropped"),    AnilistEntry::Status::DROPPED,   AppResources::Icons::Edit },
+            { QStringLiteral("Paused"),     AnilistEntry::Status::PAUSED,    AppResources::Icons::Edit },
+            { QStringLiteral("Rewatching"), AnilistEntry::Status::REPEATING, AppResources::Icons::Edit },
+        };
+
         for (const auto &action : media_add_actions) {
             QAction *menu_action = add_to_list_menu->addAction(
                 QIcon(action.icon),

@@ -19,35 +19,12 @@ struct HeaderSettings {
     int resize;
     bool hidden;
 };
-static const QList<HeaderSettings> header_settings{
-    // column, resize mode, padding, resize, hidden
-    { AnimeListModel::Columns::PendingIcon,  QHeaderView::Fixed,       0,  15,  false },
-    { AnimeListModel::Columns::Title,        QHeaderView::Interactive, 15, 350, false },
-    { AnimeListModel::Columns::Progress,     QHeaderView::Interactive, 15, 115, false },
-    { AnimeListModel::Columns::Score,        QHeaderView::Interactive, 15, 40,  false },
-    { AnimeListModel::Columns::Format,       QHeaderView::Interactive, 15, 75,  false },
-    { AnimeListModel::Columns::Season,       QHeaderView::Interactive, 15, 90,  false },
-    { AnimeListModel::Columns::EntryStatus,  QHeaderView::Interactive, 15, 80,  false },
-    { AnimeListModel::Columns::MediaStatus,  QHeaderView::Interactive, 15, 100, true  },
-    { AnimeListModel::Columns::LastUpdated,  QHeaderView::Interactive, 15, 90,  false },
-    { AnimeListModel::Columns::StartedAt,    QHeaderView::Interactive, 15, 90,  true  },
-    { AnimeListModel::Columns::CompletedAt,  QHeaderView::Interactive, 15, 90,  true  },
-    { AnimeListModel::Columns::IsAdult,      QHeaderView::Interactive, 15, 50,  true  },
-    { AnimeListModel::Columns::IsPrivate,    QHeaderView::Interactive, 15, 50,  true  },
-    { AnimeListModel::Columns::RewatchCount, QHeaderView::Interactive, 15, 80,  true  }
-};
-
 // Used to initialize the info/edit actions
 struct InfoEditAction{
     QString name;
     AnimeInfoEditDialog::Page page;
     QString icon;
 };
-static const QList<InfoEditAction> anime_info_edit_actions{
-    { QStringLiteral("Information"), AnimeInfoEditDialog::Page::Info, AppResources::Icons::Info },
-    { QStringLiteral("Edit"),        AnimeInfoEditDialog::Page::Edit, AppResources::Icons::Edit },
-};
-
 // Used to initialize the undo/redo actions
 enum class UndoRedoType {
     Undo,
@@ -58,20 +35,6 @@ struct UndoRedoAction{
     UndoRedoType type;
     QString icon;
 };
-static const QList<UndoRedoAction> undo_redo_actions{
-    { QStringLiteral("Undo"), UndoRedoType::Undo, AppResources::Icons::Undo },
-    { QStringLiteral("Redo"), UndoRedoType::Redo, AppResources::Icons::Redo },
-};
-
-// Used to initialize the delete action
-struct RemovalAction {
-    QString name;
-    QString icon;
-};
-static const RemovalAction removal_action{
-    QStringLiteral("Mark for removal"), AppResources::Icons::Trash
-};
-
 // Used to initialize the episode actions
 enum class EpisodeActionType {
     IncreaseEpisode,
@@ -83,12 +46,6 @@ struct EpisodeAction {
     EpisodeActionType type;
     QString icon;
 };
-static const QList<EpisodeAction> episode_actions{
-    { QStringLiteral("Increase episode"), EpisodeActionType::IncreaseEpisode, AppResources::Icons::Plus },
-    { QStringLiteral("Decrease episode"), EpisodeActionType::DecreaseEpisode, AppResources::Icons::Minus },
-    { QStringLiteral("Set episode"),      EpisodeActionType::SetEpisode,      AppResources::Icons::Numbers }
-};
-
 // Used to initialize the date context menu
 enum class DateActionType {
     Clear,
@@ -101,41 +58,17 @@ struct DateMenuAction {
     DateActionType type;
     QString icon;
 };
-static const QList<DateMenuAction> date_started_actions{
-    { QStringLiteral("Clear"),                 DateActionType::Clear,             AppResources::Icons::Calendar },
-    { QStringLiteral("Set to started airing"), DateActionType::SetFromMediaStart, AppResources::Icons::Calendar }
-};
-static const QList<DateMenuAction> date_completed_actions{
-    { QStringLiteral("Clear"),                   DateActionType::Clear,              AppResources::Icons::Calendar },
-    { QStringLiteral("Set to last updated"),     DateActionType::SetFromLastUpdated, AppResources::Icons::Calendar },
-    { QStringLiteral("Set to completed airing"), DateActionType::SetFromMediaEnd,    AppResources::Icons::Calendar }
-};
-
 // Used to initialize the score context menu
 struct ScoreAction {
     QString name;
     QString icon;
 };
-static const ScoreAction score_action{
-    QStringLiteral("Set score"),
-    AppResources::Icons::Numbers
-};
-
 // Used to initialize the status context menu
 struct StatusMenuAction {
     QString name;
     AnilistEntry::Status status;
     QString icon;
 };
-static const QList<StatusMenuAction> status_actions{
-    { QStringLiteral("Watching"),   AnilistEntry::Status::CURRENT,   AppResources::Icons::Edit },
-    { QStringLiteral("Planning"),   AnilistEntry::Status::PLANNING,  AppResources::Icons::Edit },
-    { QStringLiteral("Completed"),  AnilistEntry::Status::COMPLETED, AppResources::Icons::Edit },
-    { QStringLiteral("Dropped"),    AnilistEntry::Status::DROPPED,   AppResources::Icons::Edit },
-    { QStringLiteral("Paused"),     AnilistEntry::Status::PAUSED,    AppResources::Icons::Edit },
-    { QStringLiteral("Rewatching"), AnilistEntry::Status::REPEATING, AppResources::Icons::Edit },
-};
-
 } // namespace
 
 
@@ -286,7 +219,25 @@ void AnimeListView::setupDelegates() {
 }
 
 void AnimeListView::setupHeader() {
-    for (const auto setting : header_settings) {
+    static const QList<HeaderSettings> header_settings{
+        // column, resize mode, padding, resize, hidden
+        { AnimeListModel::Columns::PendingIcon,  QHeaderView::Fixed,       0,  15,  false },
+        { AnimeListModel::Columns::Title,        QHeaderView::Interactive, 15, 350, false },
+        { AnimeListModel::Columns::Progress,     QHeaderView::Interactive, 15, 115, false },
+        { AnimeListModel::Columns::Score,        QHeaderView::Interactive, 15, 40,  false },
+        { AnimeListModel::Columns::Format,       QHeaderView::Interactive, 15, 75,  false },
+        { AnimeListModel::Columns::Season,       QHeaderView::Interactive, 15, 90,  false },
+        { AnimeListModel::Columns::EntryStatus,  QHeaderView::Interactive, 15, 80,  false },
+        { AnimeListModel::Columns::MediaStatus,  QHeaderView::Interactive, 15, 100, true  },
+        { AnimeListModel::Columns::LastUpdated,  QHeaderView::Interactive, 15, 90,  false },
+        { AnimeListModel::Columns::StartedAt,    QHeaderView::Interactive, 15, 90,  true  },
+        { AnimeListModel::Columns::CompletedAt,  QHeaderView::Interactive, 15, 90,  true  },
+        { AnimeListModel::Columns::IsAdult,      QHeaderView::Interactive, 15, 50,  true  },
+        { AnimeListModel::Columns::IsPrivate,    QHeaderView::Interactive, 15, 50,  true  },
+        { AnimeListModel::Columns::RewatchCount, QHeaderView::Interactive, 15, 80,  true  }
+    };
+
+    for (const auto &setting : header_settings) {
         this->anime_list_header_->setSectionResizeMode(static_cast<int>(setting.column), setting.resize_mode);
         this->anime_list_header_->setSectionPadding(static_cast<int>(setting.column), setting.padding);
         this->anime_list_header_->resizeSection(static_cast<int>(setting.column), setting.resize);
@@ -304,6 +255,11 @@ void AnimeListView::setupHeader() {
 }
 
 void AnimeListView::addInfoEditActions(QMenu &menu, const AnilistAnime &selected_anime) {
+    static const QList<InfoEditAction> anime_info_edit_actions{
+        { QStringLiteral("Information"), AnimeInfoEditDialog::Page::Info, AppResources::Icons::Info },
+        { QStringLiteral("Edit"),        AnimeInfoEditDialog::Page::Edit, AppResources::Icons::Edit },
+    };
+
     for (const auto &action : anime_info_edit_actions) {
         QAction *menu_action = menu.addAction(
             QIcon(action.icon),
@@ -346,6 +302,11 @@ void AnimeListView::addStateHistoryActions(QMenu &menu, const AnilistAnime &sele
 }
 
 void AnimeListView::addUndoRedoActions(QMenu &menu, const QList<AnilistAnime> &selected_anime) {
+    static const QList<UndoRedoAction> undo_redo_actions{
+        { QStringLiteral("Undo"), UndoRedoType::Undo, AppResources::Icons::Undo },
+        { QStringLiteral("Redo"), UndoRedoType::Redo, AppResources::Icons::Redo },
+    };
+
     for (const auto &action : undo_redo_actions) {
         QAction *menu_action = menu.addAction(
             QIcon(action.icon),
@@ -381,8 +342,8 @@ void AnimeListView::addUndoRedoActions(QMenu &menu, const QList<AnilistAnime> &s
 
 void AnimeListView::addDeleteActions(QMenu &menu, const QList<AnilistAnime> &selected_anime) {
     const auto *remove = menu.addAction(
-        QIcon(removal_action.icon),
-        removal_action.name
+        QIcon(AppResources::Icons::Trash),
+        QStringLiteral("Mark for removal")
     );
     connect(remove, &QAction::triggered, this, [this, selected_anime] {
         emit requestMarkAnimeForRemoval(selected_anime);
@@ -390,6 +351,12 @@ void AnimeListView::addDeleteActions(QMenu &menu, const QList<AnilistAnime> &sel
 }
 
 void AnimeListView::addEpisodeActions(QMenu &menu, const QList<AnilistAnime> &selected_anime) {
+    static const QList<EpisodeAction> episode_actions{
+        { QStringLiteral("Increase episode"), EpisodeActionType::IncreaseEpisode, AppResources::Icons::Plus },
+        { QStringLiteral("Decrease episode"), EpisodeActionType::DecreaseEpisode, AppResources::Icons::Minus },
+        { QStringLiteral("Set episode"),      EpisodeActionType::SetEpisode,      AppResources::Icons::Numbers }
+    };
+
     for (const auto &action : episode_actions) {
         QAction *menu_action = menu.addAction(
             QIcon(action.icon),
@@ -428,6 +395,11 @@ void AnimeListView::addDateActions(QMenu &menu, const QList<AnilistAnime> &selec
         QStringLiteral("Set started date")
     );
 
+    static const QList<DateMenuAction> date_started_actions{
+        { QStringLiteral("Clear"),                 DateActionType::Clear,             AppResources::Icons::Calendar },
+        { QStringLiteral("Set to started airing"), DateActionType::SetFromMediaStart, AppResources::Icons::Calendar }
+    };
+
     for (const auto &action : date_started_actions) {
         QAction *menu_action = started_menu->addAction(
             QIcon(action.icon),
@@ -454,6 +426,12 @@ void AnimeListView::addDateActions(QMenu &menu, const QList<AnilistAnime> &selec
         QIcon(AppResources::Icons::Calendar),
         QStringLiteral("Set completed date")
     );
+
+    static const QList<DateMenuAction> date_completed_actions{
+        { QStringLiteral("Clear"),                   DateActionType::Clear,              AppResources::Icons::Calendar },
+        { QStringLiteral("Set to last updated"),     DateActionType::SetFromLastUpdated, AppResources::Icons::Calendar },
+        { QStringLiteral("Set to completed airing"), DateActionType::SetFromMediaEnd,    AppResources::Icons::Calendar }
+    };
 
     for (const auto &action : date_completed_actions) {
         QAction *menu_action = completed_menu->addAction(
@@ -483,8 +461,8 @@ void AnimeListView::addDateActions(QMenu &menu, const QList<AnilistAnime> &selec
 
 void AnimeListView::addScoreActions(QMenu &menu, const QList<AnilistAnime> &selected_anime) {
     const auto *score = menu.addAction(
-        QIcon(score_action.icon),
-        score_action.name
+        QIcon(AppResources::Icons::Numbers),
+        QStringLiteral("Set score")
     );
     connect(score, &QAction::triggered, this, [this, selected_anime] {
         auto *score_dialog = new SetScoreDialog(selected_anime, this->title_language_, this->score_format_, this);
@@ -500,6 +478,15 @@ void AnimeListView::addStatusActions(QMenu &menu, const QList<AnilistAnime> &sel
         QIcon(AppResources::Icons::Edit),
         QStringLiteral("Set status")
     );
+
+    static const QList<StatusMenuAction> status_actions{
+        { QStringLiteral("Watching"),   AnilistEntry::Status::CURRENT,   AppResources::Icons::Edit },
+        { QStringLiteral("Planning"),   AnilistEntry::Status::PLANNING,  AppResources::Icons::Edit },
+        { QStringLiteral("Completed"),  AnilistEntry::Status::COMPLETED, AppResources::Icons::Edit },
+        { QStringLiteral("Dropped"),    AnilistEntry::Status::DROPPED,   AppResources::Icons::Edit },
+        { QStringLiteral("Paused"),     AnilistEntry::Status::PAUSED,    AppResources::Icons::Edit },
+        { QStringLiteral("Rewatching"), AnilistEntry::Status::REPEATING, AppResources::Icons::Edit },
+    };
 
     for (const auto &action : status_actions) {
         QAction *menu_action = status_menu->addAction(

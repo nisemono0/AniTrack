@@ -133,7 +133,8 @@ std::expected<QJsonDocument, QString> readJsonResponse(QNetworkReply *network_re
         const QJsonObject validation_obj = error_obj.value(AnilistKeys::Common::Validation).toObject();
         for (const auto &[key, value] : validation_obj.asKeyValueRange()) {
             QStringList validation_errors;
-            for (const auto &validation_text : value.toArray()) {
+            QJsonArray json_array = value.toArray();
+            for (const auto &validation_text : std::as_const(json_array)) {
                 validation_errors.append(
                     QStringLiteral(" -> %1: %2").arg(key.toString(), validation_text.toString())
                 );
@@ -241,9 +242,9 @@ void AnilistApi::fetchList() {
                                                    .value(AnilistKeys::Query::MediaListCollection).toObject()
                                                    .value(AnilistKeys::MediaListCollection::Lists).toArray();
 
-        for (const auto &list : lists_array) {
+        for (const auto &list : std::as_const(lists_array)) {
             QJsonArray entries_array = list.toObject().value(AnilistKeys::MediaListGroup::Entries).toArray();
-            for (const auto &entry : entries_array) {
+            for (const auto &entry : std::as_const(entries_array)) {
                 AnilistAnime anime;
                 anime.entry = AnilistEntry::fromResponseJson(entry.toObject());
                 anime.media = AnilistMedia::fromResponseJson(
@@ -479,7 +480,7 @@ void AnilistApi::searchAnime(const QString &title) {
                                                    .value(AnilistKeys::Query::Page).toObject()
                                                    .value(AnilistKeys::Page::Media).toArray();
 
-        for (const auto &media : media_array) {
+        for (const auto &media : std::as_const(media_array)) {
             AnilistMedia media_result = AnilistMedia::fromResponseJson(media.toObject());
             media_result.in_list = false;
 

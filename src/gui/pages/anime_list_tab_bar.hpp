@@ -24,7 +24,7 @@ public:
     Tab currentTab() const;
 
 signals:
-    void currentTabChanged(Tab tab);
+    void currentTabChanged(AnimeListTabBar::Tab tab);
 
 protected:
     void wheelEvent(QWheelEvent *event) override;

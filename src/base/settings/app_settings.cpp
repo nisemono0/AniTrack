@@ -15,7 +15,8 @@ AppSettings::AppSettings(QObject *parent) : QObject(parent) {
     );
 
     // Load all settings
-    for (const auto &key : settings.allKeys()) {
+    QStringList settings_keys = settings.allKeys();
+    for (const auto &key : std::as_const(settings_keys)) {
         this->settings_variantmap_[key] = settings.value(key);
     }
 }

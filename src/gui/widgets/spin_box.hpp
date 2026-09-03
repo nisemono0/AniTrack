@@ -12,8 +12,6 @@ public:
     ~SpinBox() = default;
 
 signals:
-    // Signals when the enter key is pressed
-    void returnPressed();
     // Signals when the focus of the spinbox is lost
     void focusLost();
 

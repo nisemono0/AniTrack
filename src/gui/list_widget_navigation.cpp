@@ -6,7 +6,7 @@ ListWidgetNavigation::ListWidgetNavigation(QWidget *parent) : QListWidget(parent
 
     this->setItemDelegate(this->separator_delegate_);
 
-    for (const auto item : this->list_items_) {
+    for (const auto &item : this->list_items_) {
         if (item.page == Page::Separator) {
             this->addSeparator();
         } else {

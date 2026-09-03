@@ -21,7 +21,8 @@ bool CommandLineParser::isWindowOptionSet() {
 QString CommandLineParser::selectedStyle() {
     QString selected_style = this->parser_.value(this->style_option_);
 
-    for (const auto &app_style : QStyleFactory::keys()) {
+    QStringList style_keys = QStyleFactory::keys();
+    for (const auto &app_style : std::as_const(style_keys)) {
         if (app_style.compare(selected_style, Qt::CaseInsensitive) == 0) {
             return app_style;
         }

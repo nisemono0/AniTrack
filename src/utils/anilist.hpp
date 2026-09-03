@@ -28,7 +28,7 @@ template<typename T>
 QString jsonStringFromStudiosProducers(const QList<T> &studios_producers) {
     QJsonArray json_array;
 
-    for (const auto &item : studios_producers) {
+    for (const auto &item : std::as_const(studios_producers)) {
         QJsonObject json_obj;
         json_obj[QStringLiteral("name")] = item.name;
         json_obj[QStringLiteral("site_url")] = item.site_url;
@@ -52,7 +52,9 @@ QList<T> studiosProducersFromJsonString(const QString &json_string) {
         return list;
     }
 
-    for (const auto &item : json_doc.array()) {
+    QJsonArray json_array = json_doc.array();
+
+    for (const auto &item : std::as_const(json_array)) {
         QJsonObject json_obj = item.toObject();
         T type;
         type.name = json_obj.value(QStringLiteral("name")).toString();

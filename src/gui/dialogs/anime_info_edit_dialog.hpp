@@ -32,7 +32,7 @@ public:
 
 public slots:
     // Show or focus the dialog on page. Defaults to showing the Info page
-    void showOrFocus(Page page);
+    void showOrFocus(AnimeInfoEditDialog::Page page);
 
 signals:
     void requestUpdateAnime(const AnilistAnime &anime);

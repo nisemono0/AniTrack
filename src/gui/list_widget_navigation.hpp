@@ -29,7 +29,7 @@ public:
     };
 
 signals:
-    void pageChanged(Page new_page);
+    void pageChanged(ListWidgetNavigation::Page new_page);
 
 private:
     struct ListItem {
