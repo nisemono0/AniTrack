@@ -270,6 +270,9 @@
    <property name="toolTip">
     <string>Exit</string>
    </property>
+   <property name="statusTip">
+    <string>Exit the program</string>
+   </property>
   </action>
   <action name="actionLogs">
    <property name="icon">
@@ -278,6 +281,9 @@
    </property>
    <property name="text">
     <string>Logs</string>
+   </property>
+   <property name="statusTip">
+    <string>Show the logs window</string>
    </property>
   </action>
   <action name="actionAbout">
@@ -288,6 +294,9 @@
    <property name="text">
     <string>About</string>
    </property>
+   <property name="statusTip">
+    <string>Show the about window</string>
+   </property>
   </action>
   <action name="actionSync">
    <property name="icon">
@@ -296,6 +305,9 @@
    </property>
    <property name="text">
     <string>Sync</string>
+   </property>
+   <property name="statusTip">
+    <string>Sync with AniList</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
@@ -309,6 +321,9 @@
    <property name="text">
     <string>Settings</string>
    </property>
+   <property name="statusTip">
+    <string>Show the settings window</string>
+   </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
    </property>
@@ -321,6 +336,9 @@
    <property name="text">
     <string>Go to profile</string>
    </property>
+   <property name="statusTip">
+    <string>Open AniList profile page for the current user</string>
+   </property>
   </action>
   <action name="actionGotoStats">
    <property name="icon">
@@ -330,6 +348,9 @@
    <property name="text">
     <string>Go to stats</string>
    </property>
+   <property name="statusTip">
+    <string>Open AniList stats page for the current user</string>
+   </property>
   </action>
   <action name="actionGotoList">
    <property name="icon">
@@ -338,6 +359,9 @@
    </property>
    <property name="text">
     <string>Go to list</string>
+   </property>
+   <property name="statusTip">
+    <string>Open AniList anime list page for the current user</string>
    </property>
   </action>
   <action name="actionAccountSetup">
@@ -351,6 +375,9 @@
    <property name="toolTip">
     <string>Account setup</string>
    </property>
+   <property name="statusTip">
+    <string>Setup an AniList account</string>
+   </property>
   </action>
   <action name="actionGotoAnilist">
    <property name="icon">
@@ -359,6 +386,9 @@
    </property>
    <property name="text">
     <string>Anilist</string>
+   </property>
+   <property name="statusTip">
+    <string>Open AniList page</string>
    </property>
   </action>
   <action name="actionGotoAnichart">
@@ -369,6 +399,9 @@
    <property name="text">
     <string>AniChart</string>
    </property>
+   <property name="statusTip">
+    <string>Open AniChart page</string>
+   </property>
   </action>
   <action name="actionGotoLivechart">
    <property name="icon">
@@ -377,6 +410,9 @@
    </property>
    <property name="text">
     <string>LiveChart</string>
+   </property>
+   <property name="statusTip">
+    <string>Open LiveChart page</string>
    </property>
   </action>
   <action name="actionHide">
@@ -387,6 +423,9 @@
    <property name="text">
     <string>Hide</string>
    </property>
+   <property name="statusTip">
+    <string>Hide window</string>
+   </property>
   </action>
   <action name="actionCleanupDatabase">
    <property name="icon">
@@ -395,6 +434,9 @@
    </property>
    <property name="text">
     <string>Cleanup database</string>
+   </property>
+   <property name="statusTip">
+    <string>Cleanup unused media from the database</string>
    </property>
   </action>
   <action name="actionVacuumDatabase">
@@ -405,6 +447,9 @@
    <property name="text">
     <string>Vacuum database</string>
    </property>
+   <property name="statusTip">
+    <string>Vacuum the database</string>
+   </property>
   </action>
   <action name="actionRecreateDatabase">
    <property name="icon">
@@ -414,6 +459,9 @@
    <property name="text">
     <string>Recreate database</string>
    </property>
+   <property name="statusTip">
+    <string>Recreate the database</string>
+   </property>
   </action>
   <action name="actionUpdateUserInfo">
    <property name="icon">
@@ -422,6 +470,9 @@
    </property>
    <property name="text">
     <string>Update user info</string>
+   </property>
+   <property name="statusTip">
+    <string>Update user info from AniList</string>
    </property>
   </action>
  </widget>
