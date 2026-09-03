@@ -49,6 +49,8 @@ qt_add_executable(AniTrack
     src/base/logger/logger.hpp
     src/base/network/network.cpp
     src/base/network/network.hpp
+    src/base/recognition/mpris_watcher.cpp
+    src/base/recognition/mpris_watcher.hpp
     src/base/search/search_manager.cpp
     src/base/search/search_manager.hpp
     src/base/settings/app_settings.cpp
