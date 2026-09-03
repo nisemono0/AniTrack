@@ -28,6 +28,7 @@ VALUES (
 )
 ON CONFLICT(media_id) DO UPDATE SET
     id = excluded.id,
+    is_private = excluded.is_private,
     status = excluded.status,
     progress = excluded.progress,
     repeat = excluded.repeat,
