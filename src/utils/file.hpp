@@ -4,6 +4,9 @@
 #include <QString>
 #include <QStringList>
 
+#include <expected>
+
+
 namespace FileUtils {
 // True if file_path exists
 bool fileExists(const QString &file_path);
@@ -22,6 +25,8 @@ QString sanitizeFilePath(const QString &file_path, const QString &extension = nu
 
 // Loads and reads the file contents as QString
 QString readFile(const QString &file_path);
+
+std::expected<QString, QString> fileNameFromUrl(const QString &file_url);
 
 }; // namespace FileUtils
 
