@@ -109,6 +109,7 @@ bool App::isInitFailed() const {
 void App::setupApp() {
     this->setApplicationName(AppConfig::Name);
     this->setOrganizationName(AppConfig::OrgName);
+    this->setApplicationVersion(AppConfig::Version);
     this->setCursorFlashTime(AppConfig::CursorFlashTime);
     this->setWindowIcon(QIcon(AppResources::App::Icon));
 }
