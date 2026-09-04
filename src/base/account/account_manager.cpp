@@ -113,8 +113,6 @@ void AccountManager::onUserFetchFinished(const AnilistAccount::User &user) {
 
     bool new_user_added = user.user_id != this->anilist_account_->user().user_id;
 
-    qDebug() << new_user_added;
-
     this->anilist_account_->setUser(user);
 
     if (!this->anilist_account_->isValid()) {
