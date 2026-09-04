@@ -44,7 +44,8 @@ void MprisWatcher::registerRunningPlayers() {
         return;
     }
 
-    for (const auto &service : registered_services.value()) {
+    auto services = registered_services.value();
+    for (const auto &service : std::as_const(services)) {
         if (MprisConfig::AllowedServices.contains(service)) {
             // Register the player for PropertiesChanged signal
             this->onServiceRegistered(service);
