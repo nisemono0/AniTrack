@@ -6,6 +6,8 @@
 #include "utils/file.hpp"
 
 #include <QDBusArgument>
+#include <QDBusConnectionInterface>
+#include <QDBusVariant>
 
 
 MprisWatcher::MprisWatcher(QObject *parent) : QObject(parent) {
@@ -18,6 +20,110 @@ MprisWatcher::MprisWatcher(QObject *parent) : QObject(parent) {
 
     connect(this->dbus_watcher_, &QDBusServiceWatcher::serviceRegistered, this, &MprisWatcher::onServiceRegistered);
     connect(this->dbus_watcher_, &QDBusServiceWatcher::serviceUnregistered, this, &MprisWatcher::onServiceUnregistered);
+}
+
+void MprisWatcher::registerRunningPlayers() {
+    auto *interface = this->session_bus_.interface();
+    if (!interface) {
+        Log::warning(
+            CONTEXT_CLASS,
+            QStringLiteral("Failed to get D-Bus interface")
+        );
+        return;
+    }
+
+    auto registered_services = interface->registeredServiceNames();
+
+    if (!registered_services.isValid()) {
+        Log::warning(
+            CONTEXT_CLASS,
+            QStringLiteral("Failed to get registered services: %1").arg(
+                registered_services.error().message()
+            )
+        );
+        return;
+    }
+
+    for (const auto &service : registered_services.value()) {
+        if (MprisConfig::AllowedServices.contains(service)) {
+            // Register the player for PropertiesChanged signal
+            this->onServiceRegistered(service);
+            // Get the running's player metadata since PropertiesChanged signal
+            // might not be emitted for already running players on startup
+            this->readRunningPlayersMetadata(service);
+        }
+    }
+}
+
+void MprisWatcher::processMetadataAndNotify(const QVariantMap &metadata_vmap) {
+    if (metadata_vmap.isEmpty()) {
+        Log::warning(
+            CONTEXT_CLASS,
+            QStringLiteral("Metadata is empty")
+        );
+        return;
+    }
+
+    if (!metadata_vmap.contains(MprisKeys::Url)) {
+        Log::warning(
+            CONTEXT_CLASS,
+            QStringLiteral("Metadata does not contain: %1").arg(MprisKeys::Url)
+        );
+        return;
+    }
+
+    QString file_url = metadata_vmap.value(MprisKeys::Url).toString().trimmed();
+    if (file_url == this->current_file_url_ || file_url.isEmpty()) {
+        return;
+    }
+
+    auto file_name = FileUtils::fileNameFromUrl(file_url);
+    if (!file_name) {
+        Log::warning(CONTEXT_CLASS, file_name.error());
+        return;
+    }
+
+    this->current_file_url_ = file_url;
+
+    emit mediaFileChanged(file_name.value());
+}
+
+void MprisWatcher::readRunningPlayersMetadata(const QString &service_name) {
+    QDBusMessage metadata_method = QDBusMessage::createMethodCall(
+        service_name,
+        MprisConfig::ObjectPath,
+        MprisConfig::PropertiesInterface,
+        MprisConfig::PropertiesGet
+    );
+    metadata_method.setArguments({
+        MprisConfig::PlayerInterface,
+        MprisKeys::Metadata
+    });
+
+    auto reply = this->session_bus_.call(metadata_method);
+
+    if (reply.type() == QDBusMessage::ErrorMessage) {
+        Log::warning(
+            CONTEXT_CLASS,
+            QStringLiteral("Metadata method call failed for %1: %2").arg(service_name, reply.errorMessage())
+        );
+        return;
+    }
+
+    if (reply.arguments().isEmpty()) {
+        Log::warning(
+            CONTEXT_CLASS,
+            QStringLiteral("No metadata returned by: %1").arg(service_name)
+        );
+        return;
+    }
+
+    QVariant metadata_variant = reply.arguments().at(0).value<QDBusVariant>().variant();
+
+    QVariantMap metadata;
+    metadata_variant.value<QDBusArgument>() >> metadata;
+
+    this->processMetadataAndNotify(metadata);
 }
 
 void MprisWatcher::onServiceRegistered(const QString &service_name) {
@@ -90,6 +196,10 @@ void MprisWatcher::onServiceUnregistered(const QString &service_name) {
     }
 
     this->active_services_.remove(service_name);
+
+    if (this->active_services_.isEmpty()) {
+        this->current_file_url_.clear();
+    }
 }
 
 void MprisWatcher::onPropertiesChanged(const QString &interface_name,
@@ -118,35 +228,6 @@ void MprisWatcher::onPropertiesChanged(const QString &interface_name,
     QVariantMap metadata;
     changed_properties.value(MprisKeys::Metadata).value<QDBusArgument>() >> metadata;
 
-    if (metadata.isEmpty()) {
-        Log::warning(
-            CONTEXT_CLASS,
-            QStringLiteral("Metadata is empty")
-        );
-        return;
-    }
-
-    if (!metadata.contains(MprisKeys::Url)) {
-        Log::warning(
-            CONTEXT_CLASS,
-            QStringLiteral("Metadata does not contain: %1").arg(MprisKeys::Url)
-        );
-        return;
-    }
-
-    QString file_url = metadata.value(MprisKeys::Url).toString().trimmed();
-    if (file_url == this->current_file_url_ || file_url.isEmpty()) {
-        return;
-    }
-
-    auto file_name = FileUtils::fileNameFromUrl(file_url);
-    if (!file_name) {
-        Log::warning(CONTEXT_CLASS, file_name.error());
-        return;
-    }
-
-    this->current_file_url_ = file_url;
-
-    emit mediaFileChanged(file_name.value());
+    this->processMetadataAndNotify(metadata);
 }
 

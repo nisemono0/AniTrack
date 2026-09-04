@@ -11,6 +11,9 @@ public:
     explicit MprisWatcher(QObject *parent = nullptr);
     ~MprisWatcher() = default;
 
+    // Register any whitelisted already running players
+    void registerRunningPlayers();
+
 signals:
     void mediaFileChanged(const QString &file_name);
 
@@ -20,6 +23,9 @@ private:
 
     QString current_file_url_;
     QSet<QString> active_services_;
+
+    void readRunningPlayersMetadata(const QString &service_name);
+    void processMetadataAndNotify(const QVariantMap &metadata_vmap);
 
 private slots:
     void onServiceRegistered(const QString &service_name);
