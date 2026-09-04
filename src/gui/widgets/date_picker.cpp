@@ -14,6 +14,10 @@ DatePicker::DatePicker(QWidget *parent) : QWidget(parent) {
         this->setDate(QDate());
         this->date_popup_->hide();
     });
+    connect(this->current_date_button_, &QPushButton::clicked, this, [this] {
+        this->setDate(QDate::currentDate());
+        this->date_popup_->hide();
+    });
 }
 
 void DatePicker::setDisplayFormat(const QString &format) {
@@ -87,6 +91,12 @@ void DatePicker::setupDatePopup() {
     );
     this->clear_button_->setFocusPolicy(Qt::NoFocus);
 
+    this->current_date_button_ = new QPushButton(
+        QStringLiteral("Current date"),
+        this->date_popup_
+    );
+    this->current_date_button_->setFocusPolicy(Qt::NoFocus);
+
     this->calendar_widget_ = new QCalendarWidget(this->date_popup_);
     this->calendar_widget_->setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
     this->calendar_widget_->setGridVisible(true);
@@ -108,6 +118,7 @@ void DatePicker::setupLayout() {
     popup_layout->setContentsMargins(0, 0, 0, 0);
     popup_layout->addWidget(this->calendar_widget_);
     popup_layout->addWidget(this->clear_button_);
+    popup_layout->addWidget(this->current_date_button_);
 
     auto *main_layout = new QHBoxLayout(this);
     main_layout->setContentsMargins(0, 0, 0, 0);

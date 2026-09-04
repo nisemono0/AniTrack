@@ -35,6 +35,7 @@ private:
     QLineEdit *date_display_;
     QWidget *date_popup_;
     QPushButton *clear_button_;
+    QPushButton *current_date_button_;
     QCalendarWidget *calendar_widget_;
 
     QDate date_;
