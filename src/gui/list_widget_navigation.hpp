@@ -27,6 +27,11 @@ public:
     enum UserRoles {
         PageType = Qt::UserRole + 1,
     };
+    Q_ENUM(UserRoles);
+
+    // Select the current page
+    // This emits the currentItemChanged and pageChanged signals
+    void setCurrentPage(ListWidgetNavigation::Page page);
 
 signals:
     void pageChanged(ListWidgetNavigation::Page new_page);

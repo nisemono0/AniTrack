@@ -22,6 +22,15 @@ ListWidgetNavigation::ListWidgetNavigation(QWidget *parent) : QListWidget(parent
 
 }
 
+void ListWidgetNavigation::setCurrentPage(ListWidgetNavigation::Page page) {
+    for (int i = 0; i < this->count(); i++) {
+        auto *item = this->item(i);
+        if (item->data(UserRoles::PageType).value<Page>() == page) {
+            this->setCurrentItem(item);
+        }
+    }
+}
+
 void ListWidgetNavigation::addItem(const ListItem &list_item) {
     QListWidgetItem *item = new QListWidgetItem(
         QIcon(list_item.icon_path),

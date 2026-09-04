@@ -122,6 +122,9 @@ void MainWindow::setupQuickActionsToolBar() {
 
 void MainWindow::setupNavigationListWidget() {
     connect(this->ui_->listWidgetNavigation, &ListWidgetNavigation::pageChanged, this, &MainWindow::showPage);
+
+    // Set the default startup page to the animelist page
+    this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::AnimeList);
 }
 
 void MainWindow::setupStatusBar() {
@@ -167,7 +170,7 @@ void MainWindow::setupAnimeListPage() {
 
 void MainWindow::setupSearchPage() {
     connect(this->app_controller_, &AppController::searchFinished, this, [this] {
-        this->ui_->stackedWidgetMainWindow->setCurrentWidget(this->ui_->pageSearch);
+        this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::Search);
     });
 
     connect(this->ui_->pageSearch, &AnimeSearchPage::requestAddMedia, this->app_controller_, &AppController::requestAddMedia);
