@@ -49,6 +49,8 @@ qt_add_executable(AniTrack
     src/base/logger/logger.hpp
     src/base/network/network.cpp
     src/base/network/network.hpp
+    src/base/recognition/mpris_config.hpp
+    src/base/recognition/mpris_keys.hpp
     src/base/recognition/mpris_watcher.cpp
     src/base/recognition/mpris_watcher.hpp
     src/base/search/search_manager.cpp
@@ -200,12 +202,16 @@ target_link_libraries(AniTrack
 )
 
 # !!! cmakeconf.sh !!!
+add_subdirectory(deps)
+
 find_package(Qt6 REQUIRED COMPONENTS Sql)
 find_package(Qt6 REQUIRED COMPONENTS Network)
 find_package(Qt6 REQUIRED COMPONENTS DBus)
 find_package(Qt6 REQUIRED COMPONENTS Concurrent)
 
 target_include_directories(AniTrack PUBLIC ${CMAKE_SOURCE_DIR}/src)
+
+target_link_libraries(AniTrack PRIVATE AniTrack-deps)
 
 target_link_libraries(AniTrack PRIVATE Qt::Sql)
 target_link_libraries(AniTrack PRIVATE Qt::Network)

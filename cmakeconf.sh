@@ -19,12 +19,16 @@ echo "[!!!] Added set(CMAKE_CXX_STANDARD 23) on line 4 of CMakeLists.txt"
 echo >> ./CMakeLists.txt
 
 echo "# !!! cmakeconf.sh !!!" >> ./CMakeLists.txt
+echo "add_subdirectory(deps)" >> ./CMakeLists.txt
+echo >> ./CMakeLists.txt
 echo "find_package(Qt6 REQUIRED COMPONENTS Sql)" >> ./CMakeLists.txt
 echo "find_package(Qt6 REQUIRED COMPONENTS Network)" >> ./CMakeLists.txt
 echo "find_package(Qt6 REQUIRED COMPONENTS DBus)" >> ./CMakeLists.txt
 echo "find_package(Qt6 REQUIRED COMPONENTS Concurrent)" >> ./CMakeLists.txt
 echo >> ./CMakeLists.txt
 echo "target_include_directories($PROJ_NAME PUBLIC \${CMAKE_SOURCE_DIR}/src)" >> ./CMakeLists.txt
+echo >> ./CMakeLists.txt
+echo "target_link_libraries($PROJ_NAME PRIVATE AniTrack-deps)" >> ./CMakeLists.txt
 echo >> ./CMakeLists.txt
 echo "target_link_libraries($PROJ_NAME PRIVATE Qt::Sql)" >> ./CMakeLists.txt
 echo "target_link_libraries($PROJ_NAME PRIVATE Qt::Network)" >> ./CMakeLists.txt
