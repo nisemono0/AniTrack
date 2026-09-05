@@ -22,7 +22,7 @@ private:
     };
 
     QCommandLineOption style_option_ = {
-        {"style", "s"},
+        {"app-style", "s"},
         "Force set the application style (Fusion or Windows). Uses the system default if not specified.",
         "style"
     };
