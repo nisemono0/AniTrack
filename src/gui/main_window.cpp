@@ -4,6 +4,8 @@
 #include "utils/links.hpp"
 #include "utils/web.hpp"
 
+#include <QShortcut>
+
 
 MainWindow::MainWindow(
     AppController *app_controller,
@@ -51,6 +53,23 @@ void MainWindow::toggleWindowVisibility() {
     } else {
         this->showAndFocus();
     }
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event) {
+    const QString text = event->text();
+
+    if (event->modifiers() == Qt::NoModifier &&
+        !text.isEmpty() &&
+        text.constData()->isPrint()) {
+
+        this->ui_->toolBarQuickActions->focusSearchInput();
+        this->ui_->toolBarQuickActions->insertSearchText(text);
+
+        event->accept();
+        return;
+    }
+
+    QMainWindow::keyPressEvent(event);
 }
 
 void MainWindow::hideEvent(QHideEvent *event) {
@@ -122,6 +141,20 @@ void MainWindow::setupQuickActionsToolBar() {
 
     connect(this->ui_->toolBarQuickActions, &ToolBarQuickActions::filterTextChanged, this->ui_->pageAnimeList, &AnimeListPage::onFilterTextChanged);
     connect(this->ui_->toolBarQuickActions, &ToolBarQuickActions::searchRequested, this->app_controller_, &AppController::requestAnimeSearch);
+
+    auto *focus_search_shortcut = new QShortcut(this);
+    focus_search_shortcut->setContext(Qt::WindowShortcut);
+    focus_search_shortcut->setKeys({
+        QKeySequence(Qt::Key_Slash),
+        QKeySequence(Qt::CTRL | Qt::Key_F)
+    });
+
+    connect(focus_search_shortcut, &QShortcut::activated, this, [this] {
+        if (!this->ui_->toolBarQuickActions->hasSearchFocus()) {
+            this->ui_->toolBarQuickActions->focusSearchInput();
+            this->ui_->toolBarQuickActions->selectSearchText();
+        }
+    });
 }
 
 void MainWindow::setupNavigationListWidget() {

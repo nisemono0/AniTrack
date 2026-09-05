@@ -14,6 +14,7 @@
 #include <QWidget>
 #include <QMainWindow>
 #include <QHideEvent>
+#include <QKeyEvent>
 #include <QShowEvent>
 #include <QPointer>
 
@@ -44,6 +45,7 @@ signals:
     void exitTriggered();
 
 protected:
+    void keyPressEvent(QKeyEvent *event) override;
     void hideEvent(QHideEvent *event) override;
     void showEvent(QShowEvent *event) override;
 

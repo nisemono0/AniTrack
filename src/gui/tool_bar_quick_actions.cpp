@@ -8,7 +8,7 @@ ToolBarQuickActions::ToolBarQuickActions(QWidget *parent) : QToolBar(parent) {
         QSizePolicy::Preferred
     );
 
-    this->filter_line_edit_ = new QLineEdit(this);
+    this->filter_line_edit_ = new LineEdit(this);
     this->filter_line_edit_->setPlaceholderText(
         QStringLiteral("Filter list or search on Anilist")
     );
@@ -28,5 +28,21 @@ ToolBarQuickActions::ToolBarQuickActions(QWidget *parent) : QToolBar(parent) {
 void ToolBarQuickActions::setupToolBar() {
     this->addWidget(this->spacer_widget_);
     this->addWidget(this->filter_line_edit_);
+}
+
+bool ToolBarQuickActions::hasSearchFocus() {
+    return this->filter_line_edit_->hasFocus();
+}
+
+void ToolBarQuickActions::focusSearchInput() {
+    this->filter_line_edit_->setFocus();
+}
+
+void ToolBarQuickActions::insertSearchText(const QString &text) {
+    this->filter_line_edit_->insert(text);
+}
+
+void ToolBarQuickActions::selectSearchText() {
+    this->filter_line_edit_->selectAll();
 }
 
