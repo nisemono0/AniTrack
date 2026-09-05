@@ -4,7 +4,6 @@
 
 #include <QWidget>
 #include <QToolBar>
-#include <QLineEdit>
 
 
 class ToolBarQuickActions final : public QToolBar {
