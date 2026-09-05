@@ -135,6 +135,8 @@ qt_add_executable(AniTrack
     gui/widgets/header_view.hpp
     gui/widgets/infinite_progress_dialog.cpp
     gui/widgets/infinite_progress_dialog.hpp
+    gui/widgets/line_edit.cpp
+    gui/widgets/line_edit.hpp
     gui/widgets/progress_dialog.cpp
     gui/widgets/progress_dialog.hpp
     gui/widgets/spin_box.cpp
