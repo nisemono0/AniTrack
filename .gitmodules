@@ -1,3 +1,6 @@
 [submodule "deps/anitomy"]
 	path = deps/anitomy
 	url = https://github.com/erengy/anitomy.git
+[submodule "deps/anime-relations"]
+	path = deps/anime-relations
+	url = https://github.com/erengy/anime-relations.git
