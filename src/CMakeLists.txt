@@ -79,6 +79,8 @@ qt_add_executable(AniTrack
     gui/delegates/anime_search_adult_delegate.hpp
     gui/delegates/anime_search_in_list_delegate.cpp
     gui/delegates/anime_search_in_list_delegate.hpp
+    gui/dialogs/about_dialog.cpp
+    gui/dialogs/about_dialog.hpp
     gui/dialogs/anime_info_edit_dialog.cpp
     gui/dialogs/anime_info_edit_dialog.hpp
     gui/dialogs/anime_info_search_dialog.cpp
@@ -181,6 +183,7 @@ endif()
 
 target_sources(AniTrack
     PRIVATE
+        gui/dialogs/about_dialog.ui
         gui/dialogs/anime_info_edit_dialog.ui
         gui/dialogs/anime_info_search_dialog.ui
         gui/dialogs/logger_dialog.ui
