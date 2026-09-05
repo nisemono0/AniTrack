@@ -1,6 +1,6 @@
 # AniTrack
 
-Program for tracking watched anime for Linux and syncing with [AniList](https://anilist.co/).
+Personal program for tracking watched anime on Linux and syncing with [AniList](https://anilist.co/).
 
 Greatly inspired by [Taiga](https://github.com/erengy/taiga).
 
