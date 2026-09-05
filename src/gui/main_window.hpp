@@ -6,6 +6,7 @@
 
 #include "gui/dialogs/logger_dialog.hpp"
 #include "gui/dialogs/login_token_dialog.hpp"
+#include "gui/dialogs/about_dialog.hpp"
 
 #include "gui/widgets/infinite_progress_dialog.hpp"
 #include "gui/widgets/progress_dialog.hpp"
@@ -54,6 +55,7 @@ private:
     // Dialogs
     LoggerDialog *logger_dialog_;
     LoginTokenDialog *login_token_dialog_;
+    AboutDialog *about_dialog_;
     // Widgets
     QPointer<InfiniteProgressDialog> infinite_progress_dialog_;
     QPointer<ProgressDialog> progress_dialog_;

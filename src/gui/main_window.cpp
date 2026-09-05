@@ -68,6 +68,7 @@ void MainWindow::initUi() {
 
     this->logger_dialog_ = new LoggerDialog(this);
     this->login_token_dialog_ = new LoginTokenDialog(this);
+    this->about_dialog_ = new AboutDialog(this);
 }
 
 void MainWindow::setupFileMenu() {
@@ -109,8 +110,7 @@ void MainWindow::setupToolsMenu() {
 
 void MainWindow::setupViewMenu() {
     connect(this->ui_->actionLogs, &QAction::triggered, this->logger_dialog_, &LoggerDialog::showOrFocus);
-
-    connect(this->ui_->actionAbout, &QAction::triggered, this, [] { qDebug() << "TODO"; });
+    connect(this->ui_->actionAbout, &QAction::triggered, this->about_dialog_, &AboutDialog::showOrFocus);
 }
 
 void MainWindow::setupQuickActionsToolBar() {
