@@ -5,6 +5,32 @@ project(AniTrack
     LANGUAGES CXX
 )
 
+# Set tabler-icons version used
+set(TABLER_ICONS_VERSION "3.46.0")
+
+# Get anitomy submodule short commit
+execute_process(
+    COMMAND git -C "${CMAKE_SOURCE_DIR}/deps/anitomy" rev-parse --short HEAD
+    OUTPUT_VARIABLE ANITOMY_GIT_COMMIT
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+)
+if (NOT ANITOMY_GIT_COMMIT)
+    set(ANITOMY_GIT_COMMIT "unknown")
+endif()
+
+# Get anime-relations submodule short commit
+execute_process(
+    COMMAND git -C "${CMAKE_SOURCE_DIR}/deps/anime-relations" rev-parse --short HEAD
+    OUTPUT_VARIABLE ANIME_RELATIONS_GIT_COMMIT
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+)
+if (NOT ANIME_RELATIONS_GIT_COMMIT)
+    set(ANIME_RELATIONS_GIT_COMMIT "unknown")
+endif()
+
+# Option to enable WIP features
 option(ENABLE_WIP_FEATURES "Enable WIP features" OFF)
 
 set(CMAKE_CXX_STANDARD 23)
