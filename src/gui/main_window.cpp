@@ -105,7 +105,11 @@ void MainWindow::setupToolsMenu() {
 
     connect(this->ui_->actionRecreateDatabase, &QAction::triggered, this->app_controller_, &AppController::requestRecreateDatabase);
 
+#ifdef ENABLE_WIP_FEATURES
     connect(this->ui_->actionSettings, &QAction::triggered, this, [] { qDebug() << "TODO"; });
+#else
+    this->ui_->actionSettings->setEnabled(false);
+#endif // ENABLE_WIP_FEATURES
 }
 
 void MainWindow::setupViewMenu() {
