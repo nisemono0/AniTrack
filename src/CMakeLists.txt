@@ -174,6 +174,11 @@ target_compile_definitions(AniTrack
         ANITRACK_VERSION="${PROJECT_VERSION}"
 )
 
+if(ENABLE_WIP_FEATURESS)
+    message(STATUS "WIP features enabled")
+    target_compile_definitions(AniTrack PRIVATE ENABLE_WIP_FEATURES)
+endif()
+
 target_sources(AniTrack
     PRIVATE
         gui/dialogs/anime_info_edit_dialog.ui
