@@ -174,7 +174,7 @@ target_compile_definitions(AniTrack
         ANITRACK_VERSION="${PROJECT_VERSION}"
 )
 
-if(ENABLE_WIP_FEATURESS)
+if(ENABLE_WIP_FEATURES)
     message(STATUS "WIP features enabled")
     target_compile_definitions(AniTrack PRIVATE ENABLE_WIP_FEATURES)
 endif()
