@@ -43,8 +43,10 @@ private:
         Page page;
     };
     inline static const QList<ListItem> list_items_ = {
+#ifdef ENABLE_WIP_FEATURES
         { AppResources::Icons::Playing,    QStringLiteral("Playing"),    Page::Playing },
         { "",                              "",                           Page::Separator },
+#endif // ENABLE_WIP_FEATURES
         { AppResources::Icons::List,       QStringLiteral("Anime list"), Page::AnimeList },
         { AppResources::Icons::Statistics, QStringLiteral("Statistics"), Page::Statistics },
         { "",                              "",                           Page::Separator },
