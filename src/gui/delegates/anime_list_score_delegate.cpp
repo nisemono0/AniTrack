@@ -1,10 +1,20 @@
 #include "gui/delegates/anime_list_score_delegate.hpp"
-#include "gui/delegates/anime_list_score_editor.hpp"
 
 #include "gui/models/anime_list_model.hpp"
 
 
 AnimeListScoreDelegate::AnimeListScoreDelegate(QObject *parent) : QStyledItemDelegate(parent) {}
+
+void AnimeListScoreDelegate::stopEditing() {
+    if (!this->editor_) {
+        return;
+    }
+
+    emit closeEditor(
+        this->editor_,
+        QAbstractItemDelegate::NoHint
+    );
+}
 
 QWidget* AnimeListScoreDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     if (!index.isValid()) {
@@ -12,6 +22,8 @@ QWidget* AnimeListScoreDelegate::createEditor(QWidget *parent, const QStyleOptio
     }
 
     AnimeListScoreEditor *editor = new AnimeListScoreEditor(parent);
+    this->editor_ = editor;
+
     connect(editor, &AnimeListScoreEditor::scoreAccepted, this, &AnimeListScoreDelegate::onScoreAccepted);
 
     return editor;

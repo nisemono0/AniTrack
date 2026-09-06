@@ -6,12 +6,25 @@
 
 AnimeListStatusDelegate::AnimeListStatusDelegate(QObject *parent) : QStyledItemDelegate(parent) {}
 
+void AnimeListStatusDelegate::stopEditing() {
+    if (!this->editor_) {
+        return;
+    }
+
+    emit closeEditor(
+        this->editor_,
+        QAbstractItemDelegate::NoHint
+    );
+}
+
 QWidget* AnimeListStatusDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     if (!index.isValid()) {
         return nullptr;
     }
 
     AnimeListStatusEditor *editor = new AnimeListStatusEditor(parent);
+    this->editor_ = editor;
+
     connect(editor, &AnimeListStatusEditor::statusAccepted, this, &AnimeListStatusDelegate::onStatusAccepted);
 
     return editor;

@@ -104,7 +104,16 @@ void AnimeListView::addAnime(const QList<AnilistAnime> &anime_list) {
     this->anime_list_model_->addAnime(anime_list);
 }
 
+void AnimeListView::stopEditing() {
+    this->progress_delegate_->stopEditing();
+    this->score_delegate_->stopEditing();
+    this->status_delegate_->stopEditing();
+    this->started_delegate_->stopEditing();
+    this->completed_delegate_->stopEditing();
+}
+
 void AnimeListView::setFilterTab(AnimeListTabBar::Tab tab) {
+    this->stopEditing();
     this->anime_list_proxy_->setFilterTab(tab);
 }
 

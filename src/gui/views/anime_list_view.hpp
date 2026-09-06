@@ -35,6 +35,8 @@ public:
     void deleteAnime(const QList<int> &local_ids);
     void addAnime(const QList<AnilistAnime> &anime_list);
 
+    void stopEditing();
+
     void setFilterTab(AnimeListTabBar::Tab tab);
     void setFilterText(const QString &text);
 

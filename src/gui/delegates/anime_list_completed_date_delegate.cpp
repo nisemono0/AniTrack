@@ -1,10 +1,20 @@
 #include "gui/delegates/anime_list_completed_date_delegate.hpp"
-#include "gui/delegates/anime_list_completed_date_editor.hpp"
 
 #include "gui/models/anime_list_model.hpp"
 
 
 AnimeListCompletedDateDelegate::AnimeListCompletedDateDelegate(QObject *parent) : QStyledItemDelegate(parent) {}
+
+void AnimeListCompletedDateDelegate::stopEditing() {
+    if (!this->editor_) {
+        return;
+    }
+
+    emit closeEditor(
+        this->editor_,
+        QAbstractItemDelegate::NoHint
+    );
+}
 
 QWidget* AnimeListCompletedDateDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     if (!index.isValid()) {
@@ -12,6 +22,8 @@ QWidget* AnimeListCompletedDateDelegate::createEditor(QWidget *parent, const QSt
     }
 
     AnimeListCompletedDateEditor *editor = new AnimeListCompletedDateEditor(parent);
+    this->editor_ = editor;
+
     connect(editor, &AnimeListCompletedDateEditor::completedDateAccepted, this, &AnimeListCompletedDateDelegate::onCompletedDateAccepted);
 
     return editor;

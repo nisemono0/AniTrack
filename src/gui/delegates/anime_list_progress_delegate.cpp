@@ -1,10 +1,21 @@
 #include "gui/delegates/anime_list_progress_delegate.hpp"
-#include "gui/delegates/anime_list_progress_editor.hpp"
 
 #include "gui/models/anime_list_model.hpp"
 
 
 AnimeListProgressDelegate::AnimeListProgressDelegate(QObject *parent) : QStyledItemDelegate(parent) {}
+
+void AnimeListProgressDelegate::stopEditing() {
+    if (!this->editor_) {
+        return;
+    }
+
+    emit closeEditor(
+        this->editor_,
+        QAbstractItemDelegate::NoHint
+    );
+
+}
 
 void AnimeListProgressDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     QStyledItemDelegate::paint(painter, option, index);
@@ -42,6 +53,7 @@ QWidget* AnimeListProgressDelegate::createEditor(QWidget *parent, const QStyleOp
     }
 
     AnimeListProgressEditor *editor = new AnimeListProgressEditor(parent);
+    this->editor_ = editor;
 
     connect(editor, &AnimeListProgressEditor::minusButtonClicked, this, &AnimeListProgressDelegate::requestDecreaseAnimeProgress);
     connect(editor, &AnimeListProgressEditor::plusButtonClicked, this, &AnimeListProgressDelegate::requestIncreaseAnimeProgress);

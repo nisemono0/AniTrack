@@ -1,10 +1,20 @@
 #include "gui/delegates/anime_list_started_date_delegate.hpp"
-#include "gui/delegates/anime_list_started_date_editor.hpp"
 
 #include "gui/models/anime_list_model.hpp"
 
 
 AnimeListStartedDateDelegate::AnimeListStartedDateDelegate(QObject *parent) : QStyledItemDelegate(parent) {}
+
+void AnimeListStartedDateDelegate::stopEditing() {
+    if (!this->editor_) {
+        return;
+    }
+
+    emit closeEditor(
+        this->editor_,
+        QAbstractItemDelegate::NoHint
+    );
+}
 
 QWidget* AnimeListStartedDateDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     if (!index.isValid()) {
@@ -12,6 +22,8 @@ QWidget* AnimeListStartedDateDelegate::createEditor(QWidget *parent, const QStyl
     }
 
     AnimeListStartedDateEditor *editor = new AnimeListStartedDateEditor(parent);
+    this->editor_ = editor;
+
     connect(editor, &AnimeListStartedDateEditor::startedDateAccepted, this, &AnimeListStartedDateDelegate::onStartedDateAccepted);
 
     return editor;
