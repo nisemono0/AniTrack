@@ -39,10 +39,11 @@ void SetEpisodeDialog::populateDialog(const QList<AnilistAnime> &anime_list, Ani
 
     for (const auto &anime : anime_list) {
         this->ui_->plainTextEditAnime->appendPlainText(
-            QStringLiteral("- %1").arg(
+            QStringLiteral("• %1").arg(
                 AnilistUtils::animeTitleToPrettyString(anime.media.title, title_language)
             )
         );
     }
+    this->ui_->plainTextEditAnime->moveCursor(QTextCursor::Start);
 }
 

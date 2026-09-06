@@ -123,9 +123,10 @@ void AnimeInfoEditDialog::updateInfoTab() {
     this->ui_->plainTextEditSynonyms->clear();
     for (const auto &synonym : media.synonyms) {
         this->ui_->plainTextEditSynonyms->appendPlainText(
-            QStringLiteral("- %1").arg(synonym)
+            QStringLiteral("• %1").arg(synonym)
         );
     }
+    this->ui_->plainTextEditSynonyms->moveCursor(QTextCursor::Start);
 
     this->ui_->labelFormat->setText(
         AnilistUtils::mediaFormatToPrettyString(media.format)
