@@ -23,6 +23,9 @@ public:
     void setCurrentTab(Tab tab);
     Tab currentTab() const;
 
+    void selectNextTab();
+    void selectPreviousTab();
+
 signals:
     void currentTabChanged(AnimeListTabBar::Tab tab);
 

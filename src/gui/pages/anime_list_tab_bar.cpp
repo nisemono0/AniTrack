@@ -23,6 +23,20 @@ AnimeListTabBar::Tab AnimeListTabBar::currentTab() const {
     return static_cast<Tab>(this->currentIndex());
 }
 
+void AnimeListTabBar::selectNextTab() {
+    int next = this->currentIndex() + 1;
+    if (next < this->count()) {
+        this->setCurrentIndex(next);
+    }
+}
+
+void AnimeListTabBar::selectPreviousTab() {
+    int prev = this->currentIndex() - 1;
+    if (prev >= 0) {
+        this->setCurrentIndex(prev);
+    }
+}
+
 void AnimeListTabBar::wheelEvent(QWheelEvent *event) {
     event->ignore();
 }

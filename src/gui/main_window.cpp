@@ -203,6 +203,28 @@ void MainWindow::setupAnimeListPage() {
     connect(this->ui_->pageAnimeList, &AnimeListPage::requestRestoreAnimeState, this->app_controller_, &AppController::requestRestoreAnimeState);
 
     connect(this->ui_->pageAnimeList, &AnimeListPage::requestUpdateAnime, this->app_controller_, &AppController::requestUpdateAnime);
+
+    auto *next_tab_shortcut = new QShortcut(
+        Qt::Key_Tab,
+        this
+    );
+    next_tab_shortcut->setContext(Qt::WindowShortcut);
+    connect(next_tab_shortcut, &QShortcut::activated, this, [this] {
+        if (this->ui_->pageAnimeList->isVisible()) {
+            this->ui_->pageAnimeList->selectNextTab();
+        }
+    });
+
+    auto *prev_tab_shortcut = new QShortcut(
+        Qt::Key_Backtab,
+        this
+    );
+    prev_tab_shortcut->setContext(Qt::WindowShortcut);
+    connect(prev_tab_shortcut, &QShortcut::activated, this, [this] {
+        if (this->ui_->pageAnimeList->isVisible()) {
+            this->ui_->pageAnimeList->selectPreviousTab();
+        }
+    });
 }
 
 void MainWindow::setupSearchPage() {

@@ -16,6 +16,14 @@ AnimeListPage::~AnimeListPage() {
     delete this->ui_;
 }
 
+void AnimeListPage::selectNextTab() {
+    this->tab_bar_->selectNextTab();
+}
+
+void AnimeListPage::selectPreviousTab() {
+    this->tab_bar_->selectPreviousTab();
+}
+
 void AnimeListPage::onUserUpdated(const AnilistAccount::User &user) {
     this->ui_->treeViewAnimeList->updateUserPreferences(user);
     this->info_edit_dialog_->updateUserPreferences(user);

@@ -21,6 +21,9 @@ public:
     explicit AnimeListPage(QWidget *parent = nullptr);
     ~AnimeListPage();
 
+    void selectNextTab();
+    void selectPreviousTab();
+
 public slots:
     void onUserUpdated(const AnilistAccount::User &user);
 
