@@ -65,7 +65,7 @@ QList<AnilistMedia::Studio> AnilistUtils::studiosFromJsonArray(const QJsonArray 
 QString AnilistUtils::mediaFormatToPrettyString(AnilistMedia::Format format) {
     switch (format) {
         case AnilistMedia::Format::INVALID:
-            return QStringLiteral("Invalid");
+            return QStringLiteral("Unknown");
         case AnilistMedia::Format::TV:
             return QStringLiteral("TV");
         case AnilistMedia::Format::TV_SHORT:
@@ -89,7 +89,7 @@ QString AnilistUtils::mediaSeasonToPrettyString(AnilistMedia::Season season, int
     QStringList season_format;
     switch (season) {
         case AnilistMedia::Season::INVALID: {
-            season_format.append(QStringLiteral("Invalid"));
+            season_format.append(QStringLiteral("Unknown"));
             break;
         }
         case AnilistMedia::Season::WINTER: {
@@ -205,7 +205,7 @@ QString AnilistUtils::mediaStatusToPrettyString(AnilistMedia::Status status) {
         case AnilistMedia::Status::RELEASING:
             return QStringLiteral("Releasing");
         case AnilistMedia::Status::NOT_YET_RELEASED:
-            return QStringLiteral("Not yet released");
+            return QStringLiteral("Not released");
         case AnilistMedia::Status::CANCELLED:
             return QStringLiteral("Cancelled");
         case AnilistMedia::Status::HIATUS:

@@ -114,7 +114,7 @@ void AnimeSearchView::setupHeader() {
         { AnimeSearchModel::Columns::Episodes,  QHeaderView::Interactive, 15, 80,  false },
         { AnimeSearchModel::Columns::Score,     QHeaderView::Interactive, 15, 55,  false },
         { AnimeSearchModel::Columns::Season,    QHeaderView::Interactive, 15, 90,  false },
-        { AnimeSearchModel::Columns::Status,    QHeaderView::Interactive, 15, 100, false },
+        { AnimeSearchModel::Columns::Status,    QHeaderView::Interactive, 15, 90,  false },
         { AnimeSearchModel::Columns::InList,    QHeaderView::Interactive, 15, 45,  false },
         { AnimeSearchModel::Columns::IsAdult,   QHeaderView::Interactive, 15, 45,  false },
         { AnimeSearchModel::Columns::StartDate, QHeaderView::Interactive, 15, 90,  true },

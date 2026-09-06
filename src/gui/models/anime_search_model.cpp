@@ -136,6 +136,12 @@ QVariant AnimeSearchModel::data(const QModelIndex &index, int role) const {
                     }
                     break;
                 }
+                case Columns::Status: {
+                    if (media.status == AnilistMedia::Status::NOT_YET_RELEASED) {
+                        return QBrush(Qt::gray);
+                    }
+                    break;
+                }
                 case Columns::StartDate: {
                     if (!media.start_date.isValid()) {
                         return QBrush(Qt::gray);

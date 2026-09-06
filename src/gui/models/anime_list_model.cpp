@@ -168,6 +168,12 @@ QVariant AnimeListModel::data(const QModelIndex &index, int role) const {
                     }
                     break;
                 }
+                case Columns::MediaStatus: {
+                    if (anime.media.status == AnilistMedia::Status::NOT_YET_RELEASED) {
+                        return QBrush(Qt::gray);
+                    }
+                    break;
+                }
                 case Columns::LastUpdated: {
                     if (anime.entry.state().updated_at <= 0) {
                         return QBrush(Qt::gray);
