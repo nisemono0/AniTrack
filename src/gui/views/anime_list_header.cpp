@@ -13,7 +13,7 @@ AnimeListHeader::AnimeListHeader(QWidget *parent) : HeaderView(Qt::Horizontal, p
     this->setContextMenuPolicy(Qt::CustomContextMenu);
 
     this->setSortIndicatorShown(false);
-    this->setStretchLastSection(false);
+    this->setStretchLastSection(true);
     this->setMinimumSectionSize(15);
     this->setSectionsMovable(true);
 

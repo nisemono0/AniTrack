@@ -13,7 +13,7 @@ AnimeSearchHeader::AnimeSearchHeader(QWidget *parent) : HeaderView(Qt::Horizonta
     this->setContextMenuPolicy(Qt::CustomContextMenu);
 
     this->setSortIndicatorShown(false);
-    this->setStretchLastSection(false);
+    this->setStretchLastSection(true);
     this->setMinimumSectionSize(15);
     this->setSectionsMovable(true);
 
