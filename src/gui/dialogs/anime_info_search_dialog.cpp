@@ -17,11 +17,10 @@ AnimeInfoSearchDialog::AnimeInfoSearchDialog(QWidget *parent) :
         button->setFocusPolicy(Qt::NoFocus);
     }
 
-    this->ui_->buttonBox->button(QDialogButtonBox::Ok)->setText(QStringLiteral("Add as planning"));
-
-    connect(this, &QDialog::accepted, this, [this] {
-        emit requestAddMedia({this->media_}, AnilistEntry::Status::PLANNING);
+    connect(this->ui_->comboBoxAnimeStatus, &AnimeStatusComboBox::animeStatusActivated, this, [this] (AnilistEntry::Status status) {
+        emit requestAddMedia({this->media_}, status);
         this->ui_->labelCoverImage->clear();
+        this->accept();
     });
 
     connect(this, &QDialog::rejected, this, [this] {
@@ -65,6 +64,15 @@ void AnimeInfoSearchDialog::updateCoverImage() {
 
 void AnimeInfoSearchDialog::updateInfo() {
     const auto &media = this->media_;
+
+    this->ui_->comboBoxAnimeStatus->setCurrentIndex(-1);
+
+    // Disable adding to list if already in list
+    if (media.in_list) {
+        this->ui_->comboBoxAnimeStatus->setEnabled(false);
+    } else {
+        this->ui_->comboBoxAnimeStatus->setEnabled(true);
+    }
 
     // Top title
     this->ui_->labelTitleHeader->setText(
