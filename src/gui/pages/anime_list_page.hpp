@@ -4,8 +4,6 @@
 
 #include "base/anilist/anilist_account.hpp"
 
-#include "gui/pages/anime_list_tab_bar.hpp"
-
 #include "gui/dialogs/anime_info_edit_dialog.hpp"
 
 #include <QWidget>
@@ -68,8 +66,6 @@ signals:
 
 private:
     Ui::AnimeListWidget *ui_;
-
-    AnimeListTabBar *tab_bar_;
 
     AnimeInfoEditDialog *info_edit_dialog_;
 

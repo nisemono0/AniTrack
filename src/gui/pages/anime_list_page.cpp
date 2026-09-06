@@ -17,11 +17,11 @@ AnimeListPage::~AnimeListPage() {
 }
 
 void AnimeListPage::selectNextTab() {
-    this->tab_bar_->selectNextTab();
+    this->ui_->widgetTabBar->selectNextTab();
 }
 
 void AnimeListPage::selectPreviousTab() {
-    this->tab_bar_->selectPreviousTab();
+    this->ui_->widgetTabBar->selectPreviousTab();
 }
 
 void AnimeListPage::onUserUpdated(const AnilistAccount::User &user) {
@@ -56,15 +56,13 @@ void AnimeListPage::onRequestShowAnimeInfoEditDialog(const AnilistAnime &anime, 
 
 void AnimeListPage::initPage() {
     this->ui_->setupUi(this);
-    this->tab_bar_ = new AnimeListTabBar(this);
     this->info_edit_dialog_ = new AnimeInfoEditDialog(this);
 }
 
 void AnimeListPage::setupTabBar() {
-    connect(this->tab_bar_, &AnimeListTabBar::currentTabChanged, this, &AnimeListPage::onCurrentTabChanged);
+    connect(this->ui_->widgetTabBar, &AnimeListTabBar::currentTabChanged, this, &AnimeListPage::onCurrentTabChanged);
 
-    this->ui_->verticalLayout->insertWidget(0, this->tab_bar_);
-    this->tab_bar_->setCurrentTab(AnimeListTabBar::Tab::Watching);
+    this->ui_->widgetTabBar->setCurrentTab(AnimeListTabBar::Tab::Watching);
 }
 
 void AnimeListPage::setupPage() {

@@ -30,6 +30,9 @@
     <number>0</number>
    </property>
    <item>
+    <widget class="AnimeListTabBar" name="widgetTabBar" native="true"/>
+   </item>
+   <item>
     <widget class="AnimeListView" name="treeViewAnimeList">
      <property name="focusPolicy">
       <enum>Qt::FocusPolicy::NoFocus</enum>
@@ -91,6 +94,12 @@
    <class>AnimeListView</class>
    <extends>QTreeView</extends>
    <header>gui/views/anime_list_view.hpp</header>
+  </customwidget>
+  <customwidget>
+   <class>AnimeListTabBar</class>
+   <extends>QWidget</extends>
+   <header>gui/pages/anime_list_tab_bar.hpp</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
