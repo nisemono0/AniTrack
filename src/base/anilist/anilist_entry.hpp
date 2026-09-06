@@ -55,6 +55,7 @@ public:
     void setId(int id);
     bool setCurrentState(int index);
     void addState(const State &state);
+    void setState(const State &state);
 
     bool undoState();
     bool redoState();
@@ -78,7 +79,7 @@ private:
     bool is_private_ = false;
 
     State state_;
-    QList<State> state_history_;
+    QList<State> state_history_{state_};
     int current_state_idx_ = 0;
 
     void pushState(const AnilistEntry::State &state);

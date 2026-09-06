@@ -34,9 +34,7 @@ AnilistEntry AnilistEntry::fromResponseJson(const QJsonObject &json_obj) {
     state.updated_at = json_obj.value(AnilistKeys::MediaList::UpdatedAt).toInteger();
     state.pending_operation = PendingOperation::NONE;
 
-    entry.state_ = state;
-    entry.current_state_idx_ = 0;
-    entry.state_history_.append(entry.state_);
+    entry.setState(state);
 
     return entry;
 }
@@ -67,9 +65,7 @@ AnilistEntry AnilistEntry::fromDatabaseQuery(const QSqlQuery &query) {
     state.updated_at = query.value(DatabaseColumns::Entry::UpdatedAt).toLongLong();
     state.pending_operation = query.value(DatabaseColumns::Entry::PendingOperation).value<AnilistEntry::PendingOperation>();
 
-    entry.state_ = state;
-    entry.current_state_idx_ = 0;
-    entry.state_history_.append(entry.state_);
+    entry.setState(state);
 
     return entry;
 }
@@ -96,6 +92,14 @@ bool AnilistEntry::setCurrentState(int index) {
 void AnilistEntry::addState(const State &state) {
     this->state_ = state;
     this->pushState(state);
+}
+
+void AnilistEntry::setState(const State &state) {
+    this->state_ = state;
+    this->state_history_.replace(
+        this->current_state_idx_,
+        state
+    );
 }
 
 bool AnilistEntry::undoState() {

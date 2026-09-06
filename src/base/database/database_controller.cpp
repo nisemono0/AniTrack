@@ -75,7 +75,7 @@ void DatabaseController::requestAddMedia(const QList<AnilistMedia> &media_list, 
                 break;
         }
 
-        new_anime.entry.addState(new_state);
+        new_anime.entry.setState(new_state);
 
         added_anime.append(std::move(new_anime));
     }
