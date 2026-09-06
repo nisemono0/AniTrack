@@ -237,7 +237,7 @@ void AnimeListView::setupHeader() {
         { AnimeListModel::Columns::Format,       QHeaderView::Interactive, 15, 75,  false },
         { AnimeListModel::Columns::Season,       QHeaderView::Interactive, 15, 90,  false },
         { AnimeListModel::Columns::EntryStatus,  QHeaderView::Interactive, 15, 75,  false },
-        { AnimeListModel::Columns::MediaStatus,  QHeaderView::Interactive, 15, 90,  true  },
+        { AnimeListModel::Columns::MediaStatus,  QHeaderView::Interactive, 15, 90,  false  },
         { AnimeListModel::Columns::LastUpdated,  QHeaderView::Interactive, 15, 90,  false },
         { AnimeListModel::Columns::StartedAt,    QHeaderView::Interactive, 15, 90,  true  },
         { AnimeListModel::Columns::CompletedAt,  QHeaderView::Interactive, 15, 90,  true  },
