@@ -131,6 +131,7 @@ QString AnilistUtils::epochToPrettyString(qint64 entry_epoch, qint64 current_epo
     constexpr std::chrono::seconds day = std::chrono::days(1);
     constexpr std::chrono::seconds week = std::chrono::weeks(1);
     constexpr std::chrono::seconds month = std::chrono::days(30);
+    constexpr std::chrono::seconds year = std::chrono::years(1);
 
     const auto time_diff = std::chrono::seconds(current_epoch - entry_epoch);
 
@@ -159,6 +160,12 @@ QString AnilistUtils::epochToPrettyString(qint64 entry_epoch, qint64 current_epo
     if (time_diff < month) {
         return QStringLiteral("%1w ago").arg(
             std::chrono::duration_cast<std::chrono::weeks>(time_diff).count()
+        );
+    }
+
+    if (time_diff <= year) {
+        return QStringLiteral("%1mo ago").arg(
+            std::chrono::duration_cast<std::chrono::months>(time_diff).count()
         );
     }
 
