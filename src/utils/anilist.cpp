@@ -117,11 +117,52 @@ QString AnilistUtils::mediaSeasonToPrettyString(AnilistMedia::Season season, int
     return season_format.join(QChar::Space);
 }
 
-QString AnilistUtils::epochToPrettyString(qint64 epoch) {
-    if (epoch <= 0) {
+QString AnilistUtils::epochToPrettyString(qint64 entry_epoch, qint64 current_epoch) {
+    if (entry_epoch <= 0) {
         return QStringLiteral("-");
     }
-    return QDateTime::fromSecsSinceEpoch(epoch).toString(QStringLiteral("dd-MM-yyyy"));
+
+    if (entry_epoch > current_epoch) {
+        return QDateTime::fromSecsSinceEpoch(entry_epoch).toString(QStringLiteral("dd-MM-yyyy"));
+    }
+
+    constexpr std::chrono::seconds minute = std::chrono::minutes(1);
+    constexpr std::chrono::seconds hour = std::chrono::hours(1);
+    constexpr std::chrono::seconds day = std::chrono::days(1);
+    constexpr std::chrono::seconds week = std::chrono::weeks(1);
+    constexpr std::chrono::seconds month = std::chrono::days(30);
+
+    const auto time_diff = std::chrono::seconds(current_epoch - entry_epoch);
+
+    if (time_diff < minute) {
+        return QStringLiteral("just now");
+    }
+
+    if (time_diff < hour) {
+        return QStringLiteral("%1m ago").arg(
+            std::chrono::duration_cast<std::chrono::minutes>(time_diff).count()
+        );
+    }
+
+    if (time_diff < day) {
+        return QStringLiteral("%1h ago").arg(
+            std::chrono::duration_cast<std::chrono::hours>(time_diff).count()
+        );
+    }
+
+    if (time_diff < week) {
+        return QStringLiteral("%1d ago").arg(
+            std::chrono::duration_cast<std::chrono::days>(time_diff).count()
+        );
+    }
+
+    if (time_diff < month) {
+        return QStringLiteral("%1w ago").arg(
+            std::chrono::duration_cast<std::chrono::weeks>(time_diff).count()
+        );
+    }
+
+    return QDateTime::fromSecsSinceEpoch(entry_epoch).toString(QStringLiteral("dd-MM-yyyy"));
 }
 
 QString AnilistUtils::dateToPrettyString(const QDate &date) {

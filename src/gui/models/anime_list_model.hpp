@@ -3,9 +3,12 @@
 #include "base/anilist/anilist_account.hpp"
 #include "base/anilist/anilist_anime.hpp"
 
+#include "utils/date.hpp"
+
 #include <QAbstractItemModel>
 #include <QModelIndex>
 #include <QHash>
+#include <QTimer>
 
 
 class AnimeListModel final : public QAbstractItemModel {
@@ -75,9 +78,13 @@ private:
     AnilistAccount::ScoreFormat score_format_;
     AnilistAccount::TitleLanguage title_language_;
 
+    qint64 current_epoch_ = DateUtils::currentEpochTime();
+    QTimer *last_updated_timer_;
+
     QList<AnilistAnime> anime_list_;
     QHash<int, int> local_id_to_anime_;
 
     void rebuildLocalIdHash();
+    void updateCurrentEpoch();
 };
 

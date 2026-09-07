@@ -7,7 +7,21 @@
 #include <QBrush>
 
 
-AnimeListModel::AnimeListModel(QObject *parent) : QAbstractItemModel(parent) {}
+AnimeListModel::AnimeListModel(QObject *parent) : QAbstractItemModel(parent) {
+    this->last_updated_timer_ = new QTimer(this);
+
+    connect(this->last_updated_timer_, &QTimer::timeout, this, [this] {
+        this->updateCurrentEpoch();
+
+        emit dataChanged(
+            this->index(0, static_cast<int>(Columns::LastUpdated)),
+            this->index(this->rowCount() - 1, static_cast<int>(Columns::LastUpdated)),
+            {Qt::DisplayRole}
+        );
+    });
+
+    this->last_updated_timer_->start(std::chrono::minutes(1));
+}
 
 QModelIndex AnimeListModel::index(int row, int column, const QModelIndex &parent) const {
     if (parent.isValid()) {
@@ -131,7 +145,10 @@ QVariant AnimeListModel::data(const QModelIndex &index, int role) const {
                 case Columns::MediaStatus:
                     return AnilistUtils::mediaStatusToPrettyString(anime.media.status);
                 case Columns::LastUpdated:
-                    return AnilistUtils::epochToPrettyString(anime.entry.state().updated_at);
+                    return AnilistUtils::epochToPrettyString(
+                        anime.entry.state().updated_at,
+                        this->current_epoch_
+                    );
                 case Columns::StartedAt:
                     return AnilistUtils::dateToPrettyString(anime.entry.state().started_at);
                 case Columns::CompletedAt:
@@ -325,6 +342,8 @@ void AnimeListModel::updateUserPreferences(const AnilistAccount::User &user) {
 }
 
 void AnimeListModel::setAnime(const QList<AnilistAnime> &anime_list) {
+    this->updateCurrentEpoch();
+
     beginResetModel();
 
     this->anime_list_ = anime_list;
@@ -334,6 +353,8 @@ void AnimeListModel::setAnime(const QList<AnilistAnime> &anime_list) {
 }
 
 void AnimeListModel::updateAnime(const QList<AnilistAnime> &anime_list) {
+    this->updateCurrentEpoch();
+
     for (const auto &anime : anime_list) {
         const auto it = this->local_id_to_anime_.constFind(anime.entry.localId());
         if (it == this->local_id_to_anime_.constEnd()) {
@@ -375,6 +396,8 @@ void AnimeListModel::deleteAnime(const QList<int> &local_ids) {
 }
 
 void AnimeListModel::addAnime(const QList<AnilistAnime> &anime_list) {
+    this->updateCurrentEpoch();
+
     int first_row = this->anime_list_.size();
     int last_row = first_row + anime_list.size() - 1;
 
@@ -400,5 +423,9 @@ void AnimeListModel::rebuildLocalIdHash() {
             i
         );
     }
+}
+
+void AnimeListModel::updateCurrentEpoch() {
+    this->current_epoch_ = DateUtils::currentEpochTime();
 }
 

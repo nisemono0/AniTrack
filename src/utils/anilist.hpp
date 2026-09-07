@@ -69,7 +69,7 @@ QList<T> studiosProducersFromJsonString(const QString &json_string) {
 // Return formatted strings from various anime data
 QString mediaFormatToPrettyString(AnilistMedia::Format format);
 QString mediaSeasonToPrettyString(AnilistMedia::Season season, int season_year);
-QString epochToPrettyString(qint64 epoch);
+QString epochToPrettyString(qint64 entry_epoch, qint64 current_epoch);
 QString dateToPrettyString(const QDate &date);
 QString entryScoreToPrettyString(int score, AnilistAccount::ScoreFormat format);
 QString entryStatusToPrettyString(AnilistEntry::Status status);
