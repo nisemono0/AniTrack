@@ -29,12 +29,15 @@ void AnimeListProgressDelegate::paint(QPainter *painter, const QStyleOptionViewI
 
     QStyleOptionProgressBar option_progressbar;
     option_progressbar.rect = option.rect;
-    option_progressbar.minimum = 0;
-    option_progressbar.maximum = qMax(episodes, 1);
-    option_progressbar.progress = progress;
     if (episodes <= 0) {
+        option_progressbar.minimum = 0;
+        option_progressbar.maximum = 1;
+        option_progressbar.progress = progress <= 0 ? 0 : 1;
         option_progressbar.text = QStringLiteral("%1/?").arg(progress);
     } else {
+        option_progressbar.minimum = 0;
+        option_progressbar.maximum = episodes;
+        option_progressbar.progress = qBound(0, progress, episodes);
         option_progressbar.text = QStringLiteral("%1/%2").arg(progress)
                                                          .arg(episodes);
     }
