@@ -30,6 +30,17 @@ if (NOT ANIME_RELATIONS_GIT_COMMIT)
     set(ANIME_RELATIONS_GIT_COMMIT "unknown")
 endif()
 
+# Get utf8proc submodule short commit
+execute_process(
+    COMMAND git -C "${CMAKE_SOURCE_DIR}/deps/utf8proc" rev-parse --short HEAD
+    OUTPUT_VARIABLE UTF8PROC_GIT_COMMIT
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+)
+if (NOT UTF8PROC_GIT_COMMIT)
+    set(UTF8PROC_GIT_COMMIT "unknown")
+endif()
+
 # Option to enable WIP features
 option(ENABLE_WIP_FEATURES "Enable WIP features" OFF)
 

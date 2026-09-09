@@ -185,6 +185,7 @@ if(ENABLE_WIP_FEATURES)
     target_compile_definitions(AniTrack PRIVATE ENABLE_WIP_FEATURES)
     target_compile_definitions(AniTrack PRIVATE ANITOMY_GIT_COMMIT="${ANITOMY_GIT_COMMIT}")
     target_compile_definitions(AniTrack PRIVATE ANIME_RELATIONS_GIT_COMMIT="${ANIME_RELATIONS_GIT_COMMIT}")
+    target_compile_definitions(AniTrack PRIVATE UTF8PROC_GIT_COMMIT="${UTF8PROC_GIT_COMMIT}")
 endif()
 
 target_sources(AniTrack
