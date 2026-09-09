@@ -95,6 +95,7 @@ signals:
 
     // Sync manager
     void requestSync();
+    void requestMediaSync();
 
     // Search manager
     void requestAnimeSearch(const QString &title);

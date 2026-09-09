@@ -18,6 +18,7 @@ public:
 
 public slots:
     void requestSync();
+    void requestMediaSync();
 
 signals:
     void syncFinished();
@@ -38,9 +39,9 @@ private:
     QList<AnilistAnime> pending_anime_;
     int current_anime_ = 0;
 
+    bool is_media_sync_ = false;
     bool sync_in_progress_ = false;
 
-    void startSync();
     void resetSync();
 
     void finishSync();

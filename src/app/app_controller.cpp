@@ -112,6 +112,7 @@ void AppController::setupAccountManagerConnections() {
 
 void AppController::setupSyncConnections() {
     connect(this, &AppController::requestSync, this->sync_manager_, &SyncManager::requestSync);
+    connect(this, &AppController::requestMediaSync, this->sync_manager_, &SyncManager::requestMediaSync);
 
     connect(this->sync_manager_, &SyncManager::syncProgressStarted, this, &AppController::requestShowProgressDialog);
     connect(this->sync_manager_, &SyncManager::syncProgressUpdated, this, &AppController::requestUpdateProgressDialog);

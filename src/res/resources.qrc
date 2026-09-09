@@ -3,6 +3,7 @@
     <file alias="no-image">images/no-image.png</file>
   </qresource>
   <qresource prefix="icons">
+    <file alias="cloud-down">icons/cloud-down.svg</file>
     <file alias="history">icons/history.svg</file>
     <file alias="account-info-update">icons/account-info-update.svg</file>
     <file alias="account">icons/account.svg</file>

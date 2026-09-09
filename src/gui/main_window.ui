@@ -184,6 +184,7 @@
      <string>Anilist</string>
     </property>
     <addaction name="actionSync"/>
+    <addaction name="actionSyncAnimeInfo"/>
     <addaction name="separator"/>
     <addaction name="actionGotoProfile"/>
     <addaction name="actionGotoList"/>
@@ -252,6 +253,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionSync"/>
+   <addaction name="actionSyncAnimeInfo"/>
    <addaction name="separator"/>
    <addaction name="actionAccountSetup"/>
    <addaction name="actionUpdateUserInfo"/>
@@ -473,6 +475,24 @@
    </property>
    <property name="statusTip">
     <string>Update user info from AniList</string>
+   </property>
+  </action>
+  <action name="actionSyncAnimeInfo">
+   <property name="icon">
+    <iconset resource="../res/resources.qrc">
+     <normaloff>:/icons/cloud-down</normaloff>:/icons/cloud-down</iconset>
+   </property>
+   <property name="text">
+    <string>Sync anime info</string>
+   </property>
+   <property name="toolTip">
+    <string>Sync anime info</string>
+   </property>
+   <property name="statusTip">
+    <string>Sync anime info from AniList</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
    </property>
   </action>
  </widget>

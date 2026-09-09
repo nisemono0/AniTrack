@@ -97,6 +97,7 @@ void MainWindow::setupFileMenu() {
 
 void MainWindow::setupAnilistMenu() {
     connect(this->ui_->actionSync, &QAction::triggered, this->app_controller_, &AppController::requestSync);
+    connect(this->ui_->actionSyncAnimeInfo, &QAction::triggered, this->app_controller_, &AppController::requestMediaSync);
 
     connect(this->ui_->actionGotoProfile, &QAction::triggered, this->app_controller_, &AppController::requestProfileUrl);
     connect(this->ui_->actionGotoList, &QAction::triggered, this->app_controller_, &AppController::requestListUrl);
