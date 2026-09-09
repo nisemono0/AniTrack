@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>505</width>
-    <height>390</height>
+    <height>425</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>505</width>
-    <height>390</height>
+    <height>425</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>505</width>
-    <height>390</height>
+    <height>425</height>
    </size>
   </property>
   <property name="focusPolicy">
@@ -262,7 +262,7 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
+     <item row="5" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
         <widget class="QPushButton" name="pushButtonCopyToClipboard">
@@ -275,6 +275,20 @@
         </widget>
        </item>
       </layout>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="labelUtf8proc">
+       <property name="text">
+        <string>&lt;a href=&quot;https://github.com/JuliaStrings/utf8proc&quot;&gt;utf8proc&lt;/a&gt;:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLabel" name="labelUtf8procVer">
+       <property name="text">
+        <string>Utf8procVer</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
