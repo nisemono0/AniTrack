@@ -43,6 +43,8 @@ qt_add_executable(AniTrack
     base/recognition/mpris_keys.hpp
     base/recognition/mpris_watcher.cpp
     base/recognition/mpris_watcher.hpp
+    base/recognition/title_normalizer.cpp
+    base/recognition/title_normalizer.hpp
     base/search/search_manager.cpp
     base/search/search_manager.hpp
     base/settings/app_settings.cpp
