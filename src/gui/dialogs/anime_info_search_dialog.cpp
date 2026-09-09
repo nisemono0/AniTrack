@@ -97,7 +97,9 @@ void AnimeInfoSearchDialog::updateInfo() {
     this->ui_->labelFormat->setText(
         AnilistUtils::mediaFormatToPrettyString(media.format)
     );
-    this->ui_->labelEpisodes->setText(QString::number(media.episodes));
+    this->ui_->labelEpisodes->setText(
+        AnilistUtils::mediaEpisodesToPrettyString(media.episodes)
+    );
     this->ui_->labelStatus->setText(
         AnilistUtils::mediaStatusToPrettyString(media.status)
     );
