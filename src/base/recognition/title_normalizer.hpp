@@ -2,6 +2,6 @@
 
 
 namespace TitleNormalizer {
-void normalize(QString &title);
+QString normalize(const QString &title);
 }
 

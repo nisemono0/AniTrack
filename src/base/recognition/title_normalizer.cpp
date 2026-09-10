@@ -181,14 +181,18 @@ void simplifyTitle(QString &title) {
 }
 } // namespace
 
-void TitleNormalizer::normalize(QString &title) {
-    convertRomanNumbers(title);
-    transliterateTitle(title);
-    normalizeUnicode(title);
-    convertOrdinalNumbers(title);
-    convertSeasonNumbers(title);
-    cleanTitle(title);
-    replacePunctuations(title);
-    simplifyTitle(title);
+QString TitleNormalizer::normalize(const QString &title) {
+    QString normalized_title = title;
+
+    convertRomanNumbers(normalized_title);
+    transliterateTitle(normalized_title);
+    normalizeUnicode(normalized_title);
+    convertOrdinalNumbers(normalized_title);
+    convertSeasonNumbers(normalized_title);
+    cleanTitle(normalized_title);
+    replacePunctuations(normalized_title);
+    simplifyTitle(normalized_title);
+
+    return normalized_title;
 }
 
