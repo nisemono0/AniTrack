@@ -27,6 +27,8 @@ qt_add_executable(AniTrack
     base/cache/image_cache.hpp
     base/cache/image_request.cpp
     base/cache/image_request.hpp
+    base/cache/recognition_cache.cpp
+    base/cache/recognition_cache.hpp
     base/database/database.cpp
     base/database/database.hpp
     base/database/database_columns.hpp
@@ -43,6 +45,8 @@ qt_add_executable(AniTrack
     base/recognition/mpris_keys.hpp
     base/recognition/mpris_watcher.cpp
     base/recognition/mpris_watcher.hpp
+    base/recognition/string_similarity.cpp
+    base/recognition/string_similarity.hpp
     base/recognition/title_normalizer.cpp
     base/recognition/title_normalizer.hpp
     base/search/search_manager.cpp
