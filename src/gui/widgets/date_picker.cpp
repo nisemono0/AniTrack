@@ -52,7 +52,7 @@ void DatePicker::showPopup() {
     if (this->date_popup_->isVisible()) {
         return;
     }
-    QPoint pos = this->date_display_->mapToGlobal(
+    const QPoint pos = this->date_display_->mapToGlobal(
         QPoint(0, this->date_display_->height())
     );
 

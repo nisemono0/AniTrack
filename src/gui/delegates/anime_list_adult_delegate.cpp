@@ -8,7 +8,7 @@ AnimeListAdultDelegate::AnimeListAdultDelegate(QObject *parent) : QStyledItemDel
 void AnimeListAdultDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     QStyledItemDelegate::paint(painter, option, index);
 
-    bool is_adult = index.data(AnimeListModel::UserRoles::IsAdult).toBool();
+    const bool is_adult = index.data(AnimeListModel::UserRoles::IsAdult).toBool();
 
     if (is_adult) {
         this->icon_yes_.paint(

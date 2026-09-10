@@ -24,8 +24,8 @@ void AnimeListProgressDelegate::paint(QPainter *painter, const QStyleOptionViewI
         return;
     }
 
-    int progress = index.data(AnimeListModel::UserRoles::EntryProgress).toInt();
-    int episodes = index.data(AnimeListModel::UserRoles::MediaEpisodes).toInt();
+    const int progress = index.data(AnimeListModel::UserRoles::EntryProgress).toInt();
+    const int episodes = index.data(AnimeListModel::UserRoles::MediaEpisodes).toInt();
 
     QStyleOptionProgressBar option_progressbar;
     option_progressbar.rect = option.rect;

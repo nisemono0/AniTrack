@@ -38,7 +38,7 @@ QSize ListWidgetSeparatorDelegate::sizeHint(const QStyleOptionViewItem &option, 
     menu_item_opts.state = QStyle::State_Enabled;
     menu_item_opts.menuItemType = QStyleOptionMenuItem::Separator;
 
-    QSize size = style->sizeFromContents(QStyle::CT_MenuItem, &menu_item_opts, QSize(), option.widget);
+    const QSize size = style->sizeFromContents(QStyle::CT_MenuItem, &menu_item_opts, QSize(), option.widget);
 
     return size;
 }

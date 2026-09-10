@@ -59,7 +59,7 @@ int main (int argc, char *argv[]) {
     app.controller()->init();
     main_window->show();
 
-    int app_return_code = app.exec();
+    const int app_return_code = app.exec();
     delete main_window;
 
     app.settings()->syncToDisk();

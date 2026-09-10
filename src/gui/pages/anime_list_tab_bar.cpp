@@ -24,14 +24,14 @@ AnimeListTabBar::Tab AnimeListTabBar::currentTab() const {
 }
 
 void AnimeListTabBar::selectNextTab() {
-    int next = this->currentIndex() + 1;
+    const int next = this->currentIndex() + 1;
     if (next < this->count()) {
         this->setCurrentIndex(next);
     }
 }
 
 void AnimeListTabBar::selectPreviousTab() {
-    int prev = this->currentIndex() - 1;
+    const int prev = this->currentIndex() - 1;
     if (prev >= 0) {
         this->setCurrentIndex(prev);
     }
@@ -45,8 +45,8 @@ void AnimeListTabBar::initTabs() {
     const QMetaEnum meta_enum = QMetaEnum::fromType<AnimeListTabBar::Tab>();
 
     for (int i = 0; i < meta_enum.keyCount(); i++) {
-        Tab tab = static_cast<AnimeListTabBar::Tab>(meta_enum.value(i));
-        QString name = QString::fromLatin1(meta_enum.key(i));
+        const Tab tab = static_cast<AnimeListTabBar::Tab>(meta_enum.value(i));
+        const QString name = QString::fromLatin1(meta_enum.key(i));
 
         this->setTabData(
             this->addTab(name),

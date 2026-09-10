@@ -62,7 +62,7 @@ void AnimeSearchView::setFilterText(const QString &text) {
 void AnimeSearchView::wheelEvent(QWheelEvent *event) {
     if (event->modifiers().testFlag(Qt::ShiftModifier)) {
         QScrollBar *h_scroll = this->horizontalScrollBar();
-        int delta = event->angleDelta().y();
+        const int delta = event->angleDelta().y();
         h_scroll->setValue(
             h_scroll->value() - delta
         );
@@ -130,7 +130,7 @@ void AnimeSearchView::setupHeader() {
 
     this->anime_search_header_->saveCurrentState();
 
-    QByteArray saved_header_state = Settings::get(Settings::Ui::AnimeSearchView::HeaderState, QByteArray());
+    const QByteArray saved_header_state = Settings::get(Settings::Ui::AnimeSearchView::HeaderState, QByteArray());
     if (!saved_header_state.isEmpty()) {
         this->anime_search_header_->restoreState(saved_header_state);
     }
@@ -161,7 +161,7 @@ void AnimeSearchView::onCustomContextMenuRequested(const QPoint &pos) {
 
     QMenu menu(this);
 
-    bool is_single_media = selected_media.size() == 1;
+    const bool is_single_media = selected_media.size() == 1;
     if (is_single_media) {
         QAction *info_add_action = menu.addAction(
             QIcon(AppResources::Icons::Info),

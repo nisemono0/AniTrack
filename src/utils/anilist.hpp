@@ -47,15 +47,15 @@ template<typename T>
 QList<T> studiosProducersFromJsonString(const QString &json_string) {
     QList<T> list;
 
-    QJsonDocument json_doc = QJsonDocument::fromJson(json_string.toUtf8());
+    const QJsonDocument json_doc = QJsonDocument::fromJson(json_string.toUtf8());
     if (!json_doc.isArray()) {
         return list;
     }
 
-    QJsonArray json_array = json_doc.array();
+    const QJsonArray json_array = json_doc.array();
 
-    for (const auto &item : std::as_const(json_array)) {
-        QJsonObject json_obj = item.toObject();
+    for (const auto &item : json_array) {
+        const QJsonObject json_obj = item.toObject();
         T type;
         type.name = json_obj.value(QStringLiteral("name")).toString();
         type.site_url = json_obj.value(QStringLiteral("site_url")).toString();

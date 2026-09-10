@@ -40,7 +40,7 @@ signals:
 private:
     Ui::AnimeInfoEditDialog *ui_;
 
-    QPixmap no_image_ = QPixmap(AppResources::Images::NoImage);
+    const QPixmap no_image_ = QPixmap(AppResources::Images::NoImage);
 
     AnilistAccount::ScoreFormat score_format_;
     AnilistAccount::TitleLanguage title_language_;

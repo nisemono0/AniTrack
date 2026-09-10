@@ -31,9 +31,9 @@ QJsonObject AnilistUtils::fuzzyDateFromDate(const QDate &date) {
 QList<AnilistMedia::Producer> AnilistUtils::producersFromJsonArray(const QJsonArray &edges_array) {
     QList<AnilistMedia::Producer> producers;
     for (const auto &edge : edges_array) {
-        QJsonObject edge_obj = edge.toObject();
+        const QJsonObject edge_obj = edge.toObject();
         if (!edge_obj.value(AnilistKeys::StudioEdge::IsMain).toBool()) {
-            QJsonObject studio_obj = edge_obj.value(AnilistKeys::StudioEdge::Node).toObject();
+            const QJsonObject studio_obj = edge_obj.value(AnilistKeys::StudioEdge::Node).toObject();
             producers.append(
                 AnilistMedia::Producer{
                     studio_obj.value(AnilistKeys::Studio::Name).toString(),
@@ -48,9 +48,9 @@ QList<AnilistMedia::Producer> AnilistUtils::producersFromJsonArray(const QJsonAr
 QList<AnilistMedia::Studio> AnilistUtils::studiosFromJsonArray(const QJsonArray &edges_array) {
     QList<AnilistMedia::Studio> studios;
     for (const auto &edge : edges_array) {
-        QJsonObject edge_obj = edge.toObject();
+        const QJsonObject edge_obj = edge.toObject();
         if (edge_obj.value(AnilistKeys::StudioEdge::IsMain).toBool()) {
-            QJsonObject studio_obj = edge_obj.value(AnilistKeys::StudioEdge::Node).toObject();
+            const QJsonObject studio_obj = edge_obj.value(AnilistKeys::StudioEdge::Node).toObject();
             studios.append(
                 AnilistMedia::Studio{
                     studio_obj.value(AnilistKeys::Studio::Name).toString(),

@@ -26,7 +26,7 @@ AnilistMedia AnilistMedia::fromResponseJson(const QJsonObject &json_obj) {
     media.average_score = json_obj.value(AnilistKeys::Media::AverageScore).toInt();
     media.site_url = json_obj.value(AnilistKeys::Media::SiteUrl).toString();
 
-    QJsonObject titles_obj = json_obj.value(AnilistKeys::Media::Title).toObject();
+    const QJsonObject titles_obj = json_obj.value(AnilistKeys::Media::Title).toObject();
     media.title = AnilistMedia::Title{
         titles_obj.value(AnilistKeys::MediaTitle::English).toString(),
         titles_obj.value(AnilistKeys::MediaTitle::Native).toString(),

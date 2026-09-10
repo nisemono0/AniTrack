@@ -51,8 +51,8 @@ AnilistAccount::User AnilistAccount::userFromViewerJson(const QJsonObject &json_
         AnilistAccount::TitleLanguage::INVALID
     );
 
-    QJsonObject stats_object = json_object.value(AnilistKeys::User::Statistics).toObject()
-                                          .value(AnilistKeys::UserStatisticTypes::Anime).toObject();
+    const QJsonObject stats_object = json_object.value(AnilistKeys::User::Statistics).toObject()
+                                                .value(AnilistKeys::UserStatisticTypes::Anime).toObject();
 
     anilist_user.anime_count = stats_object.value(AnilistKeys::UserStatistics::Count).toInt();
     anilist_user.episodes_watched = stats_object.value(AnilistKeys::UserStatistics::EpisodesWatched).toInt();

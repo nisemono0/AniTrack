@@ -15,7 +15,7 @@ void AnimeSearchProxy::setFilterText(const QString &text) {
 }
 
 bool AnimeSearchProxy::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
-    QModelIndex index = this->sourceModel()->index(
+    const QModelIndex index = this->sourceModel()->index(
         source_row,
         static_cast<int>(AnimeSearchModel::Columns::Title),
         source_parent
@@ -25,7 +25,7 @@ bool AnimeSearchProxy::filterAcceptsRow(int source_row, const QModelIndex &sourc
         return false;
     }
 
-    AnilistMedia::Title title = index.data(AnimeSearchModel::UserRoles::Title).value<AnilistMedia::Title>();
+    const AnilistMedia::Title title = index.data(AnimeSearchModel::UserRoles::Title).value<AnilistMedia::Title>();
 
     return title.romaji.contains(this->filter_text_, Qt::CaseInsensitive) ||
            title.english.contains(this->filter_text_, Qt::CaseInsensitive) ||

@@ -168,13 +168,13 @@ void AnimeInfoEditDialog::updateInfoTab() {
 
 void AnimeInfoEditDialog::updateEditTab() {
     // Block signals from firing while setting up the edit page
-    QSignalBlocker episodes_watched_blocker(this->ui_->spinBoxEpisodesWatched);
-    QSignalBlocker rewatched_blocker(this->ui_->spinBoxRewatches);
-    QSignalBlocker score_blocker(this->ui_->spinBoxScore);
-    QSignalBlocker status_blocker(this->ui_->comboBoxStatus);
-    QSignalBlocker started_date_blocker(this->ui_->widgetStartedDatePicker);
-    QSignalBlocker completed_date_blocker(this->ui_->widgetCompletedDatePicker);
-    QSignalBlocker notes_blocker(this->ui_->plainTextEditNotes);
+    const QSignalBlocker episodes_watched_blocker(this->ui_->spinBoxEpisodesWatched);
+    const QSignalBlocker rewatched_blocker(this->ui_->spinBoxRewatches);
+    const QSignalBlocker score_blocker(this->ui_->spinBoxScore);
+    const QSignalBlocker status_blocker(this->ui_->comboBoxStatus);
+    const QSignalBlocker started_date_blocker(this->ui_->widgetStartedDatePicker);
+    const QSignalBlocker completed_date_blocker(this->ui_->widgetCompletedDatePicker);
+    const QSignalBlocker notes_blocker(this->ui_->plainTextEditNotes);
 
     const auto &media = this->anime_.media;
     const auto &entry_state = this->anime_.entry.state();

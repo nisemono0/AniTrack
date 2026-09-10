@@ -12,7 +12,7 @@ QStringList JsonUtils::stringListFromJsonArray(const QJsonArray &json_array) {
 }
 
 QStringList JsonUtils::stringListFromJsonString(const QString &json_string) {
-    QJsonDocument json_doc = QJsonDocument::fromJson(json_string.toUtf8());
+    const QJsonDocument json_doc = QJsonDocument::fromJson(json_string.toUtf8());
     return JsonUtils::stringListFromJsonArray(json_doc.array());
 }
 

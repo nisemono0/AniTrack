@@ -8,8 +8,8 @@ double StringSimilarity::levenshteinSimilarity(const QString &left, const QStrin
         return 1.0;
     }
 
-    int left_len = left.size();
-    int right_len = right.size();
+    const int left_len = left.size();
+    const int right_len = right.size();
 
     QList<int> prev_row(right_len + 1, 0);
     QList<int> curr_row(right_len + 1, 0);
@@ -36,7 +36,7 @@ double StringSimilarity::levenshteinSimilarity(const QString &left, const QStrin
         prev_row.swap(curr_row);
     }
 
-    double distance = prev_row.at(right_len);
+    const double distance = prev_row.at(right_len);
 
     return 1.0 - (distance / qMax(left.size(), right.size()));
 }

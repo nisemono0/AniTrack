@@ -47,7 +47,7 @@ QVariant AnimeSearchModel::data(const QModelIndex &index, int role) const {
     }
 
     const AnilistMedia &media = this->media_list_.at(index.row());
-    Columns column = static_cast<Columns>(index.column());
+    const Columns column = static_cast<Columns>(index.column());
 
     switch (role) {
         // User roles
@@ -181,7 +181,7 @@ QVariant AnimeSearchModel::headerData(int section, Qt::Orientation orientation, 
         return QVariant();
     }
 
-    Columns column = static_cast<Columns>(section);
+    const Columns column = static_cast<Columns>(section);
 
     switch (role) {
         // Header titles used for context menu
@@ -250,7 +250,7 @@ void AnimeSearchModel::setExistingMediaIds(const QList<AnilistAnime> &anime_list
     }
 
     for (int row = 0; row < this->media_list_.size(); row++) {
-        bool in_list = this->existing_media_ids_.contains(
+        const bool in_list = this->existing_media_ids_.contains(
             this->media_list_.at(row).id
         );
 
@@ -286,14 +286,14 @@ void AnimeSearchModel::setMedia(const QList<AnilistMedia> &media_list) {
 
 void AnimeSearchModel::updateAddedMedia(const QList<AnilistMedia> &media_list) {
     for (const auto &media : media_list) {
-        auto it = this->id_to_media_.constFind(media.id);
+        const auto it = this->id_to_media_.constFind(media.id);
         if (it == this->id_to_media_.constEnd()) {
             continue;
         }
 
         this->existing_media_ids_.insert(media.id);
 
-        int media_idx = it.value();
+        const int media_idx = it.value();
         this->media_list_[media_idx].in_list = true;
 
         emit dataChanged(

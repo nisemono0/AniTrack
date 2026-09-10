@@ -6,7 +6,7 @@ AnimeStatusComboBox::AnimeStatusComboBox(QWidget *parent) : QComboBox(parent) {
     const QMetaEnum meta_enum = QMetaEnum::fromType<StatusItems>();
 
     for (int i = 0; i < meta_enum.keyCount(); i++) {
-        QString name = QString::fromLatin1(meta_enum.key(i));
+        const QString name = QString::fromLatin1(meta_enum.key(i));
 
         this->addItem(
             name,

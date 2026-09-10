@@ -45,7 +45,7 @@ signals:
     void deleteAnimeFinished(int local_id);
 
     void searchAnimeFailed(const QString &message);
-    void searchAnimeFinished(const QList<AnilistMedia> &media);
+    void searchAnimeFinished(const QList<AnilistMedia> &media_list);
 
 private:
     Network *network_;

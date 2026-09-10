@@ -34,7 +34,7 @@ signals:
 private:
     Ui::AnimeInfoSearchDialog *ui_;
 
-    QPixmap  no_image_ = QPixmap(AppResources::Images::NoImage);
+    const QPixmap no_image_ = QPixmap(AppResources::Images::NoImage);
 
     AnilistAccount::TitleLanguage title_language_;
 

@@ -8,7 +8,7 @@ AnimeSearchAdultDelegate::AnimeSearchAdultDelegate(QObject *parent) : QStyledIte
 void AnimeSearchAdultDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     QStyledItemDelegate::paint(painter, option, index);
 
-    bool is_adult = index.data(AnimeSearchModel::UserRoles::IsAdult).toBool();
+    const bool is_adult = index.data(AnimeSearchModel::UserRoles::IsAdult).toBool();
 
     if (is_adult) {
         this->icon_yes_.paint(

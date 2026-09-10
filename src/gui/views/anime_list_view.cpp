@@ -124,7 +124,7 @@ void AnimeListView::setFilterText(const QString &text) {
 void AnimeListView::wheelEvent(QWheelEvent *event) {
     if (event->modifiers().testFlag(Qt::ShiftModifier)) {
         QScrollBar *h_scroll = this->horizontalScrollBar();
-        int delta = event->angleDelta().y();
+        const int delta = event->angleDelta().y();
         h_scroll->setValue(
             h_scroll->value() - delta
         );
@@ -257,7 +257,7 @@ void AnimeListView::setupHeader() {
     this->anime_list_header_->saveCurrentState();
 
     // Set the previous user's header state if any, while keeping the above as default
-    QByteArray saved_header_state = Settings::get(Settings::Ui::AnimeListView::HeaderState, QByteArray());
+    const QByteArray saved_header_state = Settings::get(Settings::Ui::AnimeListView::HeaderState, QByteArray());
     if (!saved_header_state.isEmpty()) {
         this->anime_list_header_->restoreState(saved_header_state);
     }
@@ -350,7 +350,7 @@ void AnimeListView::addUndoRedoActions(QMenu &menu, const QList<AnilistAnime> &s
 }
 
 void AnimeListView::addDeleteActions(QMenu &menu, const QList<AnilistAnime> &selected_anime) {
-    const auto *remove = menu.addAction(
+    QAction *remove = menu.addAction(
         QIcon(AppResources::Icons::Trash),
         QStringLiteral("Mark for removal")
     );
@@ -469,7 +469,7 @@ void AnimeListView::addDateActions(QMenu &menu, const QList<AnilistAnime> &selec
 }
 
 void AnimeListView::addScoreActions(QMenu &menu, const QList<AnilistAnime> &selected_anime) {
-    const auto *score = menu.addAction(
+    QAction *score = menu.addAction(
         QIcon(AppResources::Icons::Numbers),
         QStringLiteral("Set score")
     );

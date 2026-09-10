@@ -28,11 +28,11 @@ AnimeListHeader::~AnimeListHeader() {
 void AnimeListHeader::onCustomContextMenuRequested(const QPoint &pos) {
     QMenu menu(this);
 
-    int columns = this->count();
-    int visible_columns = columns - this->hiddenSectionCount();
+    const int columns = this->count();
+    const int visible_columns = columns - this->hiddenSectionCount();
 
     for (int index = 0; index < columns; index++) {
-        QString column_name = this->model()->headerData(index, Qt::Horizontal, AnimeListModel::HeaderRoles::ContextMenuTitle).toString();
+        const QString column_name = this->model()->headerData(index, Qt::Horizontal, AnimeListModel::HeaderRoles::ContextMenuTitle).toString();
 
         QAction *menu_action = menu.addAction(column_name);
         menu_action->setCheckable(true);

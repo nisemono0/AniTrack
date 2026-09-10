@@ -157,7 +157,7 @@ bool AnilistEntry::canRedoState() const {
 }
 
 void AnilistEntry::pushState(const AnilistEntry::State &state) {
-    int new_idx = this->current_state_idx_ + 1;
+    const int new_idx = this->current_state_idx_ + 1;
 
     this->state_history_.resize(new_idx);
 

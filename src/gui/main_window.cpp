@@ -242,8 +242,6 @@ void MainWindow::setupSearchPage() {
     connect(this->app_controller_, &AppController::userUpdated, this->ui_->pageSearch, &AnimeSearchPage::onUserUpdated);
     connect(this->app_controller_, &AppController::animeLoadFinished, this->ui_->pageSearch, &AnimeSearchPage::onAnimeLoadFinished);
     connect(this->app_controller_, &AppController::mediaAddFinished, this->ui_->pageSearch, &AnimeSearchPage::onMediaAddFinished);
-
-
 }
 
 void MainWindow::setupStatisticsPage() {

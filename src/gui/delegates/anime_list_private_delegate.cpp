@@ -8,7 +8,7 @@ AnimeListPrivateDelegate::AnimeListPrivateDelegate(QObject *parent) : QStyledIte
 void AnimeListPrivateDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     QStyledItemDelegate::paint(painter, option, index);
 
-    bool is_private = index.data(AnimeListModel::UserRoles::IsPrivate).toBool();
+    const bool is_private = index.data(AnimeListModel::UserRoles::IsPrivate).toBool();
 
     if (is_private) {
         this->icon_hidden_.paint(

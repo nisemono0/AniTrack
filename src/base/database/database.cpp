@@ -243,7 +243,7 @@ bool Database::insertEntries(QList<AnilistAnime> &anime_list) {
             return false;
         }
 
-        int inserted_local_id = entry_query->value(DatabaseColumns::Entry::LocalId).toInt();
+        const int inserted_local_id = entry_query->value(DatabaseColumns::Entry::LocalId).toInt();
         anime.entry.setLocalId(inserted_local_id);
 
         entry_query->finish();
@@ -305,7 +305,7 @@ bool Database::insertEntry(AnilistAnime &anime) {
         return false;
     }
 
-    int inserted_local_id = entry_query->value(DatabaseColumns::Entry::LocalId).toInt();
+    const int inserted_local_id = entry_query->value(DatabaseColumns::Entry::LocalId).toInt();
     anime.entry.setLocalId(inserted_local_id);
 
     entry_query->finish();
@@ -437,7 +437,7 @@ std::expected<int, QString> Database::entriesCount() {
     }
 
     if (!query->exec()) {
-        QString msg = QStringLiteral("Failed to count entries: %1").arg(
+        const QString msg = QStringLiteral("Failed to count entries: %1").arg(
             query->lastError().text()
         );
         Log::error(
@@ -448,7 +448,7 @@ std::expected<int, QString> Database::entriesCount() {
     }
 
     if (!query->next()) {
-        QString msg = QStringLiteral("Failed to retrieve entry count: %1").arg(
+        const QString msg = QStringLiteral("Failed to retrieve entry count: %1").arg(
             query->lastError().text()
         );
         return std::unexpected(msg);
@@ -564,7 +564,7 @@ std::expected<QList<AnilistAnime>, QString> Database::selectAllPendingEntries() 
     }
 
     if (!query->exec()) {
-        QString msg = QStringLiteral("Failed to select all pending entries: %1").arg(
+        const QString msg = QStringLiteral("Failed to select all pending entries: %1").arg(
             query->lastError().text()
         );
         Log::error(
@@ -590,7 +590,7 @@ QString Database::databasePath() const {
 }
 
 bool Database::setDatabasePath() {
-    QDir db_dir(
+    const QDir db_dir(
         QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
     );
 
@@ -608,7 +608,7 @@ bool Database::setDatabasePath() {
         }
     }
 
-    QString db_file = db_dir.filePath(DatabaseConfig::DatabaseFilename);
+    const QString db_file = db_dir.filePath(DatabaseConfig::DatabaseFilename);
 
     Log::info(
         CONTEXT_CLASS,

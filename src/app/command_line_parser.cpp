@@ -14,15 +14,15 @@ CommandLineParser::CommandLineParser(const App &app) {
     this->parser_.process(app);
 }
 
-bool CommandLineParser::isWindowOptionSet() {
+bool CommandLineParser::isWindowOptionSet() const {
     return this->parser_.isSet(this->window_option_);
 }
 
-QString CommandLineParser::selectedStyle() {
-    QString selected_style = this->parser_.value(this->style_option_);
+QString CommandLineParser::selectedStyle() const {
+    const QString selected_style = this->parser_.value(this->style_option_);
 
-    QStringList style_keys = QStyleFactory::keys();
-    for (const auto &app_style : std::as_const(style_keys)) {
+    const QStringList style_keys = QStyleFactory::keys();
+    for (const auto &app_style : style_keys) {
         if (app_style.compare(selected_style, Qt::CaseInsensitive) == 0) {
             return app_style;
         }

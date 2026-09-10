@@ -25,7 +25,7 @@ void StatusBar::onUserChanged(const AnilistAccount::User &user) {
         QStringLiteral("%1 (%2)").arg(user.username).arg(user.user_id)
     );
 
-    auto request = Cache::requestPixmap(user.avatar_url);
+    auto *request = Cache::requestPixmap(user.avatar_url);
     connect(request, &ImageRequest::finished, this, &StatusBar::showPermanentPixmap);
     connect(request, &ImageRequest::failed, this, [this] {
         Log::warning(

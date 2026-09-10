@@ -8,7 +8,7 @@ AnimeSearchInListDelegate::AnimeSearchInListDelegate(QObject *parent) : QStyledI
 void AnimeSearchInListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     QStyledItemDelegate::paint(painter, option, index);
 
-    bool in_list = index.data(AnimeSearchModel::UserRoles::InList).toBool();
+    const bool in_list = index.data(AnimeSearchModel::UserRoles::InList).toBool();
 
     if (in_list) {
         this->icon_yes_.paint(

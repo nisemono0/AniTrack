@@ -91,7 +91,7 @@ std::expected<QJsonDocument, QString> readJsonResponse(QNetworkReply *network_re
     }
 
     QJsonParseError parse_error;
-    auto response = rest_reply.readJson(&parse_error);
+    const auto response = rest_reply.readJson(&parse_error);
 
     // Parse error
     if (!response) {
@@ -116,8 +116,8 @@ std::expected<QJsonDocument, QString> readJsonResponse(QNetworkReply *network_re
     // Base errors
     for (const auto &error : response_errors) {
         const QJsonObject error_obj = error.toObject();
-        QString error_text = error_obj.value(AnilistKeys::Common::Message).toString();
-        QString error_status = QString::number(
+        const QString error_text = error_obj.value(AnilistKeys::Common::Message).toString();
+        const QString error_status = QString::number(
             error_obj.value(AnilistKeys::Common::Status).toInt()
         );
         api_errors.append(
@@ -133,8 +133,8 @@ std::expected<QJsonDocument, QString> readJsonResponse(QNetworkReply *network_re
         const QJsonObject validation_obj = error_obj.value(AnilistKeys::Common::Validation).toObject();
         for (const auto &[key, value] : validation_obj.asKeyValueRange()) {
             QStringList validation_errors;
-            QJsonArray json_array = value.toArray();
-            for (const auto &validation_text : std::as_const(json_array)) {
+            const QJsonArray json_array = value.toArray();
+            for (const auto &validation_text : json_array) {
                 validation_errors.append(
                     QStringLiteral(" -> %1: %2").arg(key.toString(), validation_text.toString())
                 );
@@ -151,7 +151,7 @@ std::expected<QJsonDocument, QString> readJsonResponse(QNetworkReply *network_re
 // Checks if json_object has a "data" object as root and returns it
 // if it exists, otherwise return a QString error message
 std::expected<QJsonObject, QString> extractDataObject(const QJsonObject &json_object) {
-    QJsonValue data_value = json_object.value(AnilistKeys::Common::Data);
+    const QJsonValue data_value = json_object.value(AnilistKeys::Common::Data);
     if (data_value.isUndefined()) {
         return std::unexpected(QStringLiteral("Missing JSON key: %1").arg(AnilistKeys::Common::Data));
     }
@@ -180,7 +180,7 @@ void AnilistApi::fetchUser() {
         QStringLiteral("Fetching anilist user...")
     );
 
-    auto query = createQuery(QueryType::Viewer);
+    const auto query = createQuery(QueryType::Viewer);
 
     if (!query) {
         emit userFetchFailed(query.error());
@@ -194,7 +194,7 @@ void AnilistApi::fetchUser() {
     );
 
     connect(network_reply, &QNetworkReply::finished, this, [this, network_reply] {
-        auto response = readJsonResponse(network_reply);
+        const auto response = readJsonResponse(network_reply);
         network_reply->deleteLater();
 
         if (!response) {
@@ -202,7 +202,7 @@ void AnilistApi::fetchUser() {
             return;
         }
 
-        auto data_object = extractDataObject(response->object());
+        const auto data_object = extractDataObject(response->object());
         if (!data_object) {
             Log::error(CONTEXT_CLASS, data_object.error());
             emit userFetchFailed(data_object.error());
@@ -231,7 +231,7 @@ void AnilistApi::fetchList() {
     QJsonObject query_variables;
     query_variables[AnilistKeys::Variables::UserId] = this->anilist_account_->user().user_id;
 
-    auto query = createQuery(
+    const auto query = createQuery(
         QueryType::MediaListCollection,
         query_variables
     );
@@ -248,7 +248,7 @@ void AnilistApi::fetchList() {
     );
 
     connect(network_reply, &QNetworkReply::finished, this, [this, network_reply] {
-        auto response = readJsonResponse(network_reply);
+        const auto response = readJsonResponse(network_reply);
         network_reply->deleteLater();
 
         if (!response) {
@@ -256,21 +256,20 @@ void AnilistApi::fetchList() {
             return;
         }
 
-        QList<AnilistAnime> anilist_anime;
-
-        auto data_object = extractDataObject(response->object());
+        const auto data_object = extractDataObject(response->object());
         if (!data_object) {
             Log::error(CONTEXT_CLASS, data_object.error());
             emit fetchListFailed(data_object.error());
             return;
         }
 
-        QJsonArray lists_array = data_object->value(AnilistKeys::Query::MediaListCollection).toObject()
-                                             .value(AnilistKeys::MediaListCollection::Lists).toArray();
+        const QJsonArray lists_array = data_object->value(AnilistKeys::Query::MediaListCollection).toObject()
+                                                   .value(AnilistKeys::MediaListCollection::Lists).toArray();
 
-        for (const auto &list : std::as_const(lists_array)) {
-            QJsonArray entries_array = list.toObject().value(AnilistKeys::MediaListGroup::Entries).toArray();
-            for (const auto &entry : std::as_const(entries_array)) {
+        QList<AnilistAnime> anilist_anime;
+        for (const auto &list : lists_array) {
+            const QJsonArray entries_array = list.toObject().value(AnilistKeys::MediaListGroup::Entries).toArray();
+            for (const auto &entry : entries_array) {
                 AnilistAnime anime;
                 anime.entry = AnilistEntry::fromResponseJson(entry.toObject());
                 anime.media = AnilistMedia::fromResponseJson(
@@ -307,7 +306,7 @@ void AnilistApi::addAnime(const AnilistAnime &anime) {
     query_variables[AnilistKeys::Variables::StartedAt] = AnilistUtils::fuzzyDateFromDate(anime.entry.state().started_at);
     query_variables[AnilistKeys::Variables::CompletedAt] = AnilistUtils::fuzzyDateFromDate(anime.entry.state().completed_at);
 
-    auto query = createQuery(
+    const auto query = createQuery(
         QueryType::SaveMediaListEntry,
         query_variables
     );
@@ -324,7 +323,7 @@ void AnilistApi::addAnime(const AnilistAnime &anime) {
     );
 
     connect(network_reply, &QNetworkReply::finished, this, [this, network_reply, anime] {
-        auto response = readJsonResponse(network_reply);
+        const auto response = readJsonResponse(network_reply);
         network_reply->deleteLater();
 
         if (!response) {
@@ -332,14 +331,14 @@ void AnilistApi::addAnime(const AnilistAnime &anime) {
             return;
         }
 
-        auto data_object = extractDataObject(response->object());
+        const auto data_object = extractDataObject(response->object());
         if (!data_object) {
             Log::error(CONTEXT_CLASS, data_object.error());
             emit addAnimeFailed(data_object.error());
             return;
         }
 
-        QJsonObject anime_obj = data_object->value(AnilistKeys::Mutation::SaveMediaListEntry).toObject();
+        const QJsonObject anime_obj = data_object->value(AnilistKeys::Mutation::SaveMediaListEntry).toObject();
         AnilistAnime added_anime{
             AnilistEntry::fromResponseJson(anime_obj),
             AnilistMedia::fromResponseJson(anime_obj.value(AnilistKeys::MediaList::Media).toObject())
@@ -373,7 +372,7 @@ void AnilistApi::updateAnime(const AnilistAnime &anime) {
     query_variables[AnilistKeys::Variables::StartedAt] = AnilistUtils::fuzzyDateFromDate(anime.entry.state().started_at);
     query_variables[AnilistKeys::Variables::CompletedAt] = AnilistUtils::fuzzyDateFromDate(anime.entry.state().completed_at);
 
-    auto query = createQuery(
+    const auto query = createQuery(
         QueryType::SaveMediaListEntry,
         query_variables
     );
@@ -390,7 +389,7 @@ void AnilistApi::updateAnime(const AnilistAnime &anime) {
     );
 
     connect(network_reply, &QNetworkReply::finished, this, [this, network_reply, anime] {
-        auto response = readJsonResponse(network_reply);
+        const auto response = readJsonResponse(network_reply);
         network_reply->deleteLater();
 
         if (!response) {
@@ -398,14 +397,14 @@ void AnilistApi::updateAnime(const AnilistAnime &anime) {
             return;
         }
 
-        auto data_object = extractDataObject(response->object());
+        const auto data_object = extractDataObject(response->object());
         if (!data_object) {
             Log::error(CONTEXT_CLASS, data_object.error());
             emit updateAnimeFailed(data_object.error());
             return;
         }
 
-        QJsonObject anime_obj = data_object->value(AnilistKeys::Mutation::SaveMediaListEntry).toObject();
+        const QJsonObject anime_obj = data_object->value(AnilistKeys::Mutation::SaveMediaListEntry).toObject();
         AnilistAnime updated_anime{
             AnilistEntry::fromResponseJson(anime_obj),
             AnilistMedia::fromResponseJson(anime_obj.value(AnilistKeys::MediaList::Media).toObject())
@@ -431,7 +430,7 @@ void AnilistApi::deleteAnime(const AnilistAnime &anime) {
     QJsonObject query_variables;
     query_variables[AnilistKeys::Variables::DeleteMediaListEntryId] = anime.entry.id();
 
-    auto query = createQuery(
+    const auto query = createQuery(
         QueryType::DeleteMediaListEntry,
         query_variables
     );
@@ -448,7 +447,7 @@ void AnilistApi::deleteAnime(const AnilistAnime &anime) {
     );
 
     connect(network_reply, &QNetworkReply::finished, this, [this, network_reply, anime] {
-        auto response = readJsonResponse(network_reply);
+        const auto response = readJsonResponse(network_reply);
         network_reply->deleteLater();
 
         if (!response) {
@@ -457,18 +456,18 @@ void AnilistApi::deleteAnime(const AnilistAnime &anime) {
         }
 
 
-        auto data_object = extractDataObject(response->object());
+        const auto data_object = extractDataObject(response->object());
         if (!data_object) {
             Log::error(CONTEXT_CLASS, data_object.error());
             emit deleteAnimeFailed(data_object.error());
             return;
         }
 
-        bool is_deleted = data_object->value(AnilistKeys::Mutation::DeleteMediaListEntry).toObject()
-                                      .value(AnilistKeys::DeleteMediaListEntry::Deleted).toBool();
+        const bool is_deleted = data_object->value(AnilistKeys::Mutation::DeleteMediaListEntry).toObject()
+                                            .value(AnilistKeys::DeleteMediaListEntry::Deleted).toBool();
 
         if (!is_deleted) {
-            QString msg = QStringLiteral("Anilist failed to remove: %1").arg(anime.entry.id());
+            const QString msg = QStringLiteral("Anilist failed to remove: %1").arg(anime.entry.id());
             Log::warning(
                 CONTEXT_CLASS,
                 msg
@@ -495,7 +494,7 @@ void AnilistApi::searchAnime(const QString &title) {
     QJsonObject query_variables;
     query_variables[AnilistKeys::Variables::Search] = title;
 
-    auto query = createQuery(
+    const auto query = createQuery(
         QueryType::MediaSearch,
         query_variables
     );
@@ -512,25 +511,26 @@ void AnilistApi::searchAnime(const QString &title) {
     );
 
     connect(network_reply, &QNetworkReply::finished, this, [this, network_reply, title] {
-        auto response = readJsonResponse(network_reply);
+        const auto response = readJsonResponse(network_reply);
         network_reply->deleteLater();
 
         if (!response) {
             emit searchAnimeFailed(response.error());
             return;
         }
-        auto data_object = extractDataObject(response->object());
+
+        const auto data_object = extractDataObject(response->object());
         if (!data_object) {
             Log::error(CONTEXT_CLASS, data_object.error());
             emit searchAnimeFailed(data_object.error());
             return;
         }
 
-        QJsonArray media_array = data_object->value(AnilistKeys::Query::Page).toObject()
-                                             .value(AnilistKeys::Page::Media).toArray();
+        const QJsonArray media_array = data_object->value(AnilistKeys::Query::Page).toObject()
+                                                   .value(AnilistKeys::Page::Media).toArray();
 
         QList<AnilistMedia> anime_search_results;
-        for (const auto &media : std::as_const(media_array)) {
+        for (const auto &media : media_array) {
             AnilistMedia media_result = AnilistMedia::fromResponseJson(media.toObject());
             media_result.in_list = false;
 

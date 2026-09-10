@@ -8,15 +8,15 @@
 AppSettings::AppSettings(QObject *parent) : QObject(parent) {
     QSettings::setDefaultFormat(QSettings::IniFormat);
 
-    QSettings settings;
+    const QSettings settings;
     Log::info(
         CONTEXT_CLASS,
         QStringLiteral("Using settings: %1").arg(settings.fileName())
     );
 
     // Load all settings
-    QStringList settings_keys = settings.allKeys();
-    for (const auto &key : std::as_const(settings_keys)) {
+    const QStringList settings_keys = settings.allKeys();
+    for (const auto &key : settings_keys) {
         this->settings_variantmap_[key] = settings.value(key);
     }
 }

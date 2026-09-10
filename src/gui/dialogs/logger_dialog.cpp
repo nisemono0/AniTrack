@@ -49,7 +49,7 @@ void LoggerDialog::appendLogMessage(const QString &message) {
 }
 
 bool LoggerDialog::eventFilter(QObject *o, QEvent *e) {
-    auto widget = qobject_cast<QWidget*>(o);
+    auto *widget = qobject_cast<QWidget*>(o);
 
     if (!widget) {
         return QDialog::eventFilter(o, e);
@@ -85,7 +85,7 @@ void LoggerDialog::showDefaultStatusTip() {
 }
 
 void LoggerDialog::saveLogs() {
-    QString save_path = DialogUtils::saveFile(this);
+    const QString save_path = DialogUtils::saveFile(this);
 
     if (save_path.isEmpty()) {
         return;

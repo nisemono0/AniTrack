@@ -11,7 +11,7 @@ LoginTokenDialog::LoginTokenDialog(QWidget *parent) :
     }
 
     connect(this, &QDialog::accepted, this, [this] {
-        QString auth_token = this->ui_->lineEditAccessToken->text();
+        const QString auth_token = this->ui_->lineEditAccessToken->text();
         emit authTokenAccepted(auth_token);
         this->ui_->lineEditAccessToken->clear();
     });

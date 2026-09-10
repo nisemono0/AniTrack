@@ -17,7 +17,7 @@ ToolBarQuickActions::ToolBarQuickActions(QWidget *parent) : QToolBar(parent) {
 
     connect(this->filter_line_edit_, &QLineEdit::textChanged, this, &ToolBarQuickActions::filterTextChanged);
     connect(this->filter_line_edit_, &QLineEdit::returnPressed, this, [this] {
-        QString text = this->filter_line_edit_->text().trimmed();
+        const QString text = this->filter_line_edit_->text().trimmed();
         if (!text.isEmpty()) {
             emit searchRequested(text);
             this->filter_line_edit_->clear();

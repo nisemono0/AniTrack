@@ -35,7 +35,7 @@ private:
 
 private slots:
     void onSearchAnimeFailed(const QString &message);
-    void onSearchAnimeFinished(const QList<AnilistMedia> &media);
+    void onSearchAnimeFinished(const QList<AnilistMedia> &media_list);
 
 };
 

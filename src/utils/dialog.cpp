@@ -17,7 +17,7 @@ QString DialogUtils::saveFile(QWidget *parent) {
     save_dialog.setDefaultSuffix(QStringLiteral(".log"));
 
     if (save_dialog.exec()) {
-        QString save_path = save_dialog.selectedFiles().constFirst();
+        const QString save_path = save_dialog.selectedFiles().constFirst();
         // Return sanitized save_path
         if (FileUtils::containsExtension(save_path, {"log", "txt"})) {
             return FileUtils::sanitizeFilePath(save_path);

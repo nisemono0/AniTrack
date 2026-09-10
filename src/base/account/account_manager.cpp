@@ -32,7 +32,7 @@ void AccountManager::requestAuthUrl() {
 }
 
 void AccountManager::requestProfileUrl() {
-    auto profile_url = this->anilist_account_->profileUrl();
+    const auto profile_url = this->anilist_account_->profileUrl();
     if (!profile_url) {
         emit errorOccurred(
             QStringLiteral("Profile"),
@@ -44,7 +44,7 @@ void AccountManager::requestProfileUrl() {
 }
 
 void AccountManager::requestListUrl() {
-    auto list_url = this->anilist_account_->listUrl();
+    const auto list_url = this->anilist_account_->listUrl();
     if (!list_url) {
         emit errorOccurred(
             QStringLiteral("Profile"),
@@ -56,7 +56,7 @@ void AccountManager::requestListUrl() {
 }
 
 void AccountManager::requestStatsUrl() {
-    auto stats_url = this->anilist_account_->statsUrl();
+    const auto stats_url = this->anilist_account_->statsUrl();
     if (!stats_url) {
         emit errorOccurred(
             QStringLiteral("Profile"),
@@ -111,7 +111,7 @@ void AccountManager::onUserFetchFinished(const AnilistAccount::User &user) {
     this->fetch_in_progress_ = false;
     emit fetchFinished();
 
-    bool new_user_added = user.user_id != this->anilist_account_->user().user_id;
+    const bool new_user_added = user.user_id != this->anilist_account_->user().user_id;
 
     this->anilist_account_->setUser(user);
 

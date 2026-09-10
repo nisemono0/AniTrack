@@ -67,7 +67,7 @@ QVariant AnimeListModel::data(const QModelIndex &index, int role) const {
     }
 
     const AnilistAnime &anime = this->anime_list_.at(index.row());
-    Columns column = static_cast<Columns>(index.column());
+    const Columns column = static_cast<Columns>(index.column());
 
     switch (role) {
         // User roles
@@ -242,7 +242,7 @@ QVariant AnimeListModel::headerData(int section, Qt::Orientation orientation, in
         return QVariant();
     }
 
-    Columns column = static_cast<Columns>(section);
+    const Columns column = static_cast<Columns>(section);
 
     switch (role) {
         // Header titles used for context menu
@@ -361,7 +361,7 @@ void AnimeListModel::updateAnime(const QList<AnilistAnime> &anime_list) {
             continue;
         }
 
-        int entry_idx = it.value();
+        const int entry_idx = it.value();
         this->anime_list_[entry_idx] = anime;
 
         emit dataChanged(
@@ -398,13 +398,13 @@ void AnimeListModel::deleteAnime(const QList<int> &local_ids) {
 void AnimeListModel::addAnime(const QList<AnilistAnime> &anime_list) {
     this->updateCurrentEpoch();
 
-    int first_row = this->anime_list_.size();
-    int last_row = first_row + anime_list.size() - 1;
+    const int first_row = this->anime_list_.size();
+    const int last_row = first_row + anime_list.size() - 1;
 
     beginInsertRows(QModelIndex(), first_row, last_row);
 
     for (const auto &anime : anime_list) {
-        int anime_idx = this->anime_list_.size();
+        const int anime_idx = this->anime_list_.size();
 
         this->anime_list_.append(anime);
         this->local_id_to_anime_.insert(anime.entry.localId(), anime_idx);

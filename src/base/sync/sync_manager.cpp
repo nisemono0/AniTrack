@@ -85,7 +85,7 @@ void SyncManager::startPendingSync() {
         return;
     }
 
-    auto pending_anime = this->database_->selectAllPendingEntries();
+    const auto pending_anime = this->database_->selectAllPendingEntries();
     if (!pending_anime) {
         this->failSync(QStringLiteral("Failed to load local pending anime"));
         return;
@@ -115,7 +115,7 @@ void SyncManager::processNextEntry() {
         return;
     }
 
-    AnilistAnime anime = this->pending_anime_.at(this->current_anime_);
+    const AnilistAnime anime = this->pending_anime_.at(this->current_anime_);
 
     emit syncProgressUpdated(this->current_anime_);
     this->current_anime_ += 1;
@@ -314,7 +314,7 @@ void SyncManager::onFetchListFinished(const QList<AnilistAnime> &anime_list) {
         return;
     }
 
-    auto local_anime = this->database_->selectAllEntries();
+    const auto local_anime = this->database_->selectAllEntries();
     if (!local_anime) {
         this->failSync(QStringLiteral("Failed to load local anime"));
         return;

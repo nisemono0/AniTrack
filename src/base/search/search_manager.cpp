@@ -39,9 +39,9 @@ void SearchManager::onSearchAnimeFailed(const QString &message) {
     );
 }
 
-void SearchManager::onSearchAnimeFinished(const QList<AnilistMedia> &media) {
+void SearchManager::onSearchAnimeFinished(const QList<AnilistMedia> &media_list) {
     this->search_in_progress_ = false;
     emit searchProgressFinished();
-    emit searchFinished(media);
+    emit searchFinished(media_list);
 }
 

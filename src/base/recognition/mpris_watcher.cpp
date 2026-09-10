@@ -32,7 +32,7 @@ void MprisWatcher::registerRunningPlayers() {
         return;
     }
 
-    auto registered_services = interface->registeredServiceNames();
+    const auto registered_services = interface->registeredServiceNames();
 
     if (!registered_services.isValid()) {
         Log::warning(
@@ -44,8 +44,8 @@ void MprisWatcher::registerRunningPlayers() {
         return;
     }
 
-    auto services = registered_services.value();
-    for (const auto &service : std::as_const(services)) {
+    const auto services = registered_services.value();
+    for (const auto &service : services) {
         if (MprisConfig::AllowedServices.contains(service)) {
             // Register the player for PropertiesChanged signal
             this->onServiceRegistered(service);
@@ -73,12 +73,12 @@ void MprisWatcher::processMetadataAndNotify(const QVariantMap &metadata_vmap) {
         return;
     }
 
-    QString file_url = metadata_vmap.value(MprisKeys::Url).toString().trimmed();
+    const QString file_url = metadata_vmap.value(MprisKeys::Url).toString().trimmed();
     if (file_url == this->current_file_url_ || file_url.isEmpty()) {
         return;
     }
 
-    auto file_name = FileUtils::fileNameFromUrl(file_url);
+    const auto file_name = FileUtils::fileNameFromUrl(file_url);
     if (!file_name) {
         Log::warning(CONTEXT_CLASS, file_name.error());
         return;
@@ -101,7 +101,7 @@ void MprisWatcher::readRunningPlayersMetadata(const QString &service_name) {
         MprisKeys::Metadata
     });
 
-    auto reply = this->session_bus_.call(metadata_method);
+    const auto reply = this->session_bus_.call(metadata_method);
 
     if (reply.type() == QDBusMessage::ErrorMessage) {
         Log::warning(
@@ -119,7 +119,7 @@ void MprisWatcher::readRunningPlayersMetadata(const QString &service_name) {
         return;
     }
 
-    QVariant metadata_variant = reply.arguments().at(0).value<QDBusVariant>().variant();
+    const QVariant metadata_variant = reply.arguments().at(0).value<QDBusVariant>().variant();
 
     QVariantMap metadata;
     metadata_variant.value<QDBusArgument>() >> metadata;
@@ -143,7 +143,7 @@ void MprisWatcher::onServiceRegistered(const QString &service_name) {
         return;
     }
 
-    bool connected = this->session_bus_.connect(
+    const bool connected = this->session_bus_.connect(
         service_name,
         MprisConfig::ObjectPath,
         MprisConfig::PropertiesInterface,
@@ -179,7 +179,7 @@ void MprisWatcher::onServiceUnregistered(const QString &service_name) {
         return;
     }
 
-    bool disconnected = this->session_bus_.disconnect(
+    const bool disconnected = this->session_bus_.disconnect(
         service_name,
         MprisConfig::ObjectPath,
         MprisConfig::PropertiesInterface,
@@ -216,7 +216,7 @@ void MprisWatcher::onPropertiesChanged(const QString &interface_name,
     }
 
     if (!changed_properties.contains(MprisKeys::Metadata)) {
-        QStringList keys = changed_properties.keys();
+        const QStringList keys = changed_properties.keys();
         Log::warning(
             CONTEXT_CLASS,
             QStringLiteral("No Metadata in PropertiesChanged signal. Changed: %1").arg(

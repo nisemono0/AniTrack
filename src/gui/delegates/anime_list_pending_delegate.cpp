@@ -8,9 +8,8 @@ AnimeListPendingDelegate::AnimeListPendingDelegate(QObject *parent) : QStyledIte
 void AnimeListPendingDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     QStyledItemDelegate::paint(painter, option, index);
 
-    AnilistEntry::PendingOperation pending_operation = index.data(AnimeListModel::UserRoles::PendingOperation)
-                                                            .value<AnilistEntry::PendingOperation>();
-
+    const AnilistEntry::PendingOperation pending_operation = index.data(AnimeListModel::UserRoles::PendingOperation)
+                                                                  .value<AnilistEntry::PendingOperation>();
 
     switch (pending_operation) {
         case AnilistEntry::PendingOperation::NONE: {

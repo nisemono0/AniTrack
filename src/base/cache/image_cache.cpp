@@ -24,7 +24,7 @@ std::expected<PixmapResponse, QString> readRequestResponse(QNetworkReply *networ
         return std::unexpected(rest_reply.errorString());
     }
 
-    QByteArray raw_image_data = rest_reply.readBody();
+    const QByteArray raw_image_data = rest_reply.readBody();
 
     PixmapResponse response;
 
@@ -36,7 +36,7 @@ std::expected<PixmapResponse, QString> readRequestResponse(QNetworkReply *networ
             return std::unexpected(QStringLiteral("Failed to open image data for reading"));
         }
 
-        QImageReader image_reader(&read_buffer);
+        const QImageReader image_reader(&read_buffer);
         response.format = image_reader.format();
     }
     return response;
@@ -116,14 +116,14 @@ qsizetype ImageCache::cacheCount() const {
 }
 
 ImageRequest* ImageCache::requestPixmap(const QString &url) {
-    QString key = this->urlToKey(url);
+    const QString key = this->urlToKey(url);
 
     // Try to get the cached pixmap from memory first
     {
         QMutexLocker locker(&this->cache_mutex_);
         QPixmap *cached_obj = this->memory_cache_.object(key);
         if (cached_obj) {
-            QPixmap cached_pixmap = *cached_obj;
+            const QPixmap cached_pixmap = *cached_obj;
             Log::info(
                 CONTEXT_CLASS,
                 QStringLiteral("Memory cache hit: %1 (%2)").arg(url, key)
@@ -213,9 +213,9 @@ QString ImageCache::keyToFilePath(const QString &key) {
 }
 
 void ImageCache::cachePixmap(const QString &url, const QPixmap &pixmap, const QByteArray &format) {
-    QString key = this->urlToKey(url);
+    const QString key = this->urlToKey(url);
 
-    QFileInfo disk_file(this->keyToFilePath(key));
+    const QFileInfo disk_file(this->keyToFilePath(key));
     if (!disk_file.exists()) {
         if (!pixmap.save(disk_file.absoluteFilePath(), format)) {
             Log::warning(
@@ -256,7 +256,7 @@ void ImageCache::handleDownloadFinished(const QString &key) {
 
     // Read the network reply image
     QNetworkReply *network_reply = download.network_reply;
-    auto response = readRequestResponse(network_reply);
+    const auto response = readRequestResponse(network_reply);
     network_reply->deleteLater();
 
     // All requests for the same image

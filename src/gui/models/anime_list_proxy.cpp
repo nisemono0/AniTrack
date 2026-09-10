@@ -21,7 +21,7 @@ void AnimeListProxy::setFilterTab(AnimeListTabBar::Tab tab) {
 }
 
 bool AnimeListProxy::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
-    QModelIndex index = this->sourceModel()->index(
+    const QModelIndex index = this->sourceModel()->index(
         source_row,
         static_cast<int>(AnimeListModel::Columns::Title),
         source_parent
@@ -31,7 +31,7 @@ bool AnimeListProxy::filterAcceptsRow(int source_row, const QModelIndex &source_
         return false;
     }
 
-    AnilistEntry::Status status = index.data(AnimeListModel::UserRoles::EntryStatus).value<AnilistEntry::Status>();
+    const AnilistEntry::Status status = index.data(AnimeListModel::UserRoles::EntryStatus).value<AnilistEntry::Status>();
 
     switch (this->filter_tab_) {
         case AnimeListTabBar::Tab::Watching: {
@@ -69,7 +69,7 @@ bool AnimeListProxy::filterAcceptsRow(int source_row, const QModelIndex &source_
             break;
     }
 
-    AnilistMedia::Title title = index.data(AnimeListModel::UserRoles::MediaTitle).value<AnilistMedia::Title>();
+    const AnilistMedia::Title title = index.data(AnimeListModel::UserRoles::MediaTitle).value<AnilistMedia::Title>();
 
     return title.romaji.contains(this->filter_text_, Qt::CaseInsensitive) ||
            title.english.contains(this->filter_text_, Qt::CaseInsensitive) ||

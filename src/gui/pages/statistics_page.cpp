@@ -73,15 +73,15 @@ void StatisticsPage::updateCachePath() {
 }
 
 QString StatisticsPage::minutesToPrettyFormat(int minutes) {
-    int days = minutes / 1440; // 24h * 60min
-    int hours = (minutes % 1440) / 60; // leftover min to hours
-    int remainder_minutes = minutes % 60; // leftover min
+    const int days = minutes / 1440; // 24h * 60min
+    const int hours = (minutes % 1440) / 60; // leftover min to hours
+    const int remainder_minutes = minutes % 60; // leftover min
 
     return QStringLiteral("%1 days %2 hours %3 minutes").arg(days).arg(hours).arg(remainder_minutes);
 }
 
 QString StatisticsPage::sizeToPrettyFormat(qint64 size) {
-    QLocale locale;
+    const QLocale locale;
     return locale.formattedDataSize(size, 1);
 }
 

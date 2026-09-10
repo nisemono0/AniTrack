@@ -13,7 +13,7 @@ DatabaseController::DatabaseController(
 
 
 void DatabaseController::initialLoad() {
-    auto entries = this->database_->selectAllEntries();
+    const auto entries = this->database_->selectAllEntries();
 
     if (!entries) {
         emit errorOccurred(
@@ -30,7 +30,7 @@ void DatabaseController::initialLoad() {
 }
 
 void DatabaseController::requestLoadAnime() {
-    auto entries = this->database_->selectAllEntries();
+    const auto entries = this->database_->selectAllEntries();
 
     if (!entries) {
         emit errorOccurred(
@@ -627,7 +627,7 @@ void DatabaseController::requestRecreateDatabase() {
         return;
     }
 
-    auto entries = this->database_->selectAllEntries();
+    const auto entries = this->database_->selectAllEntries();
 
     if (!entries) {
         emit errorOccurred(
@@ -664,7 +664,7 @@ void DatabaseController::upsertEntriesAndNotify(const QList<AnilistAnime> &anime
 }
 
 void DatabaseController::countEntriesAndNotifiy() {
-    auto entries_count = this->database_->entriesCount();
+    const auto entries_count = this->database_->entriesCount();
 
     if (!entries_count) {
         emit errorOccurred(

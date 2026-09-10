@@ -37,25 +37,9 @@ signals:
     void pageChanged(ListWidgetNavigation::Page new_page);
 
 private:
-    struct ListItem {
-        QString icon_path;
-        QString title;
-        Page page;
-    };
-    inline static const QList<ListItem> list_items_ = {
-#ifdef ENABLE_WIP_FEATURES
-        { AppResources::Icons::Playing,    QStringLiteral("Playing"),    Page::Playing },
-        { "",                              "",                           Page::Separator },
-#endif // ENABLE_WIP_FEATURES
-        { AppResources::Icons::List,       QStringLiteral("Anime list"), Page::AnimeList },
-        { AppResources::Icons::Statistics, QStringLiteral("Statistics"), Page::Statistics },
-        { "",                              "",                           Page::Separator },
-        { AppResources::Icons::Search,     QStringLiteral("Search"),     Page::Search },
-    };
-
     ListWidgetSeparatorDelegate *separator_delegate_;
 
-    void addItem(const ListItem &list_item);
+    void addItem(const QString &icon_path, const QString &name, ListWidgetNavigation::Page page_type);
     void addSeparator();
 
 };

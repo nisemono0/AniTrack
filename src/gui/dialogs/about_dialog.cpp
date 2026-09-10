@@ -18,7 +18,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
 
     connect(this->ui_->pushButtonCopyToClipboard, &QPushButton::clicked, this, [this] {
         auto *clipboard = QApplication::clipboard();
-        QString info = QStringLiteral(
+        const QString info = QStringLiteral(
             "%1\n"
             "Qt: %2\n"
             "tabler-icons: %3\n"
