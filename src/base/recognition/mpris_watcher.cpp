@@ -200,6 +200,7 @@ void MprisWatcher::onServiceUnregistered(const QString &service_name) {
 
     if (this->active_services_.isEmpty()) {
         this->current_file_url_.clear();
+        emit mediaPlayerClosed();
     }
 }
 

@@ -16,6 +16,7 @@ public:
 
 signals:
     void mediaFileChanged(const QString &file_name);
+    void mediaPlayerClosed();
 
 private:
     QDBusServiceWatcher *dbus_watcher_;
