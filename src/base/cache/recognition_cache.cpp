@@ -3,6 +3,8 @@
 #include "base/recognition/title_normalizer.hpp"
 #include "base/recognition/string_similarity.hpp"
 
+#include "utils/log.hpp"
+
 #include <algorithm>
 
 
@@ -31,18 +33,28 @@ QSet<QString> makeTrigrams(const QString &text) {
 } // namespace
 
 
-RecognitionCache::RecognitionCache(QObject *parent) : QObject(parent) {}
+RecognitionCache::RecognitionCache(QObject *parent) : QObject(parent) {
+    Log::info(
+        CONTEXT_CLASS,
+        QStringLiteral("Cache initialized with 0 media entries")
+    );
+}
 
-void RecognitionCache::init(const QList<AnilistMedia> &media_list) {
-    this->media_id_to_normalized_titles_.clear();
-    this->normalized_title_to_media_ids_.clear();
-    this->trigrams_to_media_ids_.clear();
+RecognitionCache::RecognitionCache(
+    const QList<AnilistMedia> &media_list,
+    QObject *parent
+) : QObject(parent) {
 
     this->media_id_to_normalized_titles_.reserve(media_list.size());
 
     for (const auto &media : media_list) {
         this->add(media);
     }
+
+    Log::info(
+        CONTEXT_CLASS,
+        QStringLiteral("Cache initialized with %1 media entries").arg(media_list.size())
+    );
 }
 
 void RecognitionCache::add(const AnilistMedia &media) {
@@ -52,8 +64,8 @@ void RecognitionCache::add(const AnilistMedia &media) {
     this->cacheTitle(media_id, media.title.native);
     this->cacheTitle(media_id, media.title.romaji);
 
-    for (const auto &synony : media.synonyms) {
-        this->cacheTitle(media_id, synony);
+    for (const auto &synonym : media.synonyms) {
+        this->cacheTitle(media_id, synonym);
     }
 }
 
@@ -196,7 +208,6 @@ QSet<int> RecognitionCache::findSearchCandidates(const QString &normalized_title
         }
 
         candidates.unite(trigram_it.value());
-
     }
 
     return candidates;

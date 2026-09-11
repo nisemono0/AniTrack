@@ -15,9 +15,11 @@ public:
     };
 
     explicit RecognitionCache(QObject *parent = nullptr);
+    explicit RecognitionCache(
+        const QList<AnilistMedia> &media_list,
+        QObject *parent = nullptr
+    );
     ~RecognitionCache() = default;
-
-    void init(const QList<AnilistMedia> &media_list);
 
     void add(const AnilistMedia &media);
     void add(const QString &title, int media_id);
