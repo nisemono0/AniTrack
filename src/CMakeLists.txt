@@ -41,10 +41,14 @@ qt_add_executable(AniTrack
     base/logger/logger.hpp
     base/network/network.cpp
     base/network/network.hpp
+    base/recognition/anime_file_parser.cpp
+    base/recognition/anime_file_parser.hpp
     base/recognition/mpris_config.hpp
     base/recognition/mpris_keys.hpp
     base/recognition/mpris_watcher.cpp
     base/recognition/mpris_watcher.hpp
+    base/recognition/recognition.cpp
+    base/recognition/recognition.hpp
     base/recognition/string_similarity.cpp
     base/recognition/string_similarity.hpp
     base/recognition/title_normalizer.cpp
