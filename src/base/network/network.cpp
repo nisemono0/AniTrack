@@ -1,5 +1,8 @@
 #include "base/network/network.hpp"
 
+#include <chrono>
+
+
 Network::Network(QObject *parent) : QObject(parent) {
     this->network_manager_ = new QNetworkAccessManager(this);
 }
@@ -17,6 +20,7 @@ QNetworkReply* Network::getImage(const QString &url) {
 
 QNetworkReply* Network::postJson(const QString &url, const QByteArray &body, const QString &auth_token) {
     QNetworkRequest request(url);
+    request.setTransferTimeout(std::chrono::minutes(1));
 
     request.setHeader(
         QNetworkRequest::ContentTypeHeader,
