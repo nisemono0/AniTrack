@@ -39,7 +39,6 @@ private:
     QList<AnilistAnime> pending_anime_;
     int current_anime_ = 0;
 
-    bool is_media_sync_ = false;
     bool sync_in_progress_ = false;
 
     void resetSync();
@@ -65,7 +64,8 @@ private:
 private slots:
     void handleApiFailure(const QString &message);
 
-    void onFetchListFinished(const QList<AnilistAnime> &anime_list);
+    void onSyncFetchListFinished(const QList<AnilistAnime> &anime_list);
+    void onMediaSyncFetchListFinished(const QList<AnilistAnime> &anime_list);
 
     void onAddAnimeFinished(const AnilistAnime &anime);
     void onUpdateAnimeFinished(const AnilistAnime &anime);

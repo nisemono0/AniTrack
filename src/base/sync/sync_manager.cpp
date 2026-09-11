@@ -9,12 +9,7 @@ SyncManager::SyncManager(
     database_(database),
     anilist_api_(anilist_api) {
 
-    connect(this->anilist_api_, &AnilistApi::fetchListFinished, this, &SyncManager::onFetchListFinished);
-
-    connect(this->anilist_api_, &AnilistApi::addAnimeFinished, this, &SyncManager::onAddAnimeFinished);
-    connect(this->anilist_api_, &AnilistApi::updateAnimeFinished, this, &SyncManager::onUpdateAnimeFinished);
-    connect(this->anilist_api_, &AnilistApi::deleteAnimeFinished, this, &SyncManager::onDeleteAnimeFinished);
-
+    // Handle api errors
     connect(this->anilist_api_, &AnilistApi::fetchListFailed, this, &SyncManager::handleApiFailure);
     connect(this->anilist_api_, &AnilistApi::addAnimeFailed, this, &SyncManager::handleApiFailure);
     connect(this->anilist_api_, &AnilistApi::updateAnimeFailed, this, &SyncManager::handleApiFailure);
@@ -28,12 +23,13 @@ void SyncManager::requestSync() {
 
     this->resetSync();
     this->sync_in_progress_ = true;
-    this->is_media_sync_ = false;
 
     emit listFetchStarted(
         QStringLiteral("Sync"),
         QStringLiteral("Fetching anime list...")
     );
+
+    connect(this->anilist_api_, &AnilistApi::fetchListFinished, this, &SyncManager::onSyncFetchListFinished, Qt::SingleShotConnection);
 
     this->anilist_api_->fetchList();
 }
@@ -45,21 +41,29 @@ void SyncManager::requestMediaSync() {
 
     this->resetSync();
     this->sync_in_progress_ = true;
-    this->is_media_sync_ = true;
 
     emit listFetchStarted(
         QStringLiteral("Media sync"),
         QStringLiteral("Fetching anime list...")
     );
 
+    connect(this->anilist_api_, &AnilistApi::fetchListFinished, this, &SyncManager::onMediaSyncFetchListFinished, Qt::SingleShotConnection);
+
     this->anilist_api_->fetchList();
 }
 
 void SyncManager::resetSync() {
+    // Disconnect any remaining singleshot api signals
+    disconnect(this->anilist_api_, &AnilistApi::fetchListFinished, this, &SyncManager::onSyncFetchListFinished);
+    disconnect(this->anilist_api_, &AnilistApi::fetchListFinished, this, &SyncManager::onMediaSyncFetchListFinished);
+
+    disconnect(this->anilist_api_, &AnilistApi::addAnimeFinished, this, &SyncManager::onAddAnimeFinished);
+    disconnect(this->anilist_api_, &AnilistApi::updateAnimeFinished, this, &SyncManager::onUpdateAnimeFinished);
+    disconnect(this->anilist_api_, &AnilistApi::deleteAnimeFinished, this, &SyncManager::onDeleteAnimeFinished);
+
     this->current_anime_ = 0;
     this->pending_anime_.clear();
 
-    this->is_media_sync_ = false;
     this->sync_in_progress_ = false;
 }
 
@@ -128,16 +132,19 @@ void SyncManager::processNextEntry() {
         }
         // Add on anilist
         case AnilistEntry::PendingOperation::ADD: {
+            connect(this->anilist_api_, &AnilistApi::addAnimeFinished, this, &SyncManager::onAddAnimeFinished, Qt::SingleShotConnection);
             this->anilist_api_->addAnime(anime);
             break;
         }
         // Update on anilist
         case AnilistEntry::PendingOperation::UPDATE: {
+            connect(this->anilist_api_, &AnilistApi::updateAnimeFinished, this, &SyncManager::onUpdateAnimeFinished, Qt::SingleShotConnection);
             this->anilist_api_->updateAnime(anime);
             break;
         }
         // Remove from anilist
         case AnilistEntry::PendingOperation::REMOVE: {
+            connect(this->anilist_api_, &AnilistApi::deleteAnimeFinished, this, &SyncManager::onDeleteAnimeFinished, Qt::SingleShotConnection);
             this->anilist_api_->deleteAnime(anime);
             break;
         }
@@ -304,16 +311,7 @@ void SyncManager::handleApiFailure(const QString &message) {
     this->failSync(message);
 }
 
-void SyncManager::onFetchListFinished(const QList<AnilistAnime> &anime_list) {
-    if (this->is_media_sync_) {
-        if (!this->database_->upsertMedias(anime_list)) {
-            this->failSync(QStringLiteral("Failed to update Anilist medias"));
-            return;
-        }
-        this->finishSync();
-        return;
-    }
-
+void SyncManager::onSyncFetchListFinished(const QList<AnilistAnime> &anime_list) {
     const auto local_anime = this->database_->selectAllEntries();
     if (!local_anime) {
         this->failSync(QStringLiteral("Failed to load local anime"));
@@ -346,6 +344,14 @@ void SyncManager::onFetchListFinished(const QList<AnilistAnime> &anime_list) {
     emit listFetchFinished();
 
     this->startPendingSync();
+}
+
+void SyncManager::onMediaSyncFetchListFinished(const QList<AnilistAnime> &anime_list) {
+    if (!this->database_->upsertMedias(anime_list)) {
+        this->failSync(QStringLiteral("Failed to update Anilist medias"));
+        return;
+    }
+    this->finishSync();
 }
 
 void SyncManager::onAddAnimeFinished(const AnilistAnime &anime) {
