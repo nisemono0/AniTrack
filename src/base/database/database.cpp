@@ -27,6 +27,8 @@ enum class QueryType {
     UpsertEntry,
     InsertEntry,
     SelectAllAnime,
+    SelectAnimeByMediaIds,
+    SelectAllMedia,
     SelectAllPending,
     DeleteEntry,
     CountAnimeEntries,
@@ -65,6 +67,10 @@ std::expected<QSqlQuery, QString> createQuery(QueryType type, const QSqlDatabase
             query_text = FileUtils::readFile(DatabaseResource::SelectAllAnime);
             break;
         }
+        case QueryType::SelectAllMedia: {
+            query_text = FileUtils::readFile(DatabaseResource::SelectAllMedia);
+            break;
+        }
         case QueryType::SelectAllPending: {
             query_text = FileUtils::readFile(DatabaseResource::SelectAllPending);
             break;
@@ -96,6 +102,28 @@ std::expected<QSqlQuery, QString> createQuery(QueryType type, const QSqlDatabase
 
     return query;
 }
+
+std::expected<QSqlQuery, QString> createQuery(QueryType type, int media_ids_size, const QSqlDatabase &db) {
+    if (type != QueryType::SelectAnimeByMediaIds) {
+        return std::unexpected(QStringLiteral("Failed to load query"));
+    }
+
+    QString query_text = FileUtils::readFile(DatabaseResource::SelectAnimeByMediaIds);
+
+    const QStringList placeholders(media_ids_size, QStringLiteral("?"));
+    query_text.replace(
+        QStringLiteral("%MEDIA_IDS%"),
+        placeholders.join(QStringLiteral(", "))
+    );
+
+    QSqlQuery query(db);
+    if (!query.prepare(query_text)) {
+        return std::unexpected(query.lastError().text());
+    }
+
+    return query;
+}
+
 }
 
 Database::Database(QObject *parent) : QObject(parent) {}
@@ -150,10 +178,7 @@ bool Database::insertAnime(AnilistAnime &anime) {
 bool Database::upsertEntries(const QList<AnilistAnime> &anime_list) {
     auto entry_query = createQuery(QueryType::UpsertEntry, this->db_);
     if (!entry_query) {
-        Log::error(
-            CONTEXT_CLASS,
-            entry_query.error()
-        );
+        Log::error(CONTEXT_CLASS, entry_query.error());
         return false;
     }
 
@@ -168,7 +193,7 @@ bool Database::upsertEntries(const QList<AnilistAnime> &anime_list) {
     }
 
     for (const auto &anime : anime_list) {
-        this->bindEntryQuery(entry_query.value(), anime);
+        this->bindEntry(entry_query.value(), anime);
 
         if (!entry_query->exec()) {
             Log::error(
@@ -202,10 +227,7 @@ bool Database::upsertEntry(const AnilistAnime &anime) {
 bool Database::insertEntries(QList<AnilistAnime> &anime_list) {
     auto entry_query = createQuery(QueryType::InsertEntry, this->db_);
     if (!entry_query) {
-        Log::error(
-            CONTEXT_CLASS,
-            entry_query.error()
-        );
+        Log::error(CONTEXT_CLASS, entry_query.error());
         return false;
     }
 
@@ -220,7 +242,7 @@ bool Database::insertEntries(QList<AnilistAnime> &anime_list) {
     }
 
     for (auto &anime : anime_list) {
-        this->bindEntryQuery(entry_query.value(), anime);
+        this->bindEntry(entry_query.value(), anime);
 
         if (!entry_query->exec()) {
             Log::error(
@@ -265,10 +287,7 @@ bool Database::insertEntries(QList<AnilistAnime> &anime_list) {
 bool Database::insertEntry(AnilistAnime &anime) {
     auto entry_query = createQuery(QueryType::InsertEntry, this->db_);
     if (!entry_query) {
-        Log::error(
-            CONTEXT_CLASS,
-            entry_query.error()
-        );
+        Log::error(CONTEXT_CLASS, entry_query.error());
         return false;
     }
 
@@ -282,7 +301,7 @@ bool Database::insertEntry(AnilistAnime &anime) {
         return false;
     }
 
-    this->bindEntryQuery(entry_query.value(), anime);
+    this->bindEntry(entry_query.value(), anime);
 
     if (!entry_query->exec()) {
         Log::error(
@@ -326,10 +345,7 @@ bool Database::insertEntry(AnilistAnime &anime) {
 bool Database::upsertMedias(const QList<AnilistAnime> &anime_list) {
     auto media_query = createQuery(QueryType::UpsertMedia, this->db_);
     if (!media_query) {
-        Log::error(
-            CONTEXT_CLASS,
-            media_query.error()
-        );
+        Log::error(CONTEXT_CLASS, media_query.error());
         return false;
     }
 
@@ -344,7 +360,7 @@ bool Database::upsertMedias(const QList<AnilistAnime> &anime_list) {
     }
 
     for (const auto &anime : anime_list) {
-        this->bindMediaQuery(media_query.value(), anime);
+        this->bindMedia(media_query.value(), anime);
 
         if (!media_query->exec()) {
             Log::error(
@@ -378,10 +394,7 @@ bool Database::upsertMedia(const AnilistAnime &anime) {
 bool Database::deleteEntries(const QList<int> &local_ids) {
     auto delete_query = createQuery(QueryType::DeleteEntry, this->db_);
     if (!delete_query) {
-        Log::error(
-            CONTEXT_CLASS,
-            delete_query.error()
-        );
+        Log::error(CONTEXT_CLASS, delete_query.error());
         return false;
     }
 
@@ -396,7 +409,7 @@ bool Database::deleteEntries(const QList<int> &local_ids) {
     }
 
     for (const auto &id : local_ids) {
-        this->bindDeleteQuery(delete_query.value(), id);
+        this->bindLocalId(delete_query.value(), id);
         if (!delete_query->exec()) {
             Log::error(
                 CONTEXT_CLASS,
@@ -429,10 +442,7 @@ std::expected<int, QString> Database::entriesCount() {
     auto query = createQuery(QueryType::CountAnimeEntries, this->db_);
 
     if (!query) {
-        Log::error(
-            CONTEXT_CLASS,
-            query.error()
-        );
+        Log::error(CONTEXT_CLASS, query.error());
         return std::unexpected(query.error());
     }
 
@@ -440,10 +450,7 @@ std::expected<int, QString> Database::entriesCount() {
         const QString msg = QStringLiteral("Failed to count entries: %1").arg(
             query->lastError().text()
         );
-        Log::error(
-            CONTEXT_CLASS,
-            msg
-        );
+        Log::error(CONTEXT_CLASS, msg);
         return std::unexpected(msg);
     }
 
@@ -451,6 +458,7 @@ std::expected<int, QString> Database::entriesCount() {
         const QString msg = QStringLiteral("Failed to retrieve entry count: %1").arg(
             query->lastError().text()
         );
+        Log::error(CONTEXT_CLASS, msg);
         return std::unexpected(msg);
     }
 
@@ -461,10 +469,7 @@ bool Database::cleanupUnusedMedia() {
     auto query = createQuery(QueryType::CleanupUnusedMedia, this->db_);
 
     if (!query) {
-        Log::error(
-            CONTEXT_CLASS,
-            query.error()
-        );
+        Log::error(CONTEXT_CLASS, query.error());
         return false;
     }
 
@@ -483,10 +488,7 @@ bool Database::vacuum() {
     auto query = createQuery(QueryType::Vacuum, this->db_);
 
     if (!query) {
-        Log::error(
-            CONTEXT_CLASS,
-            query.error()
-        );
+        Log::error(CONTEXT_CLASS, query.error());
         return false;
     }
 
@@ -524,10 +526,7 @@ bool Database::recreateDatabase() {
 std::expected<QList<AnilistAnime>, QString> Database::selectAllEntries() {
     auto query = createQuery(QueryType::SelectAllAnime, this->db_);
     if (!query) {
-        Log::error(
-            CONTEXT_CLASS,
-            query.error()
-        );
+        Log::error(CONTEXT_CLASS, query.error());
         return std::unexpected(query.error());
     }
 
@@ -535,10 +534,7 @@ std::expected<QList<AnilistAnime>, QString> Database::selectAllEntries() {
         QString msg = QStringLiteral("Failed to select all entries: %1").arg(
             query->lastError().text()
         );
-        Log::error(
-            CONTEXT_CLASS,
-            msg
-        );
+        Log::error(CONTEXT_CLASS, msg);
         return std::unexpected(msg);
     }
 
@@ -556,10 +552,7 @@ std::expected<QList<AnilistAnime>, QString> Database::selectAllEntries() {
 std::expected<QList<AnilistAnime>, QString> Database::selectAllPendingEntries() {
     auto query = createQuery(QueryType::SelectAllPending, this->db_);
     if (!query) {
-        Log::error(
-            CONTEXT_CLASS,
-            query.error()
-        );
+        Log::error(CONTEXT_CLASS, query.error());
         return std::unexpected(query.error());
     }
 
@@ -567,10 +560,60 @@ std::expected<QList<AnilistAnime>, QString> Database::selectAllPendingEntries() 
         const QString msg = QStringLiteral("Failed to select all pending entries: %1").arg(
             query->lastError().text()
         );
-        Log::error(
-            CONTEXT_CLASS,
-            msg
+        Log::error(CONTEXT_CLASS, msg);
+        return std::unexpected(msg);
+    }
+
+    QList<AnilistAnime> loaded_anime;
+    while (query->next()) {
+        loaded_anime.append({
+            AnilistEntry::fromDatabaseQuery(query.value()),
+            AnilistMedia::fromDatabaseQuery(query.value())
+        });
+    }
+
+    return loaded_anime;
+}
+
+std::expected<QList<AnilistMedia>, QString> Database::selectAllMedia() {
+    auto query = createQuery(QueryType::SelectAllMedia, this->db_);
+    if (!query) {
+        Log::error(CONTEXT_CLASS, query.error());
+        return std::unexpected(query.error());
+    }
+
+    if (!query->exec()) {
+        const QString msg = QStringLiteral("Failed to seleect all media: %1").arg(
+            query->lastError().text()
         );
+        Log::error(CONTEXT_CLASS, msg);
+        return std::unexpected(msg);
+    }
+
+    QList<AnilistMedia> loaded_media;
+    while (query->next()) {
+        loaded_media.append(
+            AnilistMedia::fromDatabaseQuery(query.value())
+        );
+    }
+
+    return loaded_media;
+}
+
+std::expected<QList<AnilistAnime>, QString> Database::selectAnimeByMediaIds(const QList<int> &media_ids) {
+    auto query = createQuery(QueryType::SelectAnimeByMediaIds, media_ids.size(), this->db_);
+    if (!query) {
+        Log::error(CONTEXT_CLASS, query.error());
+        return std::unexpected(query.error());
+    }
+
+    this->bindMediaIds(query.value(), media_ids);
+
+    if (!query->exec()) {
+        const QString msg = QStringLiteral("Failed to select anime by media ids: %1").arg(
+            query->lastError().text()
+        );
+        Log::error(CONTEXT_CLASS, msg);
         return std::unexpected(msg);
     }
 
@@ -641,10 +684,7 @@ bool Database::enablePragmas() {
     auto query = createQuery(QueryType::EnableForeignKeys, this->db_);
 
     if (!query) {
-        Log::error(
-            CONTEXT_CLASS,
-            query.error()
-        );
+        Log::error(CONTEXT_CLASS, query.error());
         return false;
     }
     if (!query->exec()) {
@@ -663,10 +703,7 @@ bool Database::enablePragmas() {
 bool Database::createTables() {
     auto query = createQuery(QueryType::CreateMediaTable, this->db_);
     if (!query) {
-        Log::error(
-            CONTEXT_CLASS,
-            query.error()
-        );
+        Log::error(CONTEXT_CLASS, query.error());
         return false;
     }
     if (!query->exec()) {
@@ -681,10 +718,7 @@ bool Database::createTables() {
 
     query = createQuery(QueryType::CreateEntryTable, this->db_);
     if (!query) {
-        Log::error(
-            CONTEXT_CLASS,
-            query.error()
-        );
+        Log::error(CONTEXT_CLASS, query.error());
         return false;
     }
     if (!query->exec()) {
@@ -700,7 +734,7 @@ bool Database::createTables() {
     return true;
 }
 
-void Database::bindMediaQuery(QSqlQuery &query, const AnilistAnime &anime) {
+void Database::bindMedia(QSqlQuery &query, const AnilistAnime &anime) {
     query.bindValue(DatabaseKeys::Media::Id, anime.media.id);
     query.bindValue(DatabaseKeys::Media::IsAdult, anime.media.is_adult);
     query.bindValue(DatabaseKeys::Media::MediaStatus, static_cast<int>(anime.media.status));
@@ -731,7 +765,7 @@ void Database::bindMediaQuery(QSqlQuery &query, const AnilistAnime &anime) {
     query.bindValue(DatabaseKeys::Media::Producers, AnilistUtils::jsonStringFromStudiosProducers(anime.media.producers));
 }
 
-void Database::bindEntryQuery(QSqlQuery &query, const AnilistAnime &anime) {
+void Database::bindEntry(QSqlQuery &query, const AnilistAnime &anime) {
     query.bindValue(
         DatabaseKeys::Entry::Id,
         anime.entry.id() != AnilistEntry::InvalidId ? anime.entry.id() : QVariant()
@@ -757,7 +791,13 @@ void Database::bindEntryQuery(QSqlQuery &query, const AnilistAnime &anime) {
     query.bindValue(DatabaseKeys::Entry::PendingOperation, static_cast<int>(state.pending_operation));
 }
 
-void Database::bindDeleteQuery(QSqlQuery &query, int local_id) {
+void Database::bindMediaIds(QSqlQuery &query, const QList<int> &media_ids) {
+    for (int i = 0; i < media_ids.size(); i++) {
+        query.bindValue(i, media_ids.at(i));
+    }
+}
+
+void Database::bindLocalId(QSqlQuery &query, int local_id) {
     query.bindValue(DatabaseKeys::Entry::LocalId, local_id);
 }
 

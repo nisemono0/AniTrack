@@ -62,6 +62,13 @@ public:
     std::expected<QList<AnilistAnime>, QString> selectAllEntries();
     std::expected<QList<AnilistAnime>, QString> selectAllPendingEntries();
 
+    // Return a list of anilist media from the database or a string message on error
+    std::expected<QList<AnilistMedia>, QString> selectAllMedia();
+
+    // Return a list of anilist anime from the database using a list of media_ids
+    // or a string message on error
+    std::expected<QList<AnilistAnime>, QString> selectAnimeByMediaIds(const QList<int> &media_ids);
+
     // Return the databse file location
     QString databasePath() const;
 
@@ -75,11 +82,14 @@ private:
     bool createTables();
 
     // Bind anime media to query
-    void bindMediaQuery(QSqlQuery &query, const AnilistAnime &anime);
+    void bindMedia(QSqlQuery &query, const AnilistAnime &anime);
     // Bind anime entry to query
-    void bindEntryQuery(QSqlQuery &query, const AnilistAnime &anime);
+    void bindEntry(QSqlQuery &query, const AnilistAnime &anime);
+
+    // Bind media_ids to query
+    void bindMediaIds(QSqlQuery &query, const QList<int> &media_ids);
 
     // Bind local id to query
-    void bindDeleteQuery(QSqlQuery &query, int local_id);
+    void bindLocalId(QSqlQuery &query, int local_id);
 };
 

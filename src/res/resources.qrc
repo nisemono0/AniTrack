@@ -41,6 +41,8 @@
     <file alias="x">icons/x.svg</file>
   </qresource>
   <qresource prefix="database">
+    <file alias="SelectAnimeByMediaIds">queries/database/SelectAnimeByMediaIds.sql</file>
+    <file alias="SelectAllMedia">queries/database/SelectAllMedia.sql</file>
     <file alias="InsertEntry">queries/database/InsertEntry.sql</file>
     <file alias="SelectAllAnime">queries/database/SelectAllAnime.sql</file>
     <file alias="CleanupUnusedMedia">queries/database/CleanupUnusedMedia.sql</file>

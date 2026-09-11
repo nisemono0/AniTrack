@@ -1,0 +1,25 @@
+SELECT
+    m.id AS media_id,
+    m.is_adult AS media_is_adult,
+    m.media_status AS media_status,
+    m.season AS media_season,
+    m.season_year AS media_season_year,
+    m.average_score AS media_average_score,
+    m.site_url AS media_site_url,
+    m.title_english AS media_title_english,
+    m.title_native AS media_title_native,
+    m.title_romaji AS media_title_romaji,
+    m.synonyms AS media_synonyms,
+    m.format AS media_format,
+    m.description AS media_description,
+    m.start_date AS media_start_date,
+    m.end_date AS media_end_date,
+    m.updated_at AS media_updated_at,
+    m.episodes AS media_episodes,
+    m.country_of_origin AS media_country_of_origin,
+    m.cover_url AS media_cover_url,
+    m.genres AS media_genres,
+    m.studios AS media_studios,
+    m.producers AS media_producers
+FROM media m
+INNER JOIN entry e ON e.media_id = m.id;
