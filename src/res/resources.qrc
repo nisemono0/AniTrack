@@ -2,6 +2,9 @@
   <qresource prefix="images">
     <file alias="no-image">images/no-image.png</file>
   </qresource>
+  <qresource prefix="deps">
+    <file alias="anime-relations">../../deps/anime-relations/anime-relations.txt</file>
+  </qresource>
   <qresource prefix="icons">
     <file alias="cloud-down">icons/cloud-down.svg</file>
     <file alias="history">icons/history.svg</file>
