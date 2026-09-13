@@ -22,21 +22,16 @@ AboutDialog::AboutDialog(QWidget *parent) :
             "%1\n"
             "Qt: %2\n"
             "tabler-icons: %3\n"
-#ifdef ENABLE_WIP_FEATURES
             "anitomy: %4\n"
             "anime-relations: %5\n"
             "utf8proc: %6"
-#endif // ENABLE_WIP_FEATURES
         ).arg(
             this->ui_->labelAppNameVer->text(),
             this->ui_->labelQtVer->text(),
-            this->ui_->labelTablerIconsVer->text()
-#ifdef ENABLE_WIP_FEATURES
-            ,
+            this->ui_->labelTablerIconsVer->text(),
             this->ui_->labelAnitomyVer->text(),
             this->ui_->labelAnimeRelationsVer->text(),
             this->ui_->labelUtf8procVer->text()
-#endif // ENABLE_WIP_FEATURES
         );
 
         clipboard->setText(info);
@@ -66,19 +61,9 @@ void AboutDialog::setupDialog() {
 
     this->ui_->labelQtVer->setText(qVersion());
     this->ui_->labelTablerIconsVer->setText(TABLER_ICONS_VERSION);
-
-#ifdef ENABLE_WIP_FEATURES
     this->ui_->labelAnitomyVer->setText(ANITOMY_GIT_COMMIT);
     this->ui_->labelAnimeRelationsVer->setText(ANIME_RELATIONS_GIT_COMMIT);
     this->ui_->labelUtf8procVer->setText(UTF8PROC_GIT_COMMIT);
-#else
-    this->ui_->labelAnitomy->hide();
-    this->ui_->labelAnitomyVer->hide();
-    this->ui_->labelAnimeRelations->hide();
-    this->ui_->labelAnimeRelationsVer->hide();
-    this->ui_->labelUtf8proc->hide();
-    this->ui_->labelUtf8procVer->hide();
-#endif // ENABLE_WIP_FEATURES
 
 }
 
