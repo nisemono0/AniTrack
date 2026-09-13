@@ -97,7 +97,33 @@ AnimeRedirection::AnimeRedirection(QObject *parent) : QObject(parent) {
     );
 }
 
-QList<AnimeRedirection::EpisodeRedirection> AnimeRedirection::redirections(int media_id) const {
+AnimeRedirection::Redirection AnimeRedirection::redirect(const int media_id, const int episode) {
+    const auto redirections = this->redirections(media_id);
+
+    Redirection anime_redirection{
+        .media_id = media_id,
+        .episode =episode
+    };
+
+    if (redirections.isEmpty()) {
+        return anime_redirection;
+    }
+
+    for (const auto &rule : redirections) {
+        if (episode < rule.source_episode_start ||
+            episode > rule.source_episode_end) {
+            continue;
+        }
+
+        anime_redirection.media_id = rule.destination_id;
+        anime_redirection.episode = rule.destination_episode_start + (episode - rule.source_episode_start);
+        return anime_redirection;
+    }
+
+    return anime_redirection;
+}
+
+QList<AnimeRedirection::RedirectionInfo> AnimeRedirection::redirections(int media_id) const {
     return this->redirections_.value(media_id);
 }
 
