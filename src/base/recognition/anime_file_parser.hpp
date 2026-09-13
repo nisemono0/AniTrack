@@ -5,10 +5,10 @@
 
 namespace AnimeFileParser {
 static constexpr int InvalidEpisode = -1;
-struct ParsedAnimeFile {
+struct AnimeFileInfo {
     QString title;
     int episode = InvalidEpisode;
 };
 
-ParsedAnimeFile parse(const QString &filename);
+AnimeFileInfo parse(const QString &filename);
 } // namespace AnimeFileParser

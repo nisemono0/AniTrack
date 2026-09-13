@@ -8,11 +8,11 @@
 #include <anitomy.hpp>
 
 
-AnimeFileParser::ParsedAnimeFile AnimeFileParser::parse(const QString &filename) {
+AnimeFileParser::AnimeFileInfo AnimeFileParser::parse(const QString &filename) {
     const std::string utf8_filename = filename.normalized(QString::NormalizationForm_KC).toUtf8().toStdString();
     const std::vector<anitomy::Element> elements = anitomy::parse(utf8_filename);
 
-    AnimeFileParser::ParsedAnimeFile parsed_anime_file;
+    AnimeFileParser::AnimeFileInfo parsed_anime_file;
 
     const auto title_element = std::ranges::find_if(elements, [] (const anitomy::Element &element) {
         return element.kind == anitomy::ElementKind::Title;
