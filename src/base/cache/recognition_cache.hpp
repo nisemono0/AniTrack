@@ -9,6 +9,8 @@
 class RecognitionCache final : public QObject {
     Q_OBJECT;
 public:
+    static constexpr double ExactMatch = 1.0;
+
     struct TitleMatch {
         int media_id;
         double score;

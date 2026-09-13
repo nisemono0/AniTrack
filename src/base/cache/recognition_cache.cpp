@@ -120,8 +120,12 @@ QList<RecognitionCache::TitleMatch> RecognitionCache::findMatches(const QString 
     if (exact_match) {
         matches.append({
             exact_match.value(),
-            1.0
+            ExactMatch
         });
+        Log::info(
+            CONTEXT_CLASS,
+            QStringLiteral("Found exact match: %1 -> %2").arg(title).arg(exact_match.value())
+        );
         return matches;
     }
 
@@ -164,6 +168,11 @@ QList<RecognitionCache::TitleMatch> RecognitionCache::findMatches(const QString 
     if (matches.size() > max_matches) {
         matches.resize(max_matches);
     }
+
+    Log::info(
+        CONTEXT_CLASS,
+        QStringLiteral("Found %1 partial matches for %2").arg(matches.size()).arg(title)
+    );
 
     return matches;
 }
