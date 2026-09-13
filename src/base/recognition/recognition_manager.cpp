@@ -19,6 +19,10 @@ RecognitionManager::RecognitionManager(
     this->anime_redirection_ = new AnimeRedirection(this);
 }
 
+void RecognitionManager::registerRunningPlayers() {
+    this->mpris_watcher_->registerRunningPlayers();
+}
+
 void RecognitionManager::onIdSearchFinished(const QList<AnilistMedia> &media_list) {
     for (const auto &media : media_list) {
         if (!this->missing_ids_to_redirection_episode_.contains(media.id)) {

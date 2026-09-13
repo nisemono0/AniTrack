@@ -22,6 +22,8 @@ public:
     );
     ~RecognitionManager() = default;
 
+    void registerRunningPlayers();
+
 public slots:
     void onIdSearchFinished(const QList<AnilistMedia> &media_list);
     void onIdSearchFailed(const QString &message);
