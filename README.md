@@ -10,14 +10,13 @@ Greatly inspired by [Taiga](https://github.com/erengy/taiga).
 ## WIP Features
 - Automatic media player detection.
   - UI page for displaying the currently playing anime.
-  - anitomy filename parsing.
   - Add/Update playing anime to list.
-- Episode redirects using Taiga's anime-relations data.
 
 ## Dependencies
 - Qt6
 - anitomy
 - anime-relations
+- utf8proc
 
 ## Building (Arch Linux)
 - Install dependencies:
@@ -42,5 +41,6 @@ You can also run `AniTrack --help` to see some available options.
 - [taiga](https://github.com/erengy/taiga): greatly inspired this program
 - [anitomy](https://github.com/erengy/anitomy): anime filename parser
 - [anime-relations](https://github.com/erengy/anime-relations): episode redirections
+- [utf8proc](https://github.com/JuliaStrings/utf8proc): string normalization
 - [tabler-icons](https://github.com/tabler/tabler-icons): application icons
 
