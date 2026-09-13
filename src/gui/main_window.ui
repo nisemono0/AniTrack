@@ -93,34 +93,10 @@
       <property name="currentIndex">
        <number>1</number>
       </property>
-      <widget class="QWidget" name="pagePlaying">
+      <widget class="AnimePlayingPage" name="pagePlaying">
        <property name="focusPolicy">
         <enum>Qt::FocusPolicy::NoFocus</enum>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>TODO: Playing</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
       </widget>
       <widget class="AnimeListPage" name="pageAnimeList">
        <property name="focusPolicy">
@@ -528,6 +504,12 @@
    <class>AnimeSearchPage</class>
    <extends>QWidget</extends>
    <header>gui/pages/anime_search_page.hpp</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AnimePlayingPage</class>
+   <extends>QWidget</extends>
+   <header>gui/pages/anime_playing_page.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
