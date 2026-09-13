@@ -204,14 +204,17 @@ target_compile_definitions(AniTrack
         ANITRACK_VERSION="${PROJECT_VERSION}"
 )
 
-target_compile_definitions(AniTrack PRIVATE TABLER_ICONS_VERSION="${TABLER_ICONS_VERSION}")
+target_compile_definitions(AniTrack
+    PRIVATE
+        TABLER_ICONS_VERSION="${TABLER_ICONS_VERSION}"
+        ANITOMY_GIT_COMMIT="${ANITOMY_GIT_COMMIT}"
+        ANIME_RELATIONS_GIT_COMMIT="${ANIME_RELATIONS_GIT_COMMIT}"
+        UTF8PROC_GIT_COMMIT="${UTF8PROC_GIT_COMMIT}"
+)
 
 if(ENABLE_WIP_FEATURES)
     message(STATUS "WIP features enabled")
     target_compile_definitions(AniTrack PRIVATE ENABLE_WIP_FEATURES)
-    target_compile_definitions(AniTrack PRIVATE ANITOMY_GIT_COMMIT="${ANITOMY_GIT_COMMIT}")
-    target_compile_definitions(AniTrack PRIVATE ANIME_RELATIONS_GIT_COMMIT="${ANIME_RELATIONS_GIT_COMMIT}")
-    target_compile_definitions(AniTrack PRIVATE UTF8PROC_GIT_COMMIT="${UTF8PROC_GIT_COMMIT}")
 endif()
 
 target_sources(AniTrack
