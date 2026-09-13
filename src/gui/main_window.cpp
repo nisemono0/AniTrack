@@ -25,6 +25,7 @@ MainWindow::MainWindow(
     this->setupNavigationListWidget();
     this->setupStatusBar();
 
+    this->setupPlayingPage();
     this->setupAnimeListPage();
     this->setupSearchPage();
     this->setupStatisticsPage();
@@ -167,6 +168,10 @@ void MainWindow::setupNavigationListWidget() {
 
 void MainWindow::setupStatusBar() {
     connect(this->app_controller_, &AppController::userUpdated, this->ui_->statusBar, &StatusBar::onUserChanged);
+}
+
+void MainWindow::setupPlayingPage() {
+    // TODO: setup connections here
 }
 
 void MainWindow::setupAnimeListPage() {

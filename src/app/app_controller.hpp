@@ -5,6 +5,7 @@
 #include "base/database/database_controller.hpp"
 #include "base/sync/sync_manager.hpp"
 #include "base/search/search_manager.hpp"
+#include "base/recognition/recognition_manager.hpp"
 
 #include <QObject>
 
@@ -18,6 +19,7 @@ public:
         DatabaseController *database_controller,
         SyncManager *sync_manager,
         SearchManager *search_manager,
+        RecognitionManager *recognition_manager,
         QObject *parent = nullptr
     );
     ~AppController() = default;
@@ -116,6 +118,7 @@ private:
     DatabaseController *database_controller_;
     SyncManager *sync_manager_;
     SearchManager *search_manager_;
+    RecognitionManager *recognition_manager_;
 
     // Setup
     void setupLoggerConnections();
@@ -123,6 +126,7 @@ private:
     void setupAccountManagerConnections();
     void setupSyncConnections();
     void setupSearchConnections();
+    void setupRecognitionConnections();
 
 private slots:
     void onInfoOccurred(const QString &context, const QString &message);

@@ -11,6 +11,7 @@
 #include "base/anilist/anilist_api.hpp"
 #include "base/search/search_manager.hpp"
 #include "base/account/account_manager.hpp"
+#include "base/recognition/recognition_manager.hpp"
 
 #include "app/app_controller.hpp"
 
@@ -51,6 +52,7 @@ private:
     SyncManager *sync_manager_ = nullptr;
     SearchManager *search_manager_ = nullptr;
     AccountManager *account_manager_ = nullptr;
+    RecognitionManager* recognition_manager_ = nullptr;
     AppController *app_controller_ = nullptr;
 
     bool already_running_ = false;

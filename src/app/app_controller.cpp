@@ -7,8 +7,10 @@ AppController::AppController(
     DatabaseController *database_controller,
     SyncManager *sync_manager,
     SearchManager *search_manager,
+    RecognitionManager *recognition_manager,
     QObject *parent
 ) : QObject(parent),
+    recognition_manager_(recognition_manager),
     search_manager_(search_manager),
     sync_manager_(sync_manager),
     database_controller_(database_controller),
@@ -20,11 +22,13 @@ AppController::AppController(
     this->setupAccountManagerConnections();
     this->setupSyncConnections();
     this->setupSearchConnections();
+    this->setupRecognitionConnections();
 }
 
 void AppController::init() {
     this->account_manager_->ensureLoggedIn();
     this->database_controller_->initialLoad();
+    this->recognition_manager_->registerRunningPlayers();
 }
 
 void AppController::setupLoggerConnections() {
@@ -135,6 +139,10 @@ void AppController::setupSearchConnections() {
     connect(this->search_manager_, &SearchManager::searchFinished, this, &AppController::searchFinished);
 
     connect(this->search_manager_, &SearchManager::searchFailed, this, &AppController::onErrorOccurred);
+}
+
+void AppController::setupRecognitionConnections() {
+    // TODO: add connections here
 }
 
 void AppController::onInfoOccurred(const QString &context, const QString &message) {

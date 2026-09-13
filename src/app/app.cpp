@@ -68,12 +68,18 @@ App::App(int &argc, char **argv) : QApplication(argc, argv) {
         this
     );
 
+    this->recognition_manager_ = new RecognitionManager(
+        this->database_,
+        this
+    );
+
     this->app_controller_ = new AppController(
         this->logger_,
         this->account_manager_,
         this->database_controller_,
         this->sync_manager_,
         this->search_manager_,
+        this->recognition_manager_,
         this
     );
 }

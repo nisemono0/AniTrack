@@ -74,6 +74,7 @@ private:
     void setupNavigationListWidget();
     void setupStatusBar();
 
+    void setupPlayingPage();
     void setupAnimeListPage();
     void setupSearchPage();
     void setupStatisticsPage();
