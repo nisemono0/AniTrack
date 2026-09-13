@@ -22,7 +22,8 @@ enum class QueryType {
     MediaListCollection,
     MediaSearch,
     SaveMediaListEntry,
-    DeleteMediaListEntry
+    DeleteMediaListEntry,
+    MediaIdsSearch
 };
 
 // Create a QByteArray of a query_type with added variables if given
@@ -59,6 +60,13 @@ std::expected<QByteArray, QString> createQuery(QueryType query_type, const QJson
         }
         case QueryType::DeleteMediaListEntry: {
             query = FileUtils::readFile(AnilistResources::DeleteMediaListEntry);
+            break;
+        }
+        case QueryType::MediaIdsSearch: {
+            QStringList fragmented_query;
+            fragmented_query.append(FileUtils::readFile(AnilistResources::MediaFields));
+            fragmented_query.append(FileUtils::readFile(AnilistResources::MediaIdsSearch));
+            query = fragmented_query.join(QChar::LineFeed);
             break;
         }
         default:
@@ -531,15 +539,78 @@ void AnilistApi::searchAnime(const QString &title) {
 
         QList<AnilistMedia> anime_search_results;
         for (const auto &media : media_array) {
-            AnilistMedia media_result = AnilistMedia::fromResponseJson(media.toObject());
-            media_result.in_list = false;
-
-            anime_search_results.append(std::move(media_result));
+            anime_search_results.append(
+                AnilistMedia::fromResponseJson(media.toObject())
+            );
         }
 
         Log::info(
             CONTEXT_CLASS,
             QStringLiteral("Search finished for: %1 (found %2)").arg(title).arg(anime_search_results.size())
+        );
+
+        emit searchAnimeFinished(anime_search_results);
+    });
+}
+
+void AnilistApi::searchAnimeIds(const QList<int> &media_ids) {
+    Log::info(
+        CONTEXT_CLASS,
+        QStringLiteral("Searching anime ids...")
+    );
+
+    QJsonObject query_variables;
+    QJsonArray ids_array;
+    for (const auto &id : media_ids) {
+        ids_array.append(id);
+    }
+    query_variables[AnilistKeys::Variables::IdIn] = ids_array;
+
+    const auto query = createQuery(
+        QueryType::MediaSearch,
+        query_variables
+    );
+
+    if (!query) {
+        emit searchAnimeFailed(query.error());
+        return;
+    }
+
+    QNetworkReply *network_reply = this->network_->postJson(
+        AnilistConfig::ApiUrl,
+        query.value(),
+        this->anilist_account_->authToken()
+    );
+
+    connect(network_reply, &QNetworkReply::finished, this, [this, network_reply, media_ids_size = media_ids.size()] {
+        const auto response = readJsonResponse(network_reply);
+        network_reply->deleteLater();
+
+        if (!response) {
+            emit searchAnimeFailed(response.error());
+            return;
+        }
+
+        const auto data_object = extractDataObject(response->object());
+        if (!data_object) {
+            Log::error(CONTEXT_CLASS, data_object.error());
+            emit searchAnimeFailed(data_object.error());
+            return;
+        }
+
+        const QJsonArray media_array = data_object->value(AnilistKeys::Query::Page).toObject()
+                                                   .value(AnilistKeys::Page::Media).toArray();
+
+        QList<AnilistMedia> anime_search_results;
+        for (const auto &media : media_array) {
+            anime_search_results.append(
+                AnilistMedia::fromResponseJson(media.toObject())
+            );
+        }
+
+        Log::info(
+            CONTEXT_CLASS,
+            QStringLiteral("Search finished for: %1 ids").arg(media_ids_size)
         );
 
         emit searchAnimeFinished(anime_search_results);

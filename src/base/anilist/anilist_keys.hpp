@@ -16,6 +16,7 @@ inline const QString Repeat                 = QStringLiteral("repeat");
 inline const QString Notes                  = QStringLiteral("notes");
 inline const QString StartedAt              = QStringLiteral("startedAt");
 inline const QString CompletedAt            = QStringLiteral("completedAt");
+inline const QString IdIn                   = QStringLiteral("idIn");
 } // namespace Variables
 
 namespace Common {

@@ -27,6 +27,7 @@ public:
     void deleteAnime(const AnilistAnime &anime);
 
     void searchAnime(const QString &title);
+    void searchAnimeIds(const QList<int> &media_ids);
 
 signals:
     void userFetchFailed(const QString &message);

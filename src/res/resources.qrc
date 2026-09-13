@@ -58,6 +58,7 @@
     <file alias="CreateMediaTable">queries/database/CreateMediaTable.sql</file>
   </qresource>
   <qresource prefix="anilist">
+    <file alias="MediaIdsSearch">queries/anilist/MediaIdsSearch.graphql</file>
     <file alias="EntryFields">queries/anilist/EntryFields.graphql</file>
     <file alias="DeleteMediaListEntry">queries/anilist/DeleteMediaListEntry.graphql</file>
     <file alias="SaveMediaListEntry">queries/anilist/SaveMediaListEntry.graphql</file>

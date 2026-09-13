@@ -10,5 +10,6 @@ inline const QString MediaListCollection  = QStringLiteral(":/anilist/MediaListC
 inline const QString MediaSearch          = QStringLiteral(":/anilist/MediaSearch");
 inline const QString SaveMediaListEntry   = QStringLiteral(":/anilist/SaveMediaListEntry");
 inline const QString DeleteMediaListEntry = QStringLiteral(":/anilist/DeleteMediaListEntry");
+inline const QString MediaIdsSearch       = QStringLiteral(":/anilist/MediaIdsSearch");
 } // namespace AnilistResources
 

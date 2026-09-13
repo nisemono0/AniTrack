@@ -1,0 +1,7 @@
+query Page($idIn: [Int]) {
+  Page {
+    media(type: ANIME, id_in: $idIn) {
+      ...MediaFields
+    }
+  }
+}
