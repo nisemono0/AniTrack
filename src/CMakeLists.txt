@@ -125,8 +125,20 @@ qt_add_executable(AniTrack
     gui/pages/anime_list_page.hpp
     gui/pages/anime_list_tab_bar.cpp
     gui/pages/anime_list_tab_bar.hpp
+    gui/pages/anime_playing_page.cpp
+    gui/pages/anime_playing_page.hpp
     gui/pages/anime_search_page.cpp
     gui/pages/anime_search_page.hpp
+    gui/pages/recognition_error_page.cpp
+    gui/pages/recognition_error_page.hpp
+    gui/pages/recognition_no_match_page.cpp
+    gui/pages/recognition_no_match_page.hpp
+    gui/pages/recognition_now_playing_page.cpp
+    gui/pages/recognition_now_playing_page.hpp
+    gui/pages/recognition_search_page.cpp
+    gui/pages/recognition_search_page.hpp
+    gui/pages/recognition_select_anime_page.cpp
+    gui/pages/recognition_select_anime_page.hpp
     gui/pages/statistics_page.cpp
     gui/pages/statistics_page.hpp
     gui/status_bar.cpp
@@ -213,7 +225,13 @@ target_sources(AniTrack
         gui/dialogs/set_score_dialog.ui
         gui/main_window.ui
         gui/pages/anime_list_widget.ui
+        gui/pages/anime_playing_widget.ui
         gui/pages/anime_search_widget.ui
+        gui/pages/recognition_error_widget.ui
+        gui/pages/recognition_no_match_widget.ui
+        gui/pages/recognition_now_playing_widget.ui
+        gui/pages/recognition_search_widget.ui
+        gui/pages/recognition_select_anime_widget.ui
         gui/pages/statistics_widget.ui
 )
 
