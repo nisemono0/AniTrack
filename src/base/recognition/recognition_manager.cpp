@@ -37,6 +37,19 @@ void RecognitionManager::onIdSearchFinished(const QList<AnilistMedia> &media_lis
         this->recognized_anime_.append(std::move(recognized));
     }
 
+    if (this->recognized_anime_.isEmpty()) {
+        emit showNoMatchPage(this->recognized_title_);
+        return;
+    }
+
+    if (this->recognized_anime_.size() == 1) {
+        emit showNowPlaying(
+            this->recognized_anime_.constFirst(),
+            this->recognized_title_
+        );
+        return;
+    }
+
     emit showSelectAnimePage(this->recognized_anime_, this->recognized_title_);
 }
 
