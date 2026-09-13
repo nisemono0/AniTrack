@@ -189,7 +189,7 @@ void RecognitionManager::handlePartialMatches(const QList<int> &media_ids, const
 
     // get a list of missing redirected ids to search on anilist
     QList<int> missing_ids;
-    for(const auto &redirection : redirections) {
+    for(const auto &redirection : std::as_const(redirections)) {
         if (!local_ids.contains(redirection.media_id)) {
             missing_ids.append(redirection.media_id);
             // store the missing ids redirection episode
