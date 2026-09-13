@@ -107,7 +107,7 @@ AnilistMedia AnilistMedia::fromDatabaseQuery(const QSqlQuery &query) {
     media.producers = AnilistUtils::studiosProducersFromJsonString<AnilistMedia::Producer>(
         query.value(DatabaseColumns::Media::Producers).toString()
     );
-    media.in_list = false;
+    media.in_list = true;
 
     return media;
 }

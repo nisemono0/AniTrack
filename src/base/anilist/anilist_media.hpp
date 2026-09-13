@@ -15,6 +15,8 @@ public:
     static AnilistMedia fromResponseJson(const QJsonObject &json_obj);
     static AnilistMedia fromDatabaseQuery(const QSqlQuery &query);
 
+    static constexpr int InvalidId = -1;
+
     // The enums names MUST be exactly as the ones the anilist api returns
     enum class Status {
         INVALID = 0,
@@ -67,7 +69,7 @@ public:
         QString site_url;
     };
 
-    int id = 0;
+    int id = InvalidId;
     bool is_adult = false;
     Status status = Status::INVALID;
     Season season = Season::INVALID;
