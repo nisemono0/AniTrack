@@ -97,8 +97,6 @@ qt_add_executable(AniTrack
     gui/dialogs/about_dialog.hpp
     gui/dialogs/anime_info_edit_dialog.cpp
     gui/dialogs/anime_info_edit_dialog.hpp
-    gui/dialogs/anime_info_search_dialog.cpp
-    gui/dialogs/anime_info_search_dialog.hpp
     gui/dialogs/logger_dialog.cpp
     gui/dialogs/logger_dialog.hpp
     gui/dialogs/login_token_dialog.cpp
@@ -131,6 +129,8 @@ qt_add_executable(AniTrack
     gui/pages/anime_search_page.hpp
     gui/pages/recognition_error_page.cpp
     gui/pages/recognition_error_page.hpp
+    gui/pages/recognition_idle_page.cpp
+    gui/pages/recognition_idle_page.hpp
     gui/pages/recognition_no_match_page.cpp
     gui/pages/recognition_no_match_page.hpp
     gui/pages/recognition_now_playing_page.cpp
@@ -221,7 +221,6 @@ target_sources(AniTrack
     PRIVATE
         gui/dialogs/about_dialog.ui
         gui/dialogs/anime_info_edit_dialog.ui
-        gui/dialogs/anime_info_search_dialog.ui
         gui/dialogs/logger_dialog.ui
         gui/dialogs/login_token_dialog.ui
         gui/dialogs/set_episode_dialog.ui
@@ -231,6 +230,7 @@ target_sources(AniTrack
         gui/pages/anime_playing_widget.ui
         gui/pages/anime_search_widget.ui
         gui/pages/recognition_error_widget.ui
+        gui/pages/recognition_idle_widget.ui
         gui/pages/recognition_no_match_widget.ui
         gui/pages/recognition_now_playing_widget.ui
         gui/pages/recognition_search_widget.ui
