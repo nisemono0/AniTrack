@@ -34,6 +34,8 @@ AnimeInfoSearchDialog::~AnimeInfoSearchDialog() {
 
 void AnimeInfoSearchDialog::updateUserPreferences(const AnilistAccount::User &user) {
     this->title_language_ = user.title_language;
+
+    this->updateInfo();
 }
 
 void AnimeInfoSearchDialog::setMedia(const AnilistMedia &media) {

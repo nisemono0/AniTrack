@@ -54,6 +54,9 @@ AnimeInfoEditDialog::~AnimeInfoEditDialog() {
 void AnimeInfoEditDialog::updateUserPreferences(const AnilistAccount::User &user) {
     this->score_format_ = user.score_format;
     this->title_language_ = user.title_language;
+
+    this->updateInfoTab();
+    this->updateEditTab();
 }
 
 void AnimeInfoEditDialog::setAnime(const AnilistAnime &anime) {
@@ -177,7 +180,7 @@ void AnimeInfoEditDialog::updateEditTab() {
     const QSignalBlocker notes_blocker(this->ui_->plainTextEditNotes);
 
     const auto &media = this->anime_.media;
-    const auto &entry_state = this->anime_.entry.state();
+    const auto &entry_state = this->new_state_;
 
     if (media.episodes > 0) {
         this->ui_->spinBoxEpisodesWatched->setMaximum(media.episodes);
