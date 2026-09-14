@@ -40,8 +40,10 @@ void AnimeStatusComboBox::setCurrentStatus(AnilistEntry::Status status) {
         static_cast<int>(status)
     );
 
-    if (index > 0) {
-        this->setCurrentIndex(index);
+    if (index == -1) {
+        return;
     }
+
+    this->setCurrentIndex(index);
 }
 
