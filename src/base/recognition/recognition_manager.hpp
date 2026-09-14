@@ -31,13 +31,13 @@ public slots:
     void onAnimeSelected(const AnilistMedia &media);
 
 signals:
-    void showNoMatchPage(const QString &title);
-    void showErrorPage(const QString &message);
-    void showIdlePage();
-    void showSelectAnimePage(const QList<RecognizedAnime> &recognized_anime, const QString &title);
-    void showNowPlaying(const RecognizedAnime &recognized_anime, const QString &title);
+    void requestShowNoMatchPage(const QString &message);
+    void requestShowErrorPage(const QString &message);
+    void requestShowIdlePage();
+    void requestShowSelectAnimePage(const QList<RecognizedAnime> &recognized_anime, const QString &title);
+    void requestShowNowPlayingPage(const RecognizedAnime &recognized_anime, const QString &title);
 
-    void showSearchPage(const QString &title);
+    void requestShowSearchPage(const QString &title);
 
     void requestAnimeSearchById(const QList<int> &media_ids);
 

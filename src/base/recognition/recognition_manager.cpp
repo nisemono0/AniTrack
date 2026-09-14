@@ -5,6 +5,7 @@
 #include "base/recognition/title_normalizer.hpp"
 
 #include <algorithm>
+#include <ranges>
 
 
 RecognitionManager::RecognitionManager(
@@ -24,7 +25,7 @@ void RecognitionManager::registerRunningPlayers() {
 }
 
 void RecognitionManager::onIdSearchFinished(const QList<AnilistMedia> &media_list) {
-    for (const auto &media : media_list) {
+    for (const auto &media : std::ranges::take_view(media_list, this->max_matches_)) {
         if (!this->missing_ids_to_redirection_episode_.contains(media.id)) {
             Log::warning(
                 CONTEXT_CLASS,
@@ -42,19 +43,21 @@ void RecognitionManager::onIdSearchFinished(const QList<AnilistMedia> &media_lis
     }
 
     if (this->recognized_anime_.isEmpty()) {
-        emit showNoMatchPage(this->recognized_title_);
+        emit requestShowNoMatchPage(
+            QStringLiteral("No match found for: %1").arg(this->recognized_title_)
+        );
         return;
     }
 
     if (this->recognized_anime_.size() == 1) {
-        emit showNowPlaying(
+        emit requestShowNowPlayingPage(
             this->recognized_anime_.constFirst(),
             this->recognized_title_
         );
         return;
     }
 
-    emit showSelectAnimePage(this->recognized_anime_, this->recognized_title_);
+    emit requestShowSelectAnimePage(this->recognized_anime_, this->recognized_title_);
 }
 
 void RecognitionManager::onIdSearchFailed(const QString &message) {
@@ -100,7 +103,7 @@ void RecognitionManager::initWatcher() {
 void RecognitionManager::failRecognition(const QString &message) {
     this->resetRecognition();
     Log::warning(CONTEXT_CLASS, message);
-    emit showErrorPage(message);
+    emit requestShowErrorPage(message);
 }
 
 void RecognitionManager::handleExactMatch(const int media_id, const AnimeFileParser::AnimeFileInfo &file_info) {
@@ -139,7 +142,7 @@ void RecognitionManager::handleExactMatch(const int media_id, const AnimeFilePar
     this->recognized_anime_.append(recognized);
 
     // recognized item in database, request to show it
-    emit showNowPlaying(recognized, this->recognized_title_);
+    emit requestShowNowPlayingPage(recognized, this->recognized_title_);
 }
 
 void RecognitionManager::handlePartialMatches(const QList<int> &media_ids, const AnimeFileParser::AnimeFileInfo &file_info) {
@@ -206,7 +209,7 @@ void RecognitionManager::handlePartialMatches(const QList<int> &media_ids, const
 
     // no missing ids, show the recognized anime list
     if (missing_ids.isEmpty()) {
-        emit showSelectAnimePage(this->recognized_anime_, this->recognized_title_);
+        emit requestShowSelectAnimePage(this->recognized_anime_, this->recognized_title_);
         return;
     }
 
@@ -240,7 +243,7 @@ void RecognitionManager::onMediaFileChanged(const QString &filename) {
 
     // No recognition matches, show search page
     if (matches.isEmpty()) {
-        emit showSearchPage(file_info.title);
+        emit requestShowSearchPage(file_info.title);
         return;
     }
 
@@ -262,6 +265,6 @@ void RecognitionManager::onMediaFileChanged(const QString &filename) {
 
 void RecognitionManager::onMediaPlayerClosed() {
     this->resetRecognition();
-    emit showIdlePage();
+    emit requestShowIdlePage();
 }
 
