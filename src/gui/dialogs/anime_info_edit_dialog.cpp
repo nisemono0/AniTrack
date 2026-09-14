@@ -56,6 +56,34 @@ void AnimeInfoEditDialog::onUserUpdated(const AnilistAccount::User &user) {
     this->updateEditTab();
 }
 
+void AnimeInfoEditDialog::handleAnimeAddUpdateFinished(const QList<AnilistAnime> &anime_list) {
+    if (!this->isVisible()) {
+        return;
+    }
+
+    for (const auto &anime : anime_list) {
+        if (anime.media.id != this->media_.id) {
+            continue;
+        }
+
+        switch (current_mode_) {
+            case CurrentMode::InfoEdit: {
+                this->enableInfoEdit();
+                this->setAnime(anime);
+                this->updateInfoTab();
+                this->updateEditTab();
+                return;
+            }
+            case CurrentMode::Add: {
+                this->enableAdd();
+                this->setMedia(anime.media);
+                this->updateInfoTab();
+                return;
+            }
+        }
+    }
+}
+
 void AnimeInfoEditDialog::showOrFocus() {
     if (this->isVisible()) {
         this->raise();
@@ -66,11 +94,14 @@ void AnimeInfoEditDialog::showOrFocus() {
 }
 
 void AnimeInfoEditDialog::showOrFocusInfoEdit(const AnilistAnime &anime, AnimeInfoEditDialog::Page page) {
-    this->showEditTab();
-    this->ui_->pushButtonSave->show();
-    this->ui_->comboBoxAddStatus->hide();
+    this->current_mode_ = CurrentMode::InfoEdit;
+    this->enableInfoEdit();
 
     this->setAnime(anime);
+
+    this->updateCoverImage();
+    this->updateInfoTab();
+    this->updateEditTab();
 
     switch (page) {
         case Page::Info: {
@@ -93,24 +124,19 @@ void AnimeInfoEditDialog::showOrFocusInfoEdit(const AnilistAnime &anime, AnimeIn
 }
 
 void AnimeInfoEditDialog::showOrFocusAdd(const AnilistMedia &media) {
-    this->hideEditTab();
-    this->ui_->pushButtonSave->hide();
-    this->ui_->comboBoxAddStatus->show();
+    this->current_mode_ = CurrentMode::Add;
+    this->enableAdd();
 
     this->setMedia(media);
+
+    this->updateCoverImage();
+    this->updateInfoTab();
 
     this->ui_->tabWidgetInfoEdit->setCurrentWidget(
         this->ui_->infoPage
     );
 
     this->ui_->comboBoxAddStatus->setCurrentIndex(-1);
-
-    // Disable adding to list if already in list
-    if (media.in_list) {
-        this->ui_->comboBoxAddStatus->setEnabled(false);
-    } else {
-        this->ui_->comboBoxAddStatus->setEnabled(true);
-    }
 
     this->showOrFocus();
 }
@@ -120,35 +146,40 @@ void AnimeInfoEditDialog::setAnime(const AnilistAnime &anime) {
     this->media_ = anime.media;
     this->new_state_ = anime.entry.state();
     this->original_state_ = anime.entry.state();
-
-    this->updateCoverImage();
-    this->updateInfoTab();
-    this->updateEditTab();
 }
 
 void AnimeInfoEditDialog::setMedia(const AnilistMedia &media) {
     this->entry_ = {};
     this->media_ = media;
 
-    this->updateCoverImage();
-    this->updateInfoTab();
-    this->updateEditTab();
+    // Disable adding to list if already in list
+    if (media.in_list) {
+        this->ui_->comboBoxAddStatus->setEnabled(false);
+    } else {
+        this->ui_->comboBoxAddStatus->setEnabled(true);
+    }
 }
 
-void AnimeInfoEditDialog::hideEditTab() {
-    const int edit_tab = this->ui_->tabWidgetInfoEdit->indexOf(
-        this->ui_->editPage
-    );
-
-    this->ui_->tabWidgetInfoEdit->setTabVisible(edit_tab, false);
-}
-
-void AnimeInfoEditDialog::showEditTab() {
+void AnimeInfoEditDialog::enableInfoEdit() {
     const int edit_tab = this->ui_->tabWidgetInfoEdit->indexOf(
         this->ui_->editPage
     );
 
     this->ui_->tabWidgetInfoEdit->setTabVisible(edit_tab, true);
+
+    this->ui_->pushButtonSave->show();
+    this->ui_->comboBoxAddStatus->hide();
+}
+
+void AnimeInfoEditDialog::enableAdd() {
+    const int edit_tab = this->ui_->tabWidgetInfoEdit->indexOf(
+        this->ui_->editPage
+    );
+
+    this->ui_->tabWidgetInfoEdit->setTabVisible(edit_tab, false);
+
+    this->ui_->pushButtonSave->hide();
+    this->ui_->comboBoxAddStatus->show();
 }
 
 void AnimeInfoEditDialog::updateCoverImage() {

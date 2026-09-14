@@ -28,6 +28,7 @@ public:
 
 public slots:
     void onUserUpdated(const AnilistAccount::User &user);
+    void handleAnimeAddUpdateFinished(const QList<AnilistAnime> &anime_list);
 
     void showOrFocus();
     void showOrFocusInfoEdit(const AnilistAnime &anime, AnimeInfoEditDialog::Page page);
@@ -38,6 +39,11 @@ signals:
     void requestAddMedia(const QList<AnilistMedia> &media_list, AnilistEntry::Status status);
 
 private:
+    enum class CurrentMode {
+        InfoEdit = 0,
+        Add
+    };
+
     Ui::AnimeInfoEditDialog *ui_;
 
     const QPixmap no_image_ = QPixmap(AppResources::Images::NoImage);
@@ -47,6 +53,7 @@ private:
 
     AnilistEntry entry_;
     AnilistMedia media_;
+    CurrentMode current_mode_;
 
     AnilistEntry::State original_state_;
     AnilistEntry::State new_state_;
@@ -54,8 +61,8 @@ private:
     void setAnime(const AnilistAnime &anime);
     void setMedia(const AnilistMedia &media);
 
-    void hideEditTab();
-    void showEditTab();
+    void enableInfoEdit();
+    void enableAdd();
 
     void updateCoverImage();
     void updateInfoTab();
