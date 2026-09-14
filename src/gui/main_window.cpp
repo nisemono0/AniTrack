@@ -32,6 +32,7 @@ MainWindow::MainWindow(
 
     this->setupLoggerDialog();
     this->setupLoginTokenDialog();
+    this->setupAnimeInfoEditDialog();
 
     this->setupProgressDialogs();
 
@@ -89,6 +90,7 @@ void MainWindow::initUi() {
     this->logger_dialog_ = new LoggerDialog(this);
     this->login_token_dialog_ = new LoginTokenDialog(this);
     this->about_dialog_ = new AboutDialog(this);
+    this->anime_info_edit_dialog_ = new AnimeInfoEditDialog(this);
 }
 
 void MainWindow::setupFileMenu() {
@@ -171,7 +173,27 @@ void MainWindow::setupStatusBar() {
 }
 
 void MainWindow::setupPlayingPage() {
-    // TODO: setup connections here
+    connect(this->app_controller_, &AppController::userUpdated, this->ui_->pagePlaying, &AnimePlayingPage::onUserUpdated);
+    connect(this->app_controller_, &AppController::animeUpdateFinished, this->ui_->pagePlaying, &AnimePlayingPage::handleAnimeAddUpdateFinished);
+    connect(this->app_controller_, &AppController::animeAddFinished, this->ui_->pagePlaying, &AnimePlayingPage::handleAnimeAddUpdateFinished);
+
+    connect(this->app_controller_, &AppController::requestShowNoMatchPage, this->ui_->pagePlaying, &AnimePlayingPage::showNoMatchPage);
+    connect(this->app_controller_, &AppController::requestShowErrorPage, this->ui_->pagePlaying, &AnimePlayingPage::showErrorPage);
+    connect(this->app_controller_, &AppController::requestShowIdlePage, this->ui_->pagePlaying, &AnimePlayingPage::showIdlePage);
+    connect(this->app_controller_, &AppController::requestShowSelectAnimePage, this->ui_->pagePlaying, &AnimePlayingPage::showSelectAnimePage);
+    connect(
+        this->app_controller_, &AppController::requestShowNowPlayingPage,
+        this->ui_->pagePlaying, [this] (const RecognizedAnime &recognized_anime, const QString &title) {
+            this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::Playing);
+            this->ui_->pagePlaying->showNowPlayingPage(recognized_anime, title);
+        }
+    );
+    connect(this->app_controller_, &AppController::requestShowSearchPage, this->ui_->pagePlaying, &AnimePlayingPage::showSearchPage);
+
+    connect(this->ui_->pagePlaying, &AnimePlayingPage::requestQuietAnimeSearch, this->app_controller_, &AppController::requestQuietAnimeSearch);
+
+    connect(this->ui_->pagePlaying, &AnimePlayingPage::requestShowAnimeInfoEditDialog, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::showOrFocusInfoEdit);
+    connect(this->ui_->pagePlaying, &AnimePlayingPage::requestAddMedia, this->app_controller_, &AppController::requestAddMedia);
 }
 
 void MainWindow::setupAnimeListPage() {
@@ -183,7 +205,6 @@ void MainWindow::setupAnimeListPage() {
     connect(this->ui_->pageAnimeList, &AnimeListPage::requestSetAnimeProgress, this->app_controller_, &AppController::requestSetAnimeProgress);
 
     connect(this->app_controller_, &AppController::animeUpdateFinished, this->ui_->pageAnimeList, &AnimeListPage::onAnimeUpdateFinished);
-    connect(this->app_controller_, &AppController::animeDeleteFinished, this->ui_->pageAnimeList, &AnimeListPage::onAnimeDeleteFinished);
     connect(this->app_controller_, &AppController::animeAddFinished, this->ui_->pageAnimeList, &AnimeListPage::onAnimeAddFinished);
 
     connect(this->ui_->pageAnimeList, &AnimeListPage::requestUndoAnimeState, this->app_controller_, &AppController::requestUndoAnimeState);
@@ -209,6 +230,8 @@ void MainWindow::setupAnimeListPage() {
     connect(this->ui_->pageAnimeList, &AnimeListPage::requestRestoreAnimeState, this->app_controller_, &AppController::requestRestoreAnimeState);
 
     connect(this->ui_->pageAnimeList, &AnimeListPage::requestUpdateAnime, this->app_controller_, &AppController::requestUpdateAnime);
+
+    connect(this->ui_->pageAnimeList, &AnimeListPage::requestShowAnimeInfoEditDialog, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::showOrFocusInfoEdit);
 
     auto *next_tab_shortcut = new QShortcut(
         Qt::Key_Tab,
@@ -246,7 +269,9 @@ void MainWindow::setupSearchPage() {
 
     connect(this->app_controller_, &AppController::userUpdated, this->ui_->pageSearch, &AnimeSearchPage::onUserUpdated);
     connect(this->app_controller_, &AppController::animeLoadFinished, this->ui_->pageSearch, &AnimeSearchPage::onAnimeLoadFinished);
-    connect(this->app_controller_, &AppController::mediaAddFinished, this->ui_->pageSearch, &AnimeSearchPage::onMediaAddFinished);
+    connect(this->app_controller_, &AppController::animeAddFinished, this->ui_->pageSearch, &AnimeSearchPage::onAnimeAddFinished);
+
+    connect(this->ui_->pageSearch, &AnimeSearchPage::requestShowAnimeInfoEditDialog, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::showOrFocusAdd);
 }
 
 void MainWindow::setupStatisticsPage() {
@@ -264,6 +289,15 @@ void MainWindow::setupLoggerDialog() {
 void MainWindow::setupLoginTokenDialog() {
     connect(this->app_controller_, &AppController::requestShowLoginTokenDialog, this->login_token_dialog_, &LoginTokenDialog::openOrFocus);
     connect(this->login_token_dialog_, &LoginTokenDialog::authTokenAccepted, this->app_controller_, &AppController::setAuthToken);
+}
+
+void MainWindow::setupAnimeInfoEditDialog() {
+    connect(this->app_controller_, &AppController::userUpdated, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::onUserUpdated);
+    connect(this->app_controller_, &AppController::animeUpdateFinished, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::handleAnimeAddUpdateFinished);
+    connect(this->app_controller_, &AppController::animeAddFinished, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::handleAnimeAddUpdateFinished);
+
+    connect(this->anime_info_edit_dialog_, &AnimeInfoEditDialog::requestUpdateAnime, this->app_controller_, &AppController::requestUpdateAnime);
+    connect(this->anime_info_edit_dialog_, &AnimeInfoEditDialog::requestAddMedia, this->app_controller_, &AppController::requestAddMedia);
 }
 
 void MainWindow::setupProgressDialogs() {

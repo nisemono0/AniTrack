@@ -62,10 +62,8 @@ signals:
     void animeLoadFinished(const QList<AnilistAnime> &anime_list);
 
     void animeUpdateFinished(const QList<AnilistAnime> &anime_list);
-    void animeDeleteFinished(const QList<int> &local_ids);
 
     void animeAddFinished(const QList<AnilistAnime> &anime_list);
-    void mediaAddFinished(const QList<AnilistMedia> &media_list);
 
     void requestUndoAnimeState(const QList<AnilistAnime> &anime_list);
     void requestRedoAnimeState(const QList<AnilistAnime> &anime_list);
@@ -101,7 +99,18 @@ signals:
 
     // Search manager
     void requestAnimeSearch(const QString &title);
+    void requestQuietAnimeSearch(const QString &title);
+
     void searchFinished(const QList<AnilistMedia> &media_list);
+
+    // Recognition manager
+    void requestShowNoMatchPage(const QString &message);
+    void requestShowErrorPage(const QString &message);
+    void requestShowIdlePage();
+    void requestShowSelectAnimePage(const QList<RecognizedAnime> &recognized_anime, const QString &title);
+    void requestShowNowPlayingPage(const RecognizedAnime &recognized_anime, const QString &title);
+
+    void requestShowSearchPage(const QString &title);
 
     // Ui
     void requestShowInfiniteProgressDialog(const QString &title, const QString &message);

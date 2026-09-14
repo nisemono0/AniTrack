@@ -15,14 +15,12 @@ public:
     explicit RecognitionErrorPage(QWidget *parent = nullptr);
     ~RecognitionErrorPage();
 
-public slots:
-
-signals:
+    void setDisplayedMessage(const QString &message);
 
 private:
     Ui::RecognitionErrorWidget *ui_;
 
-    void setupPage();
+    void initPage();
 
 };
 

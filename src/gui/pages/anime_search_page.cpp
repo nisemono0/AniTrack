@@ -29,8 +29,8 @@ void AnimeSearchPage::onAnimeLoadFinished(const QList<AnilistAnime> &anime_list)
     this->ui_->treeViewAnimeSearch->setExistingMediaIds(anime_list);
 }
 
-void AnimeSearchPage::onMediaAddFinished(const QList<AnilistMedia> &media_list) {
-    this->ui_->treeViewAnimeSearch->updateAddedMedia(media_list);
+void AnimeSearchPage::onAnimeAddFinished(const QList<AnilistAnime> &anime_list) {
+    this->ui_->treeViewAnimeSearch->updateAddedAnime(anime_list);
 }
 
 void AnimeSearchPage::initPage() {

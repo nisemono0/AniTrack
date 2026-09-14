@@ -5,13 +5,13 @@ RecognitionSelectAnimePage::RecognitionSelectAnimePage(QWidget *parent) :
     QWidget(parent),
     ui_(new Ui::RecognitionSelectAnimeWidget) {
 
-    this->setupPage();
+    this->initPage();
 }
 
 RecognitionSelectAnimePage::~RecognitionSelectAnimePage() {
     delete this->ui_;
 }
 
-void RecognitionSelectAnimePage::setupPage() {
+void RecognitionSelectAnimePage::initPage() {
     this->ui_->setupUi(this);
 }

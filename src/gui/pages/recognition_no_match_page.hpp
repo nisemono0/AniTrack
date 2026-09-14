@@ -15,13 +15,11 @@ public:
     explicit RecognitionNoMatchPage(QWidget *parent = nullptr);
     ~RecognitionNoMatchPage();
 
-public slots:
-
-signals:
+    void setDisplayedMessage(const QString &message);
 
 private:
     Ui::RecognitionNoMatchWidget *ui_;
 
-    void setupPage();
+    void initPage();
 };
 

@@ -5,13 +5,18 @@ RecognitionNoMatchPage::RecognitionNoMatchPage(QWidget *parent) :
     QWidget(parent),
     ui_(new Ui::RecognitionNoMatchWidget) {
 
-    this->setupPage();
+    this->initPage();
 }
 
 RecognitionNoMatchPage::~RecognitionNoMatchPage() {
     delete this->ui_;
 }
 
-void RecognitionNoMatchPage::setupPage() {
+void RecognitionNoMatchPage::setDisplayedMessage(const QString &message) {
+    this->ui_->labelNoMatchMessage->setText(message);
+}
+
+void RecognitionNoMatchPage::initPage() {
     this->ui_->setupUi(this);
 }
+

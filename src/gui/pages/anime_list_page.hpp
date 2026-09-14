@@ -28,7 +28,6 @@ public slots:
     void onAnimeLoadFinished(const QList<AnilistAnime> &anime_list);
 
     void onAnimeUpdateFinished(const QList<AnilistAnime> &anime_list);
-    void onAnimeDeleteFinished(const QList<int> &local_ids);
     void onAnimeAddFinished(const QList<AnilistAnime> &anime_list);
 
 signals:

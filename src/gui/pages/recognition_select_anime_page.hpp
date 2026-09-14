@@ -22,5 +22,5 @@ signals:
 private:
     Ui::RecognitionSelectAnimeWidget *ui_;
 
-    void setupPage();
+    void initPage();
 };

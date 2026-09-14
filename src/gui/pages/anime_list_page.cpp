@@ -39,10 +39,6 @@ void AnimeListPage::onAnimeUpdateFinished(const QList<AnilistAnime> &anime_list)
     this->ui_->treeViewAnimeList->updateAnime(anime_list);
 }
 
-void AnimeListPage::onAnimeDeleteFinished(const QList<int> &local_ids) {
-    this->ui_->treeViewAnimeList->deleteAnime(local_ids);
-}
-
 void AnimeListPage::onAnimeAddFinished(const QList<AnilistAnime> &anime_list) {
     this->ui_->treeViewAnimeList->addAnime(anime_list);
 }

@@ -25,7 +25,7 @@ public slots:
     void onFilterTextChanged(const QString &text);
 
     void onAnimeLoadFinished(const QList<AnilistAnime> &anime_list);
-    void onMediaAddFinished(const QList<AnilistMedia> &media_list);
+    void onAnimeAddFinished(const QList<AnilistAnime> &anime_list);
 
 signals:
     void requestAddMedia(const QList<AnilistMedia> &media_list, AnilistEntry::Status status);

@@ -15,12 +15,20 @@ public:
     explicit RecognitionSearchPage(QWidget *parent = nullptr);
     ~RecognitionSearchPage();
 
-public slots:
+    void setPlayingTitle(const QString &title);
 
 signals:
+    void requestQuietAnimeSearch(const QString &title);
 
 private:
     Ui::RecognitionSearchWidget *ui_;
 
+    QString playing_title_;
+
+    void initPage();
     void setupPage();
+
+private slots:
+    void requestQuietSearch();
+
 };

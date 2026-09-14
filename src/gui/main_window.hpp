@@ -7,6 +7,7 @@
 #include "gui/dialogs/logger_dialog.hpp"
 #include "gui/dialogs/login_token_dialog.hpp"
 #include "gui/dialogs/about_dialog.hpp"
+#include "gui/dialogs/anime_info_edit_dialog.hpp"
 
 #include "gui/widgets/infinite_progress_dialog.hpp"
 #include "gui/widgets/progress_dialog.hpp"
@@ -58,6 +59,7 @@ private:
     LoggerDialog *logger_dialog_;
     LoginTokenDialog *login_token_dialog_;
     AboutDialog *about_dialog_;
+    AnimeInfoEditDialog *anime_info_edit_dialog_;
     // Widgets
     QPointer<InfiniteProgressDialog> infinite_progress_dialog_;
     QPointer<ProgressDialog> progress_dialog_;
@@ -81,6 +83,7 @@ private:
 
     void setupLoggerDialog();
     void setupLoginTokenDialog();
+    void setupAnimeInfoEditDialog();
 
     void setupProgressDialogs();
 

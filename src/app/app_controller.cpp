@@ -50,10 +50,8 @@ void AppController::setupDatabaseConnections() {
     connect(this->database_controller_, &DatabaseController::animeLoadFinished, this, &AppController::animeLoadFinished);
 
     connect(this->database_controller_, &DatabaseController::animeUpdateFinished, this, &AppController::animeUpdateFinished);
-    connect(this->database_controller_, &DatabaseController::animeDeleteFinished, this, &AppController::animeDeleteFinished);
 
     connect(this->database_controller_, &DatabaseController::animeAddFinished, this, &AppController::animeAddFinished);
-    connect(this->database_controller_, &DatabaseController::mediaAddFinished, this, &AppController::mediaAddFinished);
 
     connect(this, &AppController::requestUndoAnimeState, this->database_controller_, &DatabaseController::requestUndoAnimeState);
     connect(this, &AppController::requestRedoAnimeState, this->database_controller_, &DatabaseController::requestRedoAnimeState);
@@ -132,17 +130,33 @@ void AppController::setupSyncConnections() {
 
 void AppController::setupSearchConnections() {
     connect(this, &AppController::requestAnimeSearch, this->search_manager_, &SearchManager::requestAnimeSearch);
+    connect(this, &AppController::requestQuietAnimeSearch, this->search_manager_, &SearchManager::requestQuietAnimeSearch);
+
+    connect(this->recognition_manager_, &RecognitionManager::requestAnimeSearchById, this->search_manager_, &SearchManager::requestAnimeSearchById);
 
     connect(this->search_manager_, &SearchManager::searchProgressStarted, this, &AppController::requestShowInfiniteProgressDialog);
     connect(this->search_manager_, &SearchManager::searchProgressFinished, this, &AppController::requestCloseInfiniteProgressDialog);
 
     connect(this->search_manager_, &SearchManager::searchFinished, this, &AppController::searchFinished);
 
+    connect(this->search_manager_, &SearchManager::quietSearchFinished, this->recognition_manager_, &RecognitionManager::onQuietSearchFinished);
+    connect(this->search_manager_, &SearchManager::idSearchFinished, this->recognition_manager_, &RecognitionManager::onIdSearchFinished);
+
     connect(this->search_manager_, &SearchManager::searchFailed, this, &AppController::onErrorOccurred);
+
+    connect(this->search_manager_, &SearchManager::quietSearchFailed, this->recognition_manager_, &RecognitionManager::onQuietSearchFailed);
+    connect(this->search_manager_, &SearchManager::idSearchFailed, this->recognition_manager_, &RecognitionManager::onIdSearchFailed);
+
 }
 
 void AppController::setupRecognitionConnections() {
-    // TODO: add connections here
+    connect(this->recognition_manager_, &RecognitionManager::requestShowNoMatchPage, this, &AppController::requestShowNoMatchPage);
+    connect(this->recognition_manager_, &RecognitionManager::requestShowErrorPage, this, &AppController::requestShowErrorPage);
+    connect(this->recognition_manager_, &RecognitionManager::requestShowIdlePage, this, &AppController::requestShowIdlePage);
+    connect(this->recognition_manager_, &RecognitionManager::requestShowSelectAnimePage, this, &AppController::requestShowSelectAnimePage);
+    connect(this->recognition_manager_, &RecognitionManager::requestShowNowPlayingPage, this, &AppController::requestShowNowPlayingPage);
+
+    connect(this->recognition_manager_, &RecognitionManager::requestShowSearchPage, this, &AppController::requestShowSearchPage);
 }
 
 void AppController::onInfoOccurred(const QString &context, const QString &message) {
