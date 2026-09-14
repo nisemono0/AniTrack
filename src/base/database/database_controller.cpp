@@ -55,6 +55,7 @@ void DatabaseController::requestAddMedia(const QList<AnilistMedia> &media_list, 
 
         AnilistAnime new_anime;
         new_anime.media = media;
+        new_anime.media.in_list = true;
 
         auto new_state = new_anime.entry.state();
         new_state.pending_operation = AnilistEntry::PendingOperation::ADD;
@@ -69,6 +70,7 @@ void DatabaseController::requestAddMedia(const QList<AnilistMedia> &media_list, 
             }
             case AnilistEntry::Status::COMPLETED: {
                 new_state.completed_at = DateUtils::currentDate();
+                new_state.progress = new_anime.media.episodes;
                 break;
             }
             default:
@@ -89,7 +91,6 @@ void DatabaseController::requestAddMedia(const QList<AnilistMedia> &media_list, 
     }
 
     emit animeAddFinished(added_anime);
-    emit mediaAddFinished(media_list);
 
     this->countEntriesAndNotifiy();
 }

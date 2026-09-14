@@ -60,12 +60,10 @@ signals:
     void databasePathChanged(const QString &database_path);
 
     void animeAddFinished(const QList<AnilistAnime> &anime_list);
-    void mediaAddFinished(const QList<AnilistMedia> &media_list);
 
     void animeLoadFinished(const QList<AnilistAnime> &anime_list);
 
     void animeUpdateFinished(const QList<AnilistAnime> &anime_list);
-    void animeDeleteFinished(const QList<int> &local_ids);
 
     void animeCountChanged(int count);
 
