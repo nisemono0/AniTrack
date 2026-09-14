@@ -284,8 +284,9 @@ void AnimeSearchModel::setMedia(const QList<AnilistMedia> &media_list) {
     endResetModel();
 }
 
-void AnimeSearchModel::updateAddedMedia(const QList<AnilistMedia> &media_list) {
-    for (const auto &media : media_list) {
+void AnimeSearchModel::updateAddedAnime(const QList<AnilistAnime> &anime_list) {
+    for (const auto &anime : anime_list) {
+        const auto &media = anime.media;
         const auto it = this->id_to_media_.constFind(media.id);
         if (it == this->id_to_media_.constEnd()) {
             continue;

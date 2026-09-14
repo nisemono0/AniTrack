@@ -96,10 +96,6 @@ void AnimeListView::updateAnime(const QList<AnilistAnime> &anime_list) {
     this->anime_list_model_->updateAnime(anime_list);
 }
 
-void AnimeListView::deleteAnime(const QList<int> &local_ids) {
-    this->anime_list_model_->deleteAnime(local_ids);
-}
-
 void AnimeListView::addAnime(const QList<AnilistAnime> &anime_list) {
     this->anime_list_model_->addAnime(anime_list);
 }

@@ -51,8 +51,8 @@ void AnimeSearchView::setMedia(const QList<AnilistMedia> &media_list) {
     this->anime_search_model_->setMedia(media_list);
 }
 
-void AnimeSearchView::updateAddedMedia(const QList<AnilistMedia> &media_list) {
-    this->anime_search_model_->updateAddedMedia(media_list);
+void AnimeSearchView::updateAddedAnime(const QList<AnilistAnime> &anime_list) {
+    this->anime_search_model_->updateAddedAnime(anime_list);
 }
 
 void AnimeSearchView::setFilterText(const QString &text) {

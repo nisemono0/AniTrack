@@ -26,7 +26,7 @@ public:
 
     void setExistingMediaIds(const QList<AnilistAnime> &anime_list);
     void setMedia(const QList<AnilistMedia> &media_list);
-    void updateAddedMedia(const QList<AnilistMedia> &media_list);
+    void updateAddedAnime(const QList<AnilistAnime> &anime_list);
 
     void setFilterText(const QString &text);
 

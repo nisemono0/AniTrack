@@ -71,7 +71,6 @@ public:
 
     void setAnime(const QList<AnilistAnime> &anime_list);
     void updateAnime(const QList<AnilistAnime> &anime_list);
-    void deleteAnime(const QList<int> &local_ids);
     void addAnime(const QList<AnilistAnime> &anime_list);
 
 private:

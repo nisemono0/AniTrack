@@ -2,8 +2,6 @@
 
 #include "utils/anilist.hpp"
 
-#include <algorithm>
-
 #include <QBrush>
 
 
@@ -369,30 +367,6 @@ void AnimeListModel::updateAnime(const QList<AnilistAnime> &anime_list) {
             this->index(entry_idx, this->columnCount() - 1)
         );
     }
-}
-
-void AnimeListModel::deleteAnime(const QList<int> &local_ids) {
-    QList<int> entry_idxs;
-    for (const auto &id : local_ids) {
-        const auto it = this->local_id_to_anime_.constFind(id);
-        if (it == this->local_id_to_anime_.constEnd()) {
-            continue;
-        }
-
-        entry_idxs.append(it.value());
-    }
-
-    std::sort(entry_idxs.begin(), entry_idxs.end(), std::greater<int>());
-
-    for (const auto &idx : entry_idxs) {
-        beginRemoveRows(QModelIndex(), idx, idx);
-
-        this->anime_list_.removeAt(idx);
-
-        endRemoveRows();
-    }
-
-    this->rebuildLocalIdHash();
 }
 
 void AnimeListModel::addAnime(const QList<AnilistAnime> &anime_list) {
