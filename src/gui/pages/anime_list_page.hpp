@@ -4,8 +4,6 @@
 
 #include "base/anilist/anilist_account.hpp"
 
-#include "gui/dialogs/anime_info_edit_dialog.hpp"
-
 #include <QWidget>
 
 
@@ -32,8 +30,6 @@ public slots:
     void onAnimeUpdateFinished(const QList<AnilistAnime> &anime_list);
     void onAnimeDeleteFinished(const QList<int> &local_ids);
     void onAnimeAddFinished(const QList<AnilistAnime> &anime_list);
-
-    void onRequestShowAnimeInfoEditDialog(const AnilistAnime &anime, AnimeInfoEditDialog::Page page);
 
 signals:
     void requestIncreaseAnimeProgress(const QList<AnilistAnime> &anime_list);
@@ -64,16 +60,15 @@ signals:
 
     void requestUpdateAnime(const AnilistAnime &anime);
 
+    void requestShowAnimeInfoEditDialog(const AnilistAnime &anime, AnimeInfoEditDialog::Page page);
+
 private:
     Ui::AnimeListWidget *ui_;
-
-    AnimeInfoEditDialog *info_edit_dialog_;
 
     void initPage();
 
     void setupTabBar();
     void setupPage();
-    void setupInfoEditDialog();
 
 private slots:
     void onCurrentTabChanged(AnimeListTabBar::Tab tab);

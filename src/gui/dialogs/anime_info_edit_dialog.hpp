@@ -2,7 +2,7 @@
 
 #include "ui_anime_info_edit_dialog.h"
 
-#include "app//app_resources.hpp"
+#include "app/app_resources.hpp"
 
 #include "base/anilist/anilist_account.hpp"
 #include "base/anilist/anilist_anime.hpp"
@@ -26,16 +26,16 @@ public:
         Edit
     };
 
-    void updateUserPreferences(const AnilistAccount::User &user);
-    // Set the displayed anime
-    void setAnime(const AnilistAnime &anime);
-
 public slots:
-    // Show or focus the dialog on page. Defaults to showing the Info page
-    void showOrFocus(AnimeInfoEditDialog::Page page);
+    void onUserUpdated(const AnilistAccount::User &user);
+
+    void showOrFocus();
+    void showOrFocusInfoEdit(const AnilistAnime &anime, AnimeInfoEditDialog::Page page);
+    void showOrFocusAdd(const AnilistMedia &media);
 
 signals:
     void requestUpdateAnime(const AnilistAnime &anime);
+    void requestAddMedia(const QList<AnilistMedia> &media_list, AnilistEntry::Status status);
 
 private:
     Ui::AnimeInfoEditDialog *ui_;
@@ -45,18 +45,26 @@ private:
     AnilistAccount::ScoreFormat score_format_;
     AnilistAccount::TitleLanguage title_language_;
 
-    AnilistAnime anime_;
+    AnilistEntry entry_;
+    AnilistMedia media_;
 
     AnilistEntry::State original_state_;
     AnilistEntry::State new_state_;
+
+    void setAnime(const AnilistAnime &anime);
+    void setMedia(const AnilistMedia &media);
+
+    void hideEditTab();
+    void showEditTab();
 
     void updateCoverImage();
     void updateInfoTab();
     void updateEditTab();
 
 private slots:
-    void onDialogAccepted();
-    void onDialogRejected();
+    void rejectDialog();
+    void updateAnime();
+    void addAnime(AnilistEntry::Status status);
 
 };
 

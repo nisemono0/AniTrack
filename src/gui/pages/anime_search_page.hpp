@@ -5,8 +5,6 @@
 #include "base/anilist/anilist_media.hpp"
 #include "base/anilist/anilist_account.hpp"
 
-#include "gui/dialogs/anime_info_search_dialog.hpp"
-
 #include <QWidget>
 
 
@@ -29,19 +27,15 @@ public slots:
     void onAnimeLoadFinished(const QList<AnilistAnime> &anime_list);
     void onMediaAddFinished(const QList<AnilistMedia> &media_list);
 
-    void onRequestShowAnimeInfoSearchDialog(const AnilistMedia &media);
-
 signals:
     void requestAddMedia(const QList<AnilistMedia> &media_list, AnilistEntry::Status status);
+    void requestShowAnimeInfoEditDialog(const AnilistMedia &media);
 
 private:
     Ui::AnimeSearchWidget *ui_;
 
-    AnimeInfoSearchDialog *info_search_dialog_;
-
     void initPage();
     void setupPage();
-    void setupInfoDialog();
 
 };
 

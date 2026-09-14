@@ -32,7 +32,7 @@ public:
 
 signals:
     void requestAddMedia(const QList<AnilistMedia> &media_list, AnilistEntry::Status status);
-    void requestShowAnimeInfoSearchDialog(const AnilistMedia &media);
+    void requestShowAnimeInfoEditDialog(const AnilistMedia &media);
 
 protected:
     void wheelEvent(QWheelEvent *event) override;

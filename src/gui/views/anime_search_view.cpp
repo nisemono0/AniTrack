@@ -168,7 +168,7 @@ void AnimeSearchView::onCustomContextMenuRequested(const QPoint &pos) {
             QStringLiteral("Information")
         );
         connect(info_add_action, &QAction::triggered, this, [this, selected_media] {
-            emit requestShowAnimeInfoSearchDialog(selected_media.constFirst());
+            emit requestShowAnimeInfoEditDialog(selected_media.constFirst());
         });
         menu.addSeparator();
     }

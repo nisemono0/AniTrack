@@ -9,7 +9,6 @@ AnimeListPage::AnimeListPage(QWidget *parent) :
 
     this->setupTabBar();
     this->setupPage();
-    this->setupInfoEditDialog();
 }
 
 AnimeListPage::~AnimeListPage() {
@@ -26,7 +25,6 @@ void AnimeListPage::selectPreviousTab() {
 
 void AnimeListPage::onUserUpdated(const AnilistAccount::User &user) {
     this->ui_->treeViewAnimeList->updateUserPreferences(user);
-    this->info_edit_dialog_->updateUserPreferences(user);
 }
 
 void AnimeListPage::onFilterTextChanged(const QString &text) {
@@ -49,14 +47,8 @@ void AnimeListPage::onAnimeAddFinished(const QList<AnilistAnime> &anime_list) {
     this->ui_->treeViewAnimeList->addAnime(anime_list);
 }
 
-void AnimeListPage::onRequestShowAnimeInfoEditDialog(const AnilistAnime &anime, AnimeInfoEditDialog::Page page) {
-    this->info_edit_dialog_->setAnime(anime);
-    this->info_edit_dialog_->showOrFocus(page);
-}
-
 void AnimeListPage::initPage() {
     this->ui_->setupUi(this);
-    this->info_edit_dialog_ = new AnimeInfoEditDialog(this);
 }
 
 void AnimeListPage::setupTabBar() {
@@ -91,11 +83,8 @@ void AnimeListPage::setupPage() {
     connect(this->ui_->treeViewAnimeList, &AnimeListView::requestSetAnimeScore, this, &AnimeListPage::requestSetAnimeScore);
 
     connect(this->ui_->treeViewAnimeList, &AnimeListView::requestRestoreAnimeState, this, &AnimeListPage::requestRestoreAnimeState);
-}
 
-void AnimeListPage::setupInfoEditDialog() {
-    connect(this->ui_->treeViewAnimeList, &AnimeListView::requestShowAnimeInfoEditDialog, this, &AnimeListPage::onRequestShowAnimeInfoEditDialog);
-    connect(this->info_edit_dialog_, &AnimeInfoEditDialog::requestUpdateAnime, this, &AnimeListPage::requestUpdateAnime);
+    connect(this->ui_->treeViewAnimeList, &AnimeListView::requestShowAnimeInfoEditDialog, this, &AnimeListPage::requestShowAnimeInfoEditDialog);
 }
 
 void AnimeListPage::onCurrentTabChanged(AnimeListTabBar::Tab tab) {

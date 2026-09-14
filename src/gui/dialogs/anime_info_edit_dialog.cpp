@@ -14,10 +14,6 @@ AnimeInfoEditDialog::AnimeInfoEditDialog(QWidget *parent) :
 
     this->ui_->setupUi(this);
 
-    for (auto &button : this->ui_->buttonBox->buttons()) {
-        button->setFocusPolicy(Qt::NoFocus);
-    }
-
     connect(this->ui_->spinBoxEpisodesWatched, &QSpinBox::valueChanged, this, [this] (int i) {
         this->new_state_.progress = i;
     });
@@ -30,7 +26,7 @@ AnimeInfoEditDialog::AnimeInfoEditDialog(QWidget *parent) :
             AnilistUtils::entryScoreToPrettyString(i, this->score_format_)
         );
     });
-    connect(this->ui_->comboBoxStatus, &AnimeStatusComboBox::animeStatusActivated, this, [this] (AnilistEntry::Status status) {
+    connect(this->ui_->comboBoxEditStatus, &AnimeStatusComboBox::animeStatusActivated, this, [this] (AnilistEntry::Status status) {
         this->new_state_.status = status;
     });
     connect(this->ui_->widgetStartedDatePicker, &DatePicker::dateChanged, this, [this] (QDate date) {
@@ -43,15 +39,16 @@ AnimeInfoEditDialog::AnimeInfoEditDialog(QWidget *parent) :
         this->new_state_.notes = this->ui_->plainTextEditNotes->toPlainText();
     });
 
-    connect(this, &QDialog::accepted, this, &AnimeInfoEditDialog::onDialogAccepted);
-    connect(this, &QDialog::rejected, this, &AnimeInfoEditDialog::onDialogRejected);
+    connect(this->ui_->pushButtonClose, &QPushButton::clicked, this, &AnimeInfoEditDialog::rejectDialog);
+    connect(this->ui_->pushButtonSave, &QPushButton::clicked, this, &AnimeInfoEditDialog::updateAnime);
+    connect(this->ui_->comboBoxAddStatus, &AnimeStatusComboBox::animeStatusActivated, this, &AnimeInfoEditDialog::addAnime);
 }
 
 AnimeInfoEditDialog::~AnimeInfoEditDialog() {
     delete this->ui_;
 }
 
-void AnimeInfoEditDialog::updateUserPreferences(const AnilistAccount::User &user) {
+void AnimeInfoEditDialog::onUserUpdated(const AnilistAccount::User &user) {
     this->score_format_ = user.score_format;
     this->title_language_ = user.title_language;
 
@@ -59,16 +56,22 @@ void AnimeInfoEditDialog::updateUserPreferences(const AnilistAccount::User &user
     this->updateEditTab();
 }
 
-void AnimeInfoEditDialog::setAnime(const AnilistAnime &anime) {
-    this->anime_ = anime;
-    this->new_state_ = anime.entry.state();
-    this->original_state_ = anime.entry.state();
-    this->updateCoverImage();
-    this->updateInfoTab();
-    this->updateEditTab();
+void AnimeInfoEditDialog::showOrFocus() {
+    if (this->isVisible()) {
+        this->raise();
+        this->activateWindow();
+    } else {
+        this->show();
+    }
 }
 
-void AnimeInfoEditDialog::showOrFocus(Page page) {
+void AnimeInfoEditDialog::showOrFocusInfoEdit(const AnilistAnime &anime, AnimeInfoEditDialog::Page page) {
+    this->showEditTab();
+    this->ui_->pushButtonSave->show();
+    this->ui_->comboBoxAddStatus->hide();
+
+    this->setAnime(anime);
+
     switch (page) {
         case Page::Info: {
             this->ui_->tabWidgetInfoEdit->setCurrentWidget(
@@ -86,16 +89,70 @@ void AnimeInfoEditDialog::showOrFocus(Page page) {
             break;
     }
 
-    if (this->isVisible()) {
-        this->raise();
-        this->activateWindow();
+    this->showOrFocus();
+}
+
+void AnimeInfoEditDialog::showOrFocusAdd(const AnilistMedia &media) {
+    this->hideEditTab();
+    this->ui_->pushButtonSave->hide();
+    this->ui_->comboBoxAddStatus->show();
+
+    this->setMedia(media);
+
+    this->ui_->tabWidgetInfoEdit->setCurrentWidget(
+        this->ui_->infoPage
+    );
+
+    this->ui_->comboBoxAddStatus->setCurrentIndex(-1);
+
+    // Disable adding to list if already in list
+    if (media.in_list) {
+        this->ui_->comboBoxAddStatus->setEnabled(false);
     } else {
-        this->show();
+        this->ui_->comboBoxAddStatus->setEnabled(true);
     }
+
+    this->showOrFocus();
+}
+
+void AnimeInfoEditDialog::setAnime(const AnilistAnime &anime) {
+    this->entry_ = anime.entry;
+    this->media_ = anime.media;
+    this->new_state_ = anime.entry.state();
+    this->original_state_ = anime.entry.state();
+
+    this->updateCoverImage();
+    this->updateInfoTab();
+    this->updateEditTab();
+}
+
+void AnimeInfoEditDialog::setMedia(const AnilistMedia &media) {
+    this->entry_ = {};
+    this->media_ = media;
+
+    this->updateCoverImage();
+    this->updateInfoTab();
+    this->updateEditTab();
+}
+
+void AnimeInfoEditDialog::hideEditTab() {
+    const int edit_tab = this->ui_->tabWidgetInfoEdit->indexOf(
+        this->ui_->editPage
+    );
+
+    this->ui_->tabWidgetInfoEdit->setTabVisible(edit_tab, false);
+}
+
+void AnimeInfoEditDialog::showEditTab() {
+    const int edit_tab = this->ui_->tabWidgetInfoEdit->indexOf(
+        this->ui_->editPage
+    );
+
+    this->ui_->tabWidgetInfoEdit->setTabVisible(edit_tab, true);
 }
 
 void AnimeInfoEditDialog::updateCoverImage() {
-    auto *request = Cache::requestPixmap(this->anime_.media.cover_url);
+    auto *request = Cache::requestPixmap(this->media_.cover_url);
     connect(request, &ImageRequest::finished, this->ui_->labelCoverImage, &QLabel::setPixmap);
     connect(request, &ImageRequest::failed, this, [this] {
         Log::warning(
@@ -109,7 +166,7 @@ void AnimeInfoEditDialog::updateCoverImage() {
 }
 
 void AnimeInfoEditDialog::updateInfoTab() {
-    const auto &media = this->anime_.media;
+    const auto &media = this->media_;
 
     // Top title
     this->ui_->labelTitleHeader->setText(
@@ -174,13 +231,13 @@ void AnimeInfoEditDialog::updateEditTab() {
     const QSignalBlocker episodes_watched_blocker(this->ui_->spinBoxEpisodesWatched);
     const QSignalBlocker rewatched_blocker(this->ui_->spinBoxRewatches);
     const QSignalBlocker score_blocker(this->ui_->spinBoxScore);
-    const QSignalBlocker status_blocker(this->ui_->comboBoxStatus);
+    const QSignalBlocker status_blocker(this->ui_->comboBoxEditStatus);
     const QSignalBlocker started_date_blocker(this->ui_->widgetStartedDatePicker);
     const QSignalBlocker completed_date_blocker(this->ui_->widgetCompletedDatePicker);
     const QSignalBlocker notes_blocker(this->ui_->plainTextEditNotes);
 
-    const auto &media = this->anime_.media;
-    const auto &entry_state = this->new_state_;
+    const auto &media = this->media_;
+    const auto &entry_state = this->entry_.state();
 
     if (media.episodes > 0) {
         this->ui_->spinBoxEpisodesWatched->setMaximum(media.episodes);
@@ -195,7 +252,7 @@ void AnimeInfoEditDialog::updateEditTab() {
         AnilistUtils::entryScoreToPrettyString(entry_state.score, this->score_format_)
     );
 
-    this->ui_->comboBoxStatus->setCurrentStatus(
+    this->ui_->comboBoxEditStatus->setCurrentStatus(
         entry_state.status
     );
 
@@ -206,8 +263,14 @@ void AnimeInfoEditDialog::updateEditTab() {
     this->ui_->plainTextEditNotes->setPlainText(entry_state.notes);
 }
 
-void AnimeInfoEditDialog::onDialogAccepted() {
+void AnimeInfoEditDialog::rejectDialog() {
+    this->ui_->labelCoverImage->clear();
+    this->reject();
+}
+
+void AnimeInfoEditDialog::updateAnime() {
     if (this->new_state_ == this->original_state_) {
+        this->reject();
         return;
     }
 
@@ -218,14 +281,23 @@ void AnimeInfoEditDialog::onDialogAccepted() {
     );
 
     this->new_state_.name = QStringLiteral("Dialog edit");
-    this->anime_.entry.addState(this->new_state_);
+    this->entry_.addState(this->new_state_);
 
-    emit requestUpdateAnime(this->anime_);
+    AnilistAnime update_anime{
+        this->entry_,
+        this->media_
+    };
+
+    emit requestUpdateAnime(update_anime);
 
     this->ui_->labelCoverImage->clear();
+    this->accept();
 }
 
-void AnimeInfoEditDialog::onDialogRejected() {
+void AnimeInfoEditDialog::addAnime(AnilistEntry::Status status) {
+    emit requestAddMedia({this->media_}, status);
+
     this->ui_->labelCoverImage->clear();
+    this->accept();
 }
 
