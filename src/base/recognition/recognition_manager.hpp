@@ -25,7 +25,10 @@ public:
     void registerRunningPlayers();
 
 public slots:
+    void onQuietSearchFinished(const QList<AnilistMedia> &media_list);
     void onIdSearchFinished(const QList<AnilistMedia> &media_list);
+
+    void onQuietSearchFailed(const QString &message);
     void onIdSearchFailed(const QString &message);
 
     void onAnimeSelected(const AnilistMedia &media);
@@ -45,8 +48,10 @@ private:
     Database *database_;
 
     QString recognized_title_;
+    int recognized_episode_;
+
     QList<RecognizedAnime> recognized_anime_;
-    QHash<int, int> missing_ids_to_redirection_episode_;
+    QHash<int, int> missing_ids_to_redirected_episode_;
 
     double min_score_ = 0.5;
     int max_matches_ = 5;
@@ -62,8 +67,8 @@ private:
 
     void failRecognition(const QString &message);
 
-    void handleExactMatch(const int media_id, const AnimeFileParser::AnimeFileInfo &file_info);
-    void handlePartialMatches(const QList<int> &media_ids, const AnimeFileParser::AnimeFileInfo &file_info);
+    void handleExactMatch(const int media_id);
+    void handlePartialMatches(const QList<int> &media_ids);
 
 private slots:
     void onMediaFileChanged(const QString &filename);

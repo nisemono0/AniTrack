@@ -4,7 +4,6 @@
 
 #include "base/recognition/title_normalizer.hpp"
 
-#include <algorithm>
 #include <ranges>
 
 
@@ -24,9 +23,93 @@ void RecognitionManager::registerRunningPlayers() {
     this->mpris_watcher_->registerRunningPlayers();
 }
 
+void RecognitionManager::onQuietSearchFinished(const QList<AnilistMedia> &media_list) {
+    if (media_list.isEmpty()) {
+        emit requestShowNoMatchPage(
+            QStringLiteral("No match found for: %1").arg(this->recognized_title_)
+        );
+        return;
+    }
+
+    QSet<int> redirected_ids;
+    QHash<int, int> id_to_redirected_id;
+    QHash<int, int> redirected_id_to_episode;
+    for (const auto &media : media_list) {
+        const auto redirection = this->anime_redirection_->redirect(media.id, this->recognized_episode_);
+        id_to_redirected_id.insert(media.id, redirection.media_id);
+        redirected_id_to_episode.insert(redirection.media_id, redirection.episode);
+
+        redirected_ids.insert(redirection.media_id);
+    }
+
+    const auto local_anime = this->database_->selectAnimeByMediaIds(
+        {redirected_ids.constBegin(), redirected_ids.constEnd()}
+    );
+    if (!local_anime) {
+        this->failRecognition(
+            QStringLiteral("Failed to select searched matches: %1").arg(local_anime.error())
+        );
+        return;
+    }
+
+    // handle local anime
+    for (const auto &anime : local_anime.value()) {
+        RecognizedAnime recognized;
+        recognized.media = anime.media;
+        recognized.entry = anime.entry;
+        recognized.episode = redirected_id_to_episode.value(
+            anime.media.id,
+            this->recognized_episode_
+        );
+
+        this->recognized_anime_.append(std::move(recognized));
+
+        redirected_ids.remove(anime.media.id);
+    }
+
+    // handle non local anime
+    for (const auto &media : media_list) {
+        const auto redirected_id = id_to_redirected_id.value(media.id);
+
+        if (!redirected_ids.contains(redirected_id)) {
+            continue;
+        }
+
+        RecognizedAnime recognized;
+        recognized.media = media;
+        recognized.entry = std::nullopt;
+        recognized.episode = redirected_id_to_episode.value(
+            redirected_id,
+            this->recognized_episode_
+        );
+
+        this->recognized_anime_.append(std::move(recognized));
+    }
+
+    if (this->recognized_anime_.isEmpty()) {
+        emit requestShowNoMatchPage(
+            QStringLiteral("No match found for: %1").arg(this->recognized_title_)
+        );
+        return;
+    }
+
+    if (this->recognized_anime_.size() == 1) {
+        const auto recognized = this->recognized_anime_.constFirst();
+        this->recognition_cache_->add(recognized.media);
+
+        emit requestShowNowPlayingPage(
+            recognized,
+            this->recognized_title_
+        );
+        return;
+    }
+
+    emit requestShowSelectAnimePage(this->recognized_anime_, this->recognized_title_);
+}
+
 void RecognitionManager::onIdSearchFinished(const QList<AnilistMedia> &media_list) {
     for (const auto &media : std::ranges::take_view(media_list, this->max_matches_)) {
-        if (!this->missing_ids_to_redirection_episode_.contains(media.id)) {
+        if (!this->missing_ids_to_redirected_episode_.contains(media.id)) {
             Log::warning(
                 CONTEXT_CLASS,
                 QStringLiteral("No redirection for id: %1").arg(media.id)
@@ -35,7 +118,7 @@ void RecognitionManager::onIdSearchFinished(const QList<AnilistMedia> &media_lis
         }
 
         RecognizedAnime recognized;
-        recognized.episode = this->missing_ids_to_redirection_episode_.value(media.id);
+        recognized.episode = this->missing_ids_to_redirected_episode_.value(media.id);
         recognized.media = media;
         recognized.entry = std::nullopt;
 
@@ -49,20 +132,31 @@ void RecognitionManager::onIdSearchFinished(const QList<AnilistMedia> &media_lis
         return;
     }
 
+    // single entry recognized, cache it and show it
     if (this->recognized_anime_.size() == 1) {
+        const auto recognized = this->recognized_anime_.constFirst();
+        this->recognition_cache_->add(recognized.media);
+
         emit requestShowNowPlayingPage(
-            this->recognized_anime_.constFirst(),
+            recognized,
             this->recognized_title_
         );
         return;
     }
 
+    // multiple entries recognized, ask to select the correct one
     emit requestShowSelectAnimePage(this->recognized_anime_, this->recognized_title_);
+}
+
+void RecognitionManager::onQuietSearchFailed(const QString &message) {
+    this->failRecognition(
+        QStringLiteral("Failed to search recognition anime: %1").arg(message)
+    );
 }
 
 void RecognitionManager::onIdSearchFailed(const QString &message) {
     this->failRecognition(
-        QStringLiteral("Failed to search missing ids: %1").arg(message)
+        QStringLiteral("Failed to search recognition ids: %1").arg(message)
     );
 }
 
@@ -72,9 +166,10 @@ void RecognitionManager::onAnimeSelected(const AnilistMedia &media) {
 }
 
 void RecognitionManager::resetRecognition() {
+    this->recognized_episode_ = AnimeFileParser::InvalidEpisode;
     this->recognized_title_.clear();
     this->recognized_anime_.clear();
-    this->missing_ids_to_redirection_episode_.clear();
+    this->missing_ids_to_redirected_episode_.clear();
 }
 
 void RecognitionManager::initCache() {
@@ -106,8 +201,8 @@ void RecognitionManager::failRecognition(const QString &message) {
     emit requestShowErrorPage(message);
 }
 
-void RecognitionManager::handleExactMatch(const int media_id, const AnimeFileParser::AnimeFileInfo &file_info) {
-    const auto redirection = this->anime_redirection_->redirect(media_id, file_info.episode);
+void RecognitionManager::handleExactMatch(const int media_id) {
+    const auto redirection = this->anime_redirection_->redirect(media_id, this->recognized_episode_);
 
     // recognized media_id after redirection
     const auto local_anime = this->database_->selectAnimeByMediaIds({redirection.media_id});
@@ -122,7 +217,7 @@ void RecognitionManager::handleExactMatch(const int media_id, const AnimeFilePar
     // the recognized id to get it from anilist
     if (local_anime->isEmpty()) {
         // store the missing id redirectioned episode
-        this->missing_ids_to_redirection_episode_.insert(
+        this->missing_ids_to_redirected_episode_.insert(
             redirection.media_id,
             redirection.episode
         );
@@ -145,17 +240,18 @@ void RecognitionManager::handleExactMatch(const int media_id, const AnimeFilePar
     emit requestShowNowPlayingPage(recognized, this->recognized_title_);
 }
 
-void RecognitionManager::handlePartialMatches(const QList<int> &media_ids, const AnimeFileParser::AnimeFileInfo &file_info) {
-    QList<AnimeRedirection::Redirection> redirections;
-    QList<int> redirected_media_ids;
+void RecognitionManager::handlePartialMatches(const QList<int> &media_ids) {
+    QSet<int> redirected_ids;
+    QHash<int, int> redirected_id_to_episode;
     for (const auto &id : media_ids) {
-        const auto redirection = this->anime_redirection_->redirect(id, file_info.episode);
+        const auto redirection = this->anime_redirection_->redirect(id, this->recognized_episode_);
+        redirected_id_to_episode.insert(redirection.media_id, redirection.episode);
 
-        redirected_media_ids.append(redirection.media_id);
-        redirections.append(std::move(redirection));
+        redirected_ids.insert(redirection.media_id);
     }
 
-    const auto local_anime = this->database_->selectAnimeByMediaIds(redirected_media_ids);
+    QList<int> redirected_ids_list{redirected_ids.constBegin(), redirected_ids.constEnd()};
+    const auto local_anime = this->database_->selectAnimeByMediaIds(redirected_ids_list);
     if (!local_anime) {
         this->failRecognition(
             QStringLiteral("Failed to select partial matches: %1").arg(local_anime.error())
@@ -165,55 +261,54 @@ void RecognitionManager::handlePartialMatches(const QList<int> &media_ids, const
 
     // no local anime with recognized ids, search them all
     if (local_anime->isEmpty()) {
-        emit requestAnimeSearchById(redirected_media_ids);
+        emit requestAnimeSearchById(redirected_ids_list);
         return;
     }
 
-    // add the local only ids in a set and add the matching anime
-    // to the recognized anime list
-    QSet<int> local_ids;
+    // handle local anime
     for (const auto &anime : local_anime.value()) {
-        local_ids.insert(anime.media.id);
-
-        const auto it = std::ranges::find_if(
-            redirections,
-            [&anime] (const AnimeRedirection::Redirection &redirection) {
-                return anime.media.id == redirection.media_id;
-            }
+        RecognizedAnime recognized;
+        recognized.media = anime.media;
+        recognized.entry = anime.entry;
+        recognized.episode = redirected_id_to_episode.value(
+            anime.media.id,
+            this->recognized_episode_
         );
 
-        if (it == redirections.end()) {
-            continue;
-        }
-
-        RecognizedAnime recognized;
-        recognized.episode = it->episode;
-        recognized.entry = anime.entry;
-        recognized.media = anime.media;
-
         this->recognized_anime_.append(std::move(recognized));
+
+        redirected_ids.remove(anime.media.id);
     }
 
-    // get a list of missing redirected ids to search on anilist
+    // remaining redirected ids are the missing ones
     QList<int> missing_ids;
-    for(const auto &redirection : std::as_const(redirections)) {
-        if (!local_ids.contains(redirection.media_id)) {
-            missing_ids.append(redirection.media_id);
-            // store the missing ids redirection episode
-            this->missing_ids_to_redirection_episode_.insert(
-                redirection.media_id,
-                redirection.episode
-            );
-        }
+    for(const auto &redirected_id : std::as_const(redirected_ids)) {
+        missing_ids.append(redirected_id);
+        this->missing_ids_to_redirected_episode_.insert(
+            redirected_id,
+            redirected_id_to_episode.value(
+                redirected_id,
+                this->recognized_episode_
+            )
+        );
     }
 
-    // no missing ids, show the recognized anime list
+    // no missing ids, show the recognized anime list or
+    // the now playing if only 1 exists
     if (missing_ids.isEmpty()) {
+        if (this->recognized_anime_.size() == 1) {
+            const auto recognized = this->recognized_anime_.constFirst();
+            this->recognition_cache_->add(recognized.media);
+
+            emit requestShowNowPlayingPage(recognized, this->recognized_title_);
+            return;
+        }
+
         emit requestShowSelectAnimePage(this->recognized_anime_, this->recognized_title_);
         return;
     }
 
-    // search the missing local ids
+    // search for the missing ids
     emit requestAnimeSearchById(missing_ids);
 }
 
@@ -234,6 +329,7 @@ void RecognitionManager::onMediaFileChanged(const QString &filename) {
     }
 
     this->recognized_title_ = file_info.title;
+    this->recognized_episode_ = file_info.episode;
 
     const auto matches = this->recognition_cache_->findMatches(
         file_info.title,
@@ -251,7 +347,7 @@ void RecognitionManager::onMediaFileChanged(const QString &filename) {
     // the best score or is an exact match
     const auto &first_match = matches.constFirst();
     if (first_match.score == RecognitionCache::ExactMatch) {
-        this->handleExactMatch(first_match.media_id, file_info);
+        this->handleExactMatch(first_match.media_id);
         return;
     }
 
@@ -260,7 +356,7 @@ void RecognitionManager::onMediaFileChanged(const QString &filename) {
     for (const auto &match : matches) {
         media_ids.append(match.media_id);
     }
-    this->handlePartialMatches(media_ids, file_info);
+    this->handlePartialMatches(media_ids);
 }
 
 void RecognitionManager::onMediaPlayerClosed() {
