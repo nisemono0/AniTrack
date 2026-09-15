@@ -4,8 +4,6 @@
 
 #include "base/recognition/title_normalizer.hpp"
 
-#include <ranges>
-
 
 RecognitionManager::RecognitionManager(
     Database *database,
@@ -37,7 +35,7 @@ void RecognitionManager::onQuietSearchFinished(const QList<AnilistMedia> &media_
     QSet<int> redirected_ids;
     QHash<int, int> id_to_redirected_id;
     QHash<int, int> redirected_id_to_episode;
-    for (const auto &media : std::ranges::take_view(media_list, this->max_matches_)) {
+    for (const auto &media : media_list) {
         const auto redirection = this->anime_redirection_->redirect(media.id, this->recognized_episode_);
         id_to_redirected_id.insert(media.id, redirection.media_id);
         redirected_id_to_episode.insert(redirection.media_id, redirection.episode);
@@ -112,7 +110,7 @@ void RecognitionManager::onQuietSearchFinished(const QList<AnilistMedia> &media_
 }
 
 void RecognitionManager::onIdSearchFinished(const QList<AnilistMedia> &media_list) {
-    for (const auto &media : std::ranges::take_view(media_list, this->max_matches_)) {
+    for (const auto &media : media_list) {
         if (!this->missing_ids_to_redirected_episode_.contains(media.id)) {
             Log::warning(
                 CONTEXT_CLASS,
