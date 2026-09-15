@@ -5,12 +5,10 @@ Personal program for tracking watched anime on Linux and syncing with [AniList](
 Greatly inspired by [Taiga](https://github.com/erengy/taiga).
 
 > [!IMPORTANT]
-> Still a WIP, but basic syncing should work.
+> Still a WIP, but basic syncing and recognition should work.
 
-## WIP Features
-- Automatic media player detection.
-  - UI page for displaying the currently playing anime.
-  - Add/Update playing anime to list.
+## WIP
+- Settings dialog
 
 ## Dependencies
 - Qt6
@@ -43,4 +41,3 @@ You can also run `AniTrack --help` to see some available options.
 - [anime-relations](https://github.com/erengy/anime-relations): episode redirections
 - [utf8proc](https://github.com/JuliaStrings/utf8proc): string normalization
 - [tabler-icons](https://github.com/tabler/tabler-icons): application icons
-
