@@ -13,11 +13,15 @@ RecognitionSearchPage::~RecognitionSearchPage() {
     delete this->ui_;
 }
 
-void RecognitionSearchPage::setPlayingTitle(const QString &title) {
+void RecognitionSearchPage::setPlayingAnime(const QString &title, int episode) {
     this->playing_title_= title;
 
-    this->ui_->labelPlayingTitle->setText(title);
+    this->ui_->lineEditSearchText->clear();
     this->ui_->lineEditSearchText->setPlaceholderText(title);
+
+    this->ui_->labelPlayingTitle->setText(
+        QStringLiteral("%1 episode %2").arg(title).arg(episode)
+    );
 }
 
 void RecognitionSearchPage::initPage() {
@@ -25,11 +29,11 @@ void RecognitionSearchPage::initPage() {
 }
 
 void RecognitionSearchPage::setupPage() {
-    connect(this->ui_->lineEditSearchText, &QLineEdit::returnPressed, this, &RecognitionSearchPage::requestQuietSearch);
-    connect(this->ui_->pushButtonSearch, &QPushButton::clicked, this, &RecognitionSearchPage::requestQuietSearch);
+    connect(this->ui_->lineEditSearchText, &QLineEdit::returnPressed, this, &RecognitionSearchPage::searchAnime);
+    connect(this->ui_->pushButtonSearch, &QPushButton::clicked, this, &RecognitionSearchPage::searchAnime);
 }
 
-void RecognitionSearchPage::requestQuietSearch() {
+void RecognitionSearchPage::searchAnime() {
     const QString search_text = this->ui_->lineEditSearchText->text();
 
     if (search_text.isEmpty()) {
@@ -38,5 +42,6 @@ void RecognitionSearchPage::requestQuietSearch() {
     }
 
     emit requestQuietAnimeSearch(search_text);
+    this->ui_->lineEditSearchText->clear();
 }
 

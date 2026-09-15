@@ -15,7 +15,7 @@ public:
     explicit RecognitionSearchPage(QWidget *parent = nullptr);
     ~RecognitionSearchPage();
 
-    void setPlayingTitle(const QString &title);
+    void setPlayingAnime(const QString &title, int episode);
 
 signals:
     void requestQuietAnimeSearch(const QString &title);
@@ -29,6 +29,6 @@ private:
     void setupPage();
 
 private slots:
-    void requestQuietSearch();
+    void searchAnime();
 
 };
