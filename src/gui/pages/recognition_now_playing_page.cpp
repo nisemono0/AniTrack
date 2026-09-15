@@ -37,22 +37,32 @@ void RecognitionNowPlayingPage::handleAnimeAddUpdateFinished(const QList<Anilist
 }
 
 void RecognitionNowPlayingPage::setNowPlayingAnime(const RecognizedAnime &recognized_anime, const QString &title) {
-    this->playing_title_ = title;
-    this->episode_ = recognized_anime.episode;
+    this->playing_episode_ = recognized_anime.episode;
 
     this->media_ = recognized_anime.media;
-    if (recognized_anime.entry) {
-        // anime is in our list, show edit widgets
-        this->showEdit();
-        this->entry_ = recognized_anime.entry.value();
-    } else {
-        // anime no in our list, show add widgets
+    // entry_ is nullopt if anime not in our list
+    if (!recognized_anime.entry) {
+        this->entry_.reset();
         this->showAdd();
-        this->entry_ = {};
+    } else {
+        this->entry_ = recognized_anime.entry;
+        this->showEdit();
     }
 
     this->updateCoverImage();
     this->updateNowPlayingInfo();
+}
+
+void RecognitionNowPlayingPage::startPopupTimer() {
+    this->popup_timer_->start();
+}
+
+void RecognitionNowPlayingPage::stopPopupTimer() {
+    this->popup_timer_->stop();
+}
+
+void RecognitionNowPlayingPage::setPopupTimerDelay(std::chrono::minutes minutes) {
+    this->popup_timer_->setInterval(minutes);
 }
 
 void RecognitionNowPlayingPage::showEdit() {
@@ -68,6 +78,10 @@ void RecognitionNowPlayingPage::showAdd() {
 
 void RecognitionNowPlayingPage::initPage() {
     this->ui_->setupUi(this);
+
+    this->popup_timer_ = new QTimer(this);
+    this->popup_timer_->setInterval(std::chrono::seconds(120));;
+    this->popup_timer_->setSingleShot(true);
 }
 
 void RecognitionNowPlayingPage::setupPage() {
@@ -77,12 +91,14 @@ void RecognitionNowPlayingPage::setupPage() {
 
     connect(this->ui_->pushButtonEdit, &QPushButton::clicked, this, [this] {
         AnilistAnime anime{
-            this->entry_,
+            this->entry_.value(),
             this->media_
         };
 
         emit requestShowAnimeInfoEditDialog(anime, AnimeInfoEditDialog::Page::Edit);
     });
+
+    connect(this->popup_timer_, &QTimer::timeout, this, &RecognitionNowPlayingPage::onPopupTimerTimeout);
 }
 
 void RecognitionNowPlayingPage::updateCoverImage() {
@@ -104,14 +120,13 @@ void RecognitionNowPlayingPage::updateNowPlayingInfo() {
 
     // Now playing title
     this->ui_->labelPlayingTitle->setText(
-        QStringLiteral("Episode: %1").arg(this->episode_)
+        QStringLiteral("Episode: %1").arg(this->playing_episode_)
     );
 
     // Top title
+    this->playing_title_ = AnilistUtils::animeTitleToPrettyString(media.title, this->title_language_);
     this->ui_->labelTitleHeader->setText(
-        LinksUtils::createTextLink(
-            media.site_url, AnilistUtils::animeTitleToPrettyString(media.title, this->title_language_)
-        )
+        LinksUtils::createTextLink(media.site_url, this->playing_title_)
     );
 
     // Titles
@@ -155,4 +170,83 @@ void RecognitionNowPlayingPage::updateNowPlayingInfo() {
     this->ui_->labelScore->setText(QStringLiteral("%1%").arg(media.average_score));
     // Synopsis
     this->ui_->textEditSynopsis->setHtml(media.description);
+}
+
+void RecognitionNowPlayingPage::openPopupDialog(const QString &header_text,
+                                                const QString &body_text,
+                                                NowPlayingPopupDialog::PopupType popup_type) {
+    // create a new dialog if it doesnt exist
+    if (!this->popup_dialog_) {
+        this->popup_dialog_ = new NowPlayingPopupDialog(header_text, body_text, popup_type, this);
+        this->popup_dialog_->open();
+        return;
+    }
+
+    // set text and display existing one
+    this->popup_dialog_->setHeadertext(header_text);
+    this->popup_dialog_->setBodyText(body_text);
+    this->popup_dialog_->setPopupType(popup_type);
+    this->popup_dialog_->open();
+}
+
+void RecognitionNowPlayingPage::onPopupTimerTimeout() {
+    // anime not in list, ask to add
+    if (!this->entry_) {
+        this->openPopupDialog(
+            this->playing_title_,
+            QStringLiteral("Add anime to watching list"),
+            NowPlayingPopupDialog::PopupType::Add
+        );
+    } else {
+        // anime in list, update it
+        // ask to set it as completed if current episode >= total episodes
+        if (this->playing_episode_ >= this->media_.episodes) {
+            this->openPopupDialog(
+                this->playing_title_,
+                QStringLiteral("Set anime as completed"),
+                NowPlayingPopupDialog::PopupType::Complete
+            );
+        } else {
+            // ask to set progress to currently playing episode
+            this->openPopupDialog(
+                this->playing_title_,
+                QStringLiteral("Set anime progress to: %1").arg(this->playing_episode_),
+                NowPlayingPopupDialog::PopupType::Update
+            );
+        }
+    }
+
+    // connect the accepted signal only if dialog exists
+    if (!this->popup_dialog_) {
+        return;
+    }
+    connect(this->popup_dialog_, &NowPlayingPopupDialog::popupAccepted, this, &RecognitionNowPlayingPage::onPopupAccepted);
+}
+
+void RecognitionNowPlayingPage::onPopupAccepted(NowPlayingPopupDialog::PopupType popup_type) {
+    switch (popup_type) {
+        case NowPlayingPopupDialog::PopupType::Add: {
+            emit requestAddMedia({this->media_}, AnilistEntry::Status::CURRENT);
+            break;
+        }
+        case NowPlayingPopupDialog::PopupType::Update: {
+            AnilistAnime anime{
+                this->entry_.value(),
+                this->media_
+            };
+            emit requestSetAnimeProgress({anime}, this->playing_episode_);
+            break;
+        }
+        case NowPlayingPopupDialog::PopupType::Complete: {
+            AnilistAnime anime{
+                this->entry_.value(),
+                this->media_
+            };
+            if (anime.media.episodes <= 0) {
+                return;
+            }
+            emit requestSetAnimeProgress({anime}, anime.media.episodes);
+            break;
+        }
+    }
 }

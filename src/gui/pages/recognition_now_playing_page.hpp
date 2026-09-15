@@ -10,8 +10,11 @@
 #include "base/recognition/recognized_anime.hpp"
 
 #include "gui/dialogs/anime_info_edit_dialog.hpp"
+#include "gui/dialogs/now_playing_popup_dialog.hpp"
 
 #include <QWidget>
+#include <QTimer>
+#include <QPointer>
 
 
 namespace Ui {
@@ -29,11 +32,15 @@ public:
 
     void setNowPlayingAnime(const RecognizedAnime &recognized_anime, const QString &title);
 
-public slots:
+    void startPopupTimer();
+    void stopPopupTimer();
+
+    void setPopupTimerDelay(std::chrono::minutes minutes);
 
 signals:
     void requestShowAnimeInfoEditDialog(const AnilistAnime &anime, AnimeInfoEditDialog::Page page);
     void requestAddMedia(const QList<AnilistMedia> &media_list, AnilistEntry::Status status);
+    void requestSetAnimeProgress(const QList<AnilistAnime> &anime_list, int progress);
 
 private:
     Ui::RecognitionNowPlayingWidget *ui_;
@@ -42,10 +49,13 @@ private:
 
     AnilistAccount::TitleLanguage title_language_;
 
-    QString playing_title_;
-    int episode_;
+    QTimer *popup_timer_;
+    QPointer<NowPlayingPopupDialog> popup_dialog_;
 
-    AnilistEntry entry_;
+    QString playing_title_;
+    int playing_episode_;
+
+    std::optional<AnilistEntry> entry_;
     AnilistMedia media_;
 
     void showEdit();
@@ -57,6 +67,12 @@ private:
     void updateCoverImage();
     void updateNowPlayingInfo();
 
+    void openPopupDialog(const QString &header_text,
+                         const QString &body_text,
+                         NowPlayingPopupDialog::PopupType popup_type);
+
 private slots:
+    void onPopupTimerTimeout();
+    void onPopupAccepted(NowPlayingPopupDialog::PopupType popup_type);
 
 };
