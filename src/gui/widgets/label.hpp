@@ -20,6 +20,11 @@ signals:
     void clicked();
 
 protected:
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
+
+private:
+    bool pressed_ = false;
 };
 
