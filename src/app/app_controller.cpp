@@ -156,6 +156,10 @@ void AppController::setupRecognitionConnections() {
     connect(this->recognition_manager_, &RecognitionManager::requestShowNowPlayingPage, this, &AppController::requestShowNowPlayingPage);
 
     connect(this->recognition_manager_, &RecognitionManager::requestShowSearchPage, this, &AppController::requestShowSearchPage);
+
+    connect(this->database_controller_, &DatabaseController::animeAddFinished, this->recognition_manager_, &RecognitionManager::onAnimeAddFinished);
+
+    connect(this, &AppController::recognizedAnimeSelected, this->recognition_manager_, &RecognitionManager::onRecognizedAnimeSelected);
 }
 
 void AppController::onInfoOccurred(const QString &context, const QString &message) {

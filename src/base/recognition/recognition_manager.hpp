@@ -25,21 +25,23 @@ public:
     void registerRunningPlayers();
 
 public slots:
+    void onAnimeAddFinished(const QList<AnilistAnime> &anime_list);
+
     void onQuietSearchFinished(const QList<AnilistMedia> &media_list);
     void onIdSearchFinished(const QList<AnilistMedia> &media_list);
 
     void onQuietSearchFailed(const QString &message);
     void onIdSearchFailed(const QString &message);
 
-    void onAnimeSelected(const AnilistMedia &media);
+    void onRecognizedAnimeSelected(const RecognizedAnime &selected_anime);
 
 signals:
     void requestShowNoMatchPage(const QString &message);
     void requestShowIdlePage();
-    void requestShowSelectAnimePage(const QList<RecognizedAnime> &recognized_anime, const QString &title);
+    void requestShowSelectAnimePage(const QList<RecognizedAnime> &recognized_anime, const QString &title, int episode);
     void requestShowNowPlayingPage(const RecognizedAnime &recognized_anime, const QString &title);
 
-    void requestShowSearchPage(const QString &title);
+    void requestShowSearchPage(const QString &title, int episode);
 
     void requestAnimeSearchById(const QList<int> &media_ids);
 

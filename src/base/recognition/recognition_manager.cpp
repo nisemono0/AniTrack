@@ -23,11 +23,21 @@ void RecognitionManager::registerRunningPlayers() {
     this->mpris_watcher_->registerRunningPlayers();
 }
 
+void RecognitionManager::onAnimeAddFinished(const QList<AnilistAnime> &anime_list) {
+    for (const auto &anime : anime_list) {
+        this->recognition_cache_->addMedia(anime.media);
+    }
+}
+
 void RecognitionManager::onQuietSearchFinished(const QList<AnilistMedia> &media_list) {
+    // quiet search is a new standalone result set
+    this->recognized_anime_.clear();
+    this->missing_ids_to_redirected_episode_.clear();
+
     QSet<int> redirected_ids;
     QHash<int, int> id_to_redirected_id;
     QHash<int, int> redirected_id_to_episode;
-    for (const auto &media : media_list) {
+    for (const auto &media : std::ranges::take_view(media_list, this->max_matches_)) {
         const auto redirection = this->anime_redirection_->redirect(media.id, this->recognized_episode_);
         id_to_redirected_id.insert(media.id, redirection.media_id);
         redirected_id_to_episode.insert(redirection.media_id, redirection.episode);
@@ -80,14 +90,13 @@ void RecognitionManager::onQuietSearchFinished(const QList<AnilistMedia> &media_
     }
 
     if (this->recognized_anime_.isEmpty()) {
-        emit requestShowSearchPage(this->recognized_title_);
+        emit requestShowSearchPage(this->recognized_title_, this->recognized_episode_);
         return;
     }
 
     if (this->recognized_anime_.size() == 1) {
         const auto recognized = this->recognized_anime_.constFirst();
-        this->recognition_cache_->add(recognized.media);
-
+        this->recognition_cache_->add(this->recognized_title_, recognized.media.id);
         emit requestShowNowPlayingPage(
             recognized,
             this->recognized_title_
@@ -95,7 +104,11 @@ void RecognitionManager::onQuietSearchFinished(const QList<AnilistMedia> &media_
         return;
     }
 
-    emit requestShowSelectAnimePage(this->recognized_anime_, this->recognized_title_);
+    emit requestShowSelectAnimePage(
+        this->recognized_anime_,
+        this->recognized_title_,
+        this->recognized_episode_
+    );
 }
 
 void RecognitionManager::onIdSearchFinished(const QList<AnilistMedia> &media_list) {
@@ -117,14 +130,14 @@ void RecognitionManager::onIdSearchFinished(const QList<AnilistMedia> &media_lis
     }
 
     if (this->recognized_anime_.isEmpty()) {
-        emit requestShowSearchPage(this->recognized_title_);
+        emit requestShowSearchPage(this->recognized_title_, this->recognized_episode_);
         return;
     }
 
     // single entry recognized, cache it and show it
     if (this->recognized_anime_.size() == 1) {
         const auto recognized = this->recognized_anime_.constFirst();
-        this->recognition_cache_->add(recognized.media);
+        this->recognition_cache_->add(this->recognized_title_, recognized.media.id);
 
         emit requestShowNowPlayingPage(
             recognized,
@@ -134,7 +147,11 @@ void RecognitionManager::onIdSearchFinished(const QList<AnilistMedia> &media_lis
     }
 
     // multiple entries recognized, ask to select the correct one
-    emit requestShowSelectAnimePage(this->recognized_anime_, this->recognized_title_);
+    emit requestShowSelectAnimePage(
+        this->recognized_anime_,
+        this->recognized_title_,
+        this->recognized_episode_
+    );
 }
 
 void RecognitionManager::onQuietSearchFailed(const QString &message) {
@@ -149,9 +166,10 @@ void RecognitionManager::onIdSearchFailed(const QString &message) {
     );
 }
 
-void RecognitionManager::onAnimeSelected(const AnilistMedia &media) {
-    // user selected an unkown anime. cache it
-    this->recognition_cache_->add(media);
+void RecognitionManager::onRecognizedAnimeSelected(const RecognizedAnime &selected_anime) {
+    // cache and show the selected anime
+    this->recognition_cache_->add(this->recognized_title_, selected_anime.media.id);
+    emit requestShowNowPlayingPage(selected_anime, this->recognized_title_);
 }
 
 void RecognitionManager::resetRecognition() {
@@ -287,13 +305,17 @@ void RecognitionManager::handlePartialMatches(const QList<int> &media_ids) {
     if (missing_ids.isEmpty()) {
         if (this->recognized_anime_.size() == 1) {
             const auto recognized = this->recognized_anime_.constFirst();
-            this->recognition_cache_->add(recognized.media);
+            this->recognition_cache_->add(this->recognized_title_, recognized.media.id);
 
             emit requestShowNowPlayingPage(recognized, this->recognized_title_);
             return;
         }
 
-        emit requestShowSelectAnimePage(this->recognized_anime_, this->recognized_title_);
+        emit requestShowSelectAnimePage(
+            this->recognized_anime_,
+            this->recognized_title_,
+            this->recognized_episode_
+        );
         return;
     }
 
@@ -328,7 +350,7 @@ void RecognitionManager::onMediaFileChanged(const QString &filename) {
 
     // No recognition matches, show search page
     if (matches.isEmpty()) {
-        emit requestShowSearchPage(file_info.title);
+        emit requestShowSearchPage(file_info.title, file_info.episode);
         return;
     }
 

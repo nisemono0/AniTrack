@@ -106,10 +106,12 @@ signals:
     // Recognition manager
     void requestShowNoMatchPage(const QString &message);
     void requestShowIdlePage();
-    void requestShowSelectAnimePage(const QList<RecognizedAnime> &recognized_anime, const QString &title);
+    void requestShowSelectAnimePage(const QList<RecognizedAnime> &recognized_anime, const QString &title, int episode);
     void requestShowNowPlayingPage(const RecognizedAnime &recognized_anime, const QString &title);
 
-    void requestShowSearchPage(const QString &title);
+    void requestShowSearchPage(const QString &title, int episode);
+
+    void recognizedAnimeSelected(const RecognizedAnime &recognized_anime);
 
     // Ui
     void requestShowInfiniteProgressDialog(const QString &title, const QString &message);
