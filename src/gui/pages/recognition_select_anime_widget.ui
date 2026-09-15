@@ -84,7 +84,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="labelInList">
      <property name="font">
       <font>
        <pointsize>12</pointsize>
@@ -96,17 +96,24 @@
     </widget>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayoutInList"/>
+    <layout class="QVBoxLayout" name="verticalLayoutInList">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>15</number>
+     </property>
+    </layout>
    </item>
    <item>
-    <widget class="Line" name="line_3">
+    <widget class="Line" name="lineInList">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="labelNotInList">
      <property name="font">
       <font>
        <pointsize>12</pointsize>
@@ -118,10 +125,17 @@
     </widget>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayoutNotInList"/>
+    <layout class="QVBoxLayout" name="verticalLayoutNotInList">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>15</number>
+     </property>
+    </layout>
    </item>
    <item>
-    <widget class="Line" name="line_4">
+    <widget class="Line" name="lineNotInList">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
      </property>
@@ -139,6 +153,34 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item>
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLineEdit" name="lineEditSearchText">
+       <property name="focusPolicy">
+        <enum>Qt::FocusPolicy::ClickFocus</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonSearch">
+       <property name="focusPolicy">
+        <enum>Qt::FocusPolicy::NoFocus</enum>
+       </property>
+       <property name="text">
+        <string>Search</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
