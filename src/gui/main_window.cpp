@@ -178,7 +178,6 @@ void MainWindow::setupPlayingPage() {
     connect(this->app_controller_, &AppController::animeAddFinished, this->ui_->pagePlaying, &AnimePlayingPage::handleAnimeAddUpdateFinished);
 
     connect(this->app_controller_, &AppController::requestShowNoMatchPage, this->ui_->pagePlaying, &AnimePlayingPage::showNoMatchPage);
-    connect(this->app_controller_, &AppController::requestShowErrorPage, this->ui_->pagePlaying, &AnimePlayingPage::showErrorPage);
     connect(this->app_controller_, &AppController::requestShowIdlePage, this->ui_->pagePlaying, &AnimePlayingPage::showIdlePage);
     connect(this->app_controller_, &AppController::requestShowSelectAnimePage, this->ui_->pagePlaying, &AnimePlayingPage::showSelectAnimePage);
     connect(

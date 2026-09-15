@@ -32,31 +32,18 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidgetAnimePlaying">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="RecognitionIdlePage" name="pageRecognitionIdle"/>
      <widget class="RecognitionNowPlayingPage" name="pageRecognitionNowPlaying"/>
      <widget class="RecognitionSelectAnimePage" name="pageRecognitionSelectAnime"/>
      <widget class="RecognitionSearchPage" name="pageRecognitionSearch"/>
      <widget class="RecognitionNoMatchPage" name="pageRecognitionNoMatch"/>
-     <widget class="RecognitionErrorPage" name="pageRecognitionError">
-      <property name="font">
-       <font>
-        <pointsize>16</pointsize>
-       </font>
-      </property>
-     </widget>
     </widget>
    </item>
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>RecognitionErrorPage</class>
-   <extends>QWidget</extends>
-   <header>gui/pages/recognition_error_page.hpp</header>
-   <container>1</container>
-  </customwidget>
   <customwidget>
    <class>RecognitionNoMatchPage</class>
    <extends>QWidget</extends>

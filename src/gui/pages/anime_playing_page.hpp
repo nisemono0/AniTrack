@@ -24,7 +24,6 @@ public slots:
     void handleAnimeAddUpdateFinished(const QList<AnilistAnime> &anime_list);
 
     void showNoMatchPage(const QString &message);
-    void showErrorPage(const QString &message);
     void showIdlePage();
     void showSelectAnimePage(const QList<RecognizedAnime> &recognized_anime, const QString &title);
     void showNowPlayingPage(const RecognizedAnime &recognized_anime, const QString &title);

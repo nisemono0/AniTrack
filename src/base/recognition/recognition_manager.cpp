@@ -24,13 +24,6 @@ void RecognitionManager::registerRunningPlayers() {
 }
 
 void RecognitionManager::onQuietSearchFinished(const QList<AnilistMedia> &media_list) {
-    if (media_list.isEmpty()) {
-        emit requestShowNoMatchPage(
-            QStringLiteral("No match found for: %1").arg(this->recognized_title_)
-        );
-        return;
-    }
-
     QSet<int> redirected_ids;
     QHash<int, int> id_to_redirected_id;
     QHash<int, int> redirected_id_to_episode;
@@ -87,9 +80,7 @@ void RecognitionManager::onQuietSearchFinished(const QList<AnilistMedia> &media_
     }
 
     if (this->recognized_anime_.isEmpty()) {
-        emit requestShowNoMatchPage(
-            QStringLiteral("No match found for: %1").arg(this->recognized_title_)
-        );
+        emit requestShowSearchPage(this->recognized_title_);
         return;
     }
 
@@ -126,9 +117,7 @@ void RecognitionManager::onIdSearchFinished(const QList<AnilistMedia> &media_lis
     }
 
     if (this->recognized_anime_.isEmpty()) {
-        emit requestShowNoMatchPage(
-            QStringLiteral("No match found for: %1").arg(this->recognized_title_)
-        );
+        emit requestShowSearchPage(this->recognized_title_);
         return;
     }
 
@@ -150,7 +139,7 @@ void RecognitionManager::onIdSearchFinished(const QList<AnilistMedia> &media_lis
 
 void RecognitionManager::onQuietSearchFailed(const QString &message) {
     this->failRecognition(
-        QStringLiteral("Failed to search recognition anime: %1").arg(message)
+        QStringLiteral("Failed to search recognition titles: %1").arg(message)
     );
 }
 
@@ -198,7 +187,7 @@ void RecognitionManager::initWatcher() {
 void RecognitionManager::failRecognition(const QString &message) {
     this->resetRecognition();
     Log::warning(CONTEXT_CLASS, message);
-    emit requestShowErrorPage(message);
+    emit requestShowNoMatchPage(message);
 }
 
 void RecognitionManager::handleExactMatch(const int media_id) {

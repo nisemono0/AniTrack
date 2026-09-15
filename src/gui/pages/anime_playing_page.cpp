@@ -24,6 +24,11 @@ void AnimePlayingPage::onUserUpdated(const AnilistAccount::User &user) {
 }
 
 void AnimePlayingPage::handleAnimeAddUpdateFinished(const QList<AnilistAnime> &anime_list) {
+    auto *current_page = this->ui_->stackedWidgetAnimePlaying->currentWidget();
+    if (current_page != this->ui_->pageRecognitionNowPlaying) {
+        return;
+    }
+
     this->ui_->pageRecognitionNowPlaying->handleAnimeAddUpdateFinished(anime_list);
 }
 
@@ -31,13 +36,6 @@ void AnimePlayingPage::showNoMatchPage(const QString &message) {
     this->ui_->pageRecognitionNoMatch->setDisplayedMessage(message);
     this->ui_->stackedWidgetAnimePlaying->setCurrentWidget(
         this->ui_->pageRecognitionNoMatch
-    );
-}
-
-void AnimePlayingPage::showErrorPage(const QString &message) {
-    this->ui_->pageRecognitionError->setDisplayedMessage(message);
-    this->ui_->stackedWidgetAnimePlaying->setCurrentWidget(
-        this->ui_->pageRecognitionError
     );
 }
 

@@ -151,7 +151,6 @@ void AppController::setupSearchConnections() {
 
 void AppController::setupRecognitionConnections() {
     connect(this->recognition_manager_, &RecognitionManager::requestShowNoMatchPage, this, &AppController::requestShowNoMatchPage);
-    connect(this->recognition_manager_, &RecognitionManager::requestShowErrorPage, this, &AppController::requestShowErrorPage);
     connect(this->recognition_manager_, &RecognitionManager::requestShowIdlePage, this, &AppController::requestShowIdlePage);
     connect(this->recognition_manager_, &RecognitionManager::requestShowSelectAnimePage, this, &AppController::requestShowSelectAnimePage);
     connect(this->recognition_manager_, &RecognitionManager::requestShowNowPlayingPage, this, &AppController::requestShowNowPlayingPage);

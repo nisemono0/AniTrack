@@ -127,8 +127,6 @@ qt_add_executable(AniTrack
     gui/pages/anime_playing_page.hpp
     gui/pages/anime_search_page.cpp
     gui/pages/anime_search_page.hpp
-    gui/pages/recognition_error_page.cpp
-    gui/pages/recognition_error_page.hpp
     gui/pages/recognition_idle_page.cpp
     gui/pages/recognition_idle_page.hpp
     gui/pages/recognition_no_match_page.cpp
@@ -229,7 +227,6 @@ target_sources(AniTrack
         gui/pages/anime_list_widget.ui
         gui/pages/anime_playing_widget.ui
         gui/pages/anime_search_widget.ui
-        gui/pages/recognition_error_widget.ui
         gui/pages/recognition_idle_widget.ui
         gui/pages/recognition_no_match_widget.ui
         gui/pages/recognition_now_playing_widget.ui

@@ -105,7 +105,6 @@ signals:
 
     // Recognition manager
     void requestShowNoMatchPage(const QString &message);
-    void requestShowErrorPage(const QString &message);
     void requestShowIdlePage();
     void requestShowSelectAnimePage(const QList<RecognizedAnime> &recognized_anime, const QString &title);
     void requestShowNowPlayingPage(const RecognizedAnime &recognized_anime, const QString &title);
