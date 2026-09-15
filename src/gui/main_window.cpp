@@ -179,7 +179,13 @@ void MainWindow::setupPlayingPage() {
 
     connect(this->app_controller_, &AppController::requestShowNoMatchPage, this->ui_->pagePlaying, &AnimePlayingPage::showNoMatchPage);
     connect(this->app_controller_, &AppController::requestShowIdlePage, this->ui_->pagePlaying, &AnimePlayingPage::showIdlePage);
-    connect(this->app_controller_, &AppController::requestShowSelectAnimePage, this->ui_->pagePlaying, &AnimePlayingPage::showSelectAnimePage);
+    connect(
+        this->app_controller_, &AppController::requestShowSelectAnimePage,
+        this->ui_->pagePlaying, [this] (const QList<RecognizedAnime> &recognized_anime, const QString &title, int episode) {
+            this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::Playing);
+            this->ui_->pagePlaying->showSelectAnimePage(recognized_anime, title, episode);
+        }
+    );
     connect(
         this->app_controller_, &AppController::requestShowNowPlayingPage,
         this->ui_->pagePlaying, [this] (const RecognizedAnime &recognized_anime, const QString &title) {
@@ -187,12 +193,20 @@ void MainWindow::setupPlayingPage() {
             this->ui_->pagePlaying->showNowPlayingPage(recognized_anime, title);
         }
     );
-    connect(this->app_controller_, &AppController::requestShowSearchPage, this->ui_->pagePlaying, &AnimePlayingPage::showSearchPage);
-
+    connect(
+        this->app_controller_, &AppController::requestShowSearchPage,
+        this->ui_->pagePlaying, [this] (const QString &title, int episode) {
+            this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::Playing);
+            this->ui_->pagePlaying->showSearchPage(title, episode);
+        }
+    );
     connect(this->ui_->pagePlaying, &AnimePlayingPage::requestQuietAnimeSearch, this->app_controller_, &AppController::requestQuietAnimeSearch);
 
     connect(this->ui_->pagePlaying, &AnimePlayingPage::requestShowAnimeInfoEditDialog, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::showOrFocusInfoEdit);
     connect(this->ui_->pagePlaying, &AnimePlayingPage::requestAddMedia, this->app_controller_, &AppController::requestAddMedia);
+    connect(this->ui_->pagePlaying, &AnimePlayingPage::requestSetAnimeProgress, this->app_controller_, &AppController::requestSetAnimeProgress);
+
+    connect(this->ui_->pagePlaying, &AnimePlayingPage::recognizedAnimeSelected, this->app_controller_, &AppController::recognizedAnimeSelected);
 }
 
 void MainWindow::setupAnimeListPage() {

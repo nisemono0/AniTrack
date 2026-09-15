@@ -25,16 +25,19 @@ public slots:
 
     void showNoMatchPage(const QString &message);
     void showIdlePage();
-    void showSelectAnimePage(const QList<RecognizedAnime> &recognized_anime, const QString &title);
+    void showSelectAnimePage(const QList<RecognizedAnime> &recognized_anime, const QString &title, int episode);
     void showNowPlayingPage(const RecognizedAnime &recognized_anime, const QString &title);
 
-    void showSearchPage(const QString &title);
+    void showSearchPage(const QString &title, int episode);
 
 signals:
     void requestQuietAnimeSearch(const QString &title);
 
     void requestShowAnimeInfoEditDialog(const AnilistAnime &anime, AnimeInfoEditDialog::Page page);
     void requestAddMedia(const QList<AnilistMedia> &media_list, AnilistEntry::Status status);
+    void requestSetAnimeProgress(const QList<AnilistAnime> &anime_list, int progress);
+
+    void recognizedAnimeSelected(const RecognizedAnime &recognized_anime);
 
 private:
     Ui::AnimePlayingWidget *ui_;
@@ -44,5 +47,8 @@ private:
     void setupSelectAnimePage();
     void setupNowPlayingPage();
     void setupSearchPage();
+
+    void startNowPlaingTimer();
+    void stopNowPlayingTimer();
 };
 
