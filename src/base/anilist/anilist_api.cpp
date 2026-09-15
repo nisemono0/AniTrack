@@ -567,7 +567,7 @@ void AnilistApi::searchAnimeIds(const QList<int> &media_ids) {
     query_variables[AnilistKeys::Variables::IdIn] = ids_array;
 
     const auto query = createQuery(
-        QueryType::MediaSearch,
+        QueryType::MediaIdsSearch,
         query_variables
     );
 
