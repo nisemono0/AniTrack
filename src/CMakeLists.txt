@@ -101,6 +101,8 @@ qt_add_executable(AniTrack
     gui/dialogs/logger_dialog.hpp
     gui/dialogs/login_token_dialog.cpp
     gui/dialogs/login_token_dialog.hpp
+    gui/dialogs/now_playing_popup_dialog.cpp
+    gui/dialogs/now_playing_popup_dialog.hpp
     gui/dialogs/set_episode_dialog.cpp
     gui/dialogs/set_episode_dialog.hpp
     gui/dialogs/set_score_dialog.cpp
@@ -159,6 +161,8 @@ qt_add_executable(AniTrack
     gui/widgets/header_view.hpp
     gui/widgets/infinite_progress_dialog.cpp
     gui/widgets/infinite_progress_dialog.hpp
+    gui/widgets/label.cpp
+    gui/widgets/label.hpp
     gui/widgets/line_edit.cpp
     gui/widgets/line_edit.hpp
     gui/widgets/progress_dialog.cpp
@@ -221,6 +225,7 @@ target_sources(AniTrack
         gui/dialogs/anime_info_edit_dialog.ui
         gui/dialogs/logger_dialog.ui
         gui/dialogs/login_token_dialog.ui
+        gui/dialogs/now_playing_popup_dialog.ui
         gui/dialogs/set_episode_dialog.ui
         gui/dialogs/set_score_dialog.ui
         gui/main_window.ui
