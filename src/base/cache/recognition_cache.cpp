@@ -48,7 +48,7 @@ RecognitionCache::RecognitionCache(
     this->media_id_to_normalized_titles_.reserve(media_list.size());
 
     for (const auto &media : media_list) {
-        this->add(media);
+        this->addMedia(media);
     }
 
     Log::info(
@@ -57,7 +57,7 @@ RecognitionCache::RecognitionCache(
     );
 }
 
-void RecognitionCache::add(const AnilistMedia &media) {
+void RecognitionCache::addMedia(const AnilistMedia &media) {
     const int media_id = media.id;
 
     this->cacheTitle(media_id, media.title.english);

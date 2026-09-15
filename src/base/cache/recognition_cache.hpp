@@ -23,7 +23,7 @@ public:
     );
     ~RecognitionCache() = default;
 
-    void add(const AnilistMedia &media);
+    void addMedia(const AnilistMedia &media);
     void add(const QString &title, int media_id);
 
     void remove(int media_id);
