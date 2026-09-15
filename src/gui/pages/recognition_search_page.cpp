@@ -20,7 +20,7 @@ void RecognitionSearchPage::setPlayingAnime(const QString &title, int episode) {
     this->ui_->lineEditSearchText->setPlaceholderText(title);
 
     this->ui_->labelPlayingTitle->setText(
-        QStringLiteral("%1 episode %2").arg(title).arg(episode)
+        QStringLiteral("%1 [Episode %2]").arg(title).arg(episode)
     );
 }
 
