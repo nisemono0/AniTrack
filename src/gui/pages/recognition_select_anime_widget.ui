@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>650</width>
-    <height>496</height>
+    <width>774</width>
+    <height>447</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -96,14 +96,72 @@
     </widget>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayoutInList">
-     <property name="spacing">
-      <number>6</number>
+    <widget class="QScrollArea" name="scrollAreaInList">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="leftMargin">
-      <number>15</number>
+     <property name="focusPolicy">
+      <enum>Qt::FocusPolicy::NoFocus</enum>
      </property>
-    </layout>
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>774</width>
+        <height>127</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayoutInList">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="leftMargin">
+          <number>15</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="lineInList">
@@ -125,37 +183,75 @@
     </widget>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayoutNotInList">
-     <property name="spacing">
-      <number>6</number>
+    <widget class="QScrollArea" name="scrollAreaNotInList">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="leftMargin">
-      <number>15</number>
+     <property name="focusPolicy">
+      <enum>Qt::FocusPolicy::NoFocus</enum>
      </property>
-    </layout>
-   </item>
-   <item>
-    <widget class="Line" name="lineNotInList">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
      </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>774</width>
+        <height>127</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayoutNotInList">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="leftMargin">
+          <number>15</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Orientation::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
-    <widget class="Line" name="line_3">
+    <widget class="Line" name="lineNotInList">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
      </property>

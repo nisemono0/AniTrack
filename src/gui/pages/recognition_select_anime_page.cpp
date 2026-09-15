@@ -34,7 +34,7 @@ void RecognitionSelectAnimePage::setPlayingAnime(const QString &title, int episo
     this->ui_->lineEditSearchText->setPlaceholderText(title);
 
     this->ui_->labelPlayingTitle->setText(
-        QStringLiteral("%1 episode %2").arg(title).arg(episode)
+        QStringLiteral("%1 [Episode %2]").arg(title).arg(episode)
     );
 }
 
@@ -59,12 +59,9 @@ void RecognitionSelectAnimePage::updateSelection() {
         const auto &recognized = this->recognized_anime_.at(i);
         Label *label = new Label(
             // hack to make the label look like a hyperlink
-            QStringLiteral("<a href=#>• %1</a> episode %2").arg(
+            QStringLiteral("<a href=#>• %1</a>").arg(
                 AnilistUtils::animeTitleToPrettyString(recognized.media.title, this->title_language_)
-            ).arg(
-                recognized.episode
-            ),
-            this
+            )
         );
 
         connect(label, &Label::clicked, this, [this, i] {
@@ -80,23 +77,23 @@ void RecognitionSelectAnimePage::updateSelection() {
         }
     }
 
-    this->ui_->labelInList->setVisible(
-        this->ui_->verticalLayoutInList->count() > 0
-    );
-    this->ui_->lineInList->setVisible(
-        this->ui_->verticalLayoutInList->count() > 0
-    );
+    const bool has_in_list_items = this->ui_->verticalLayoutInList->count() > 0;
+    this->ui_->labelInList->setVisible(has_in_list_items);
+    this->ui_->lineInList->setVisible(has_in_list_items);
+    this->ui_->scrollAreaInList->setVisible(has_in_list_items);
 
-    this->ui_->labelNotInList->setVisible(
-        this->ui_->verticalLayoutNotInList->count() > 0
-    );
-    this->ui_->lineNotInList->setVisible(
-        this->ui_->verticalLayoutNotInList->count() > 0
-    );
+    const bool has_not_in_list_items = this->ui_->verticalLayoutNotInList->count() > 0;
+    this->ui_->labelNotInList->setVisible(has_not_in_list_items);
+    this->ui_->lineNotInList->setVisible(has_not_in_list_items);
+    this->ui_->scrollAreaNotInList->setVisible(has_not_in_list_items);
+
+
 }
 
 void RecognitionSelectAnimePage::initPage() {
     this->ui_->setupUi(this);
+    this->ui_->verticalLayoutInList->setAlignment(Qt::AlignTop);
+    this->ui_->verticalLayoutNotInList->setAlignment(Qt::AlignTop);
 }
 
 void RecognitionSelectAnimePage::setupPage() {
