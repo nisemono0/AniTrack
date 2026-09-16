@@ -120,9 +120,29 @@ void RecognitionNowPlayingPage::updateCoverImage() {
 void RecognitionNowPlayingPage::updateNowPlayingInfo() {
     const auto &media = this->media_;
 
-    // Now playing title
+    // Show the entry progress if entry in our list
+    // otherwise hide it
+    const auto &entry = this->entry_;
+    if (entry) {
+        this->ui_->labelProgress->setVisible(true);
+        this->ui_->labelProgressText->setVisible(true);
+        if (media.episodes <= 0) {
+            this->ui_->labelProgressText->setText(
+                QStringLiteral("%1/?").arg(entry->state().progress)
+            );
+        } else {
+            this->ui_->labelProgressText->setText(
+                QStringLiteral("%1/%2").arg(entry->state().progress).arg(media.episodes)
+            );
+        }
+    } else {
+        this->ui_->labelProgress->setVisible(false);
+        this->ui_->labelProgressText->setVisible(false);
+    }
+
+    // Now playing episode
     this->ui_->labelPlayingTitle->setText(
-        QStringLiteral("Episode: %1").arg(this->playing_episode_)
+        QStringLiteral("Episode %1").arg(this->playing_episode_)
     );
 
     // Top title
