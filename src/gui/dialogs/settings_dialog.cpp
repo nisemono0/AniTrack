@@ -175,23 +175,21 @@ void SettingsDialog::onDialogAccepted() {
 
 void SettingsDialog::onResetClicked() {
     // Reset sync settings
-    Settings::set(Settings::Sync::UpdateUseInfoOnStart, false);
-    Settings::set(Settings::Sync::UpdateAnimeInfoOnStart, false);
-    Settings::set(Settings::Sync::SyncAnimeOnStart, false);
+    this->ui_->checkBoxUpdateUserInfo->setChecked(false);
+    this->ui_->checkBoxUpdateAnimeInfo->setChecked(false);
+    this->ui_->checkBoxSyncAnime->setChecked(false);
 
     // Reset recognition settings
-    Settings::set(Settings::Recognition::EnableAnimeRecognition, true);
-    Settings::set(Settings::Recognition::EnableRecognitionPopup, true);
-    Settings::set(Settings::Recognition::MaxCacheMatches, 10);
-    Settings::set(Settings::Recognition::MinMatchScore, 0.5);
-    Settings::set(Settings::Recognition::RecognitionPopupDelay, 120);
+    this->ui_->checkBoxEnableRecognition->setChecked(true);
+    this->ui_->checkBoxEnableRecognitionPopup->setChecked(true);
+    this->ui_->spinBoxMaxMatches->setValue(10);
+    this->ui_->doubleSpinBoxMatchScore->setValue(0.5);
+    this->ui_->spinBoxPopupTimerDelay->setValue(120);
 
     // Reset ui settings
-    Settings::set(Settings::Ui::Window::StartMinimized, false);
-    Settings::set(Settings::Ui::Window::SaveLoadWindowState, false);
-    Settings::set(Settings::Ui::Window::SaveLoadAnimeHeaderState, false);
-    Settings::set(Settings::Ui::Window::SaveLoadSearchHeaderState, false);
-
-    this->updateDialog();
+    this->ui_->checkBoxStartMinimized->setChecked(false);
+    this->ui_->checkBoxSaveWindowState->setChecked(false);
+    this->ui_->checkBoxSaveAnimeHeaderState->setChecked(false);
+    this->ui_->checkBoxSaveSearchHeaderState->setChecked(false);
 }
 
