@@ -36,7 +36,7 @@ private:
     void addToggleVisibleAction();
     void addAccountActions();
     void addSyncActions();
-    void addSettingsAtion();
+    void addSettingsAction();
     void addExitAction();
 
 private slots:

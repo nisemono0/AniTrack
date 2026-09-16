@@ -36,7 +36,7 @@ void SystemTrayIcon::setupTrayMenu() {
     this->addToggleVisibleAction();
     this->addAccountActions();
     this->addSyncActions();
-    this->addSettingsAtion();
+    this->addSettingsAction();
     this->addExitAction();
 
     this->setContextMenu(this->tray_menu_);
@@ -87,7 +87,7 @@ void SystemTrayIcon::addSyncActions() {
     this->tray_menu_->addSeparator();
 }
 
-void SystemTrayIcon::addSettingsAtion() {
+void SystemTrayIcon::addSettingsAction() {
     auto *settings_action = this->tray_menu_->addAction(
         QIcon(AppResources::Icons::Settings),
         QStringLiteral("Settings")
