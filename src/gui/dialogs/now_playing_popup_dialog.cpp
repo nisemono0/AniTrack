@@ -15,6 +15,10 @@ NowPlayingPopupDialog::NowPlayingPopupDialog(
     this->setBodyText(body_text);
     this->setPopupType(popup_type);
 
+    for (auto &button : this->ui_->buttonBox->buttons()) {
+        button->setFocusPolicy(Qt::NoFocus);
+    }
+
     this->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(this, &QDialog::rejected, this, &NowPlayingPopupDialog::popupRejected);
