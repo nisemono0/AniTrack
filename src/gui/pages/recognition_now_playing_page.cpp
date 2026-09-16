@@ -196,23 +196,24 @@ void RecognitionNowPlayingPage::onPopupTimerTimeout() {
     if (!this->entry_) {
         this->openPopupDialog(
             this->playing_title_,
-            QStringLiteral("Add anime to watching list"),
+            QStringLiteral("Add to watching list"),
             NowPlayingPopupDialog::PopupType::Add
         );
     } else {
         // anime in list, update it
         // ask to set it as completed if current episode >= total episodes
+        // don't show the popup if current episode == entry progress
         if (this->playing_episode_ >= this->media_.episodes) {
             this->openPopupDialog(
                 this->playing_title_,
-                QStringLiteral("Set anime as completed"),
+                QStringLiteral("Set as completed"),
                 NowPlayingPopupDialog::PopupType::Complete
             );
-        } else {
+        } else if (this->playing_episode_ > this->entry_->state().progress) {
             // ask to set progress to currently playing episode
             this->openPopupDialog(
                 this->playing_title_,
-                QStringLiteral("Set anime progress to: %1").arg(this->playing_episode_),
+                QStringLiteral("Set as watching and progress to: %1").arg(this->playing_episode_),
                 NowPlayingPopupDialog::PopupType::Update
             );
         }
@@ -236,6 +237,13 @@ void RecognitionNowPlayingPage::onPopupAccepted(NowPlayingPopupDialog::PopupType
                 this->entry_.value(),
                 this->media_
             };
+            // Set anime as watching if not already watching/rewatching
+            auto watching_state = anime.entry.state();
+            if (watching_state.status != AnilistEntry::Status::CURRENT &&
+                watching_state.status != AnilistEntry::Status::REPEATING) {
+                watching_state.status = AnilistEntry::Status::CURRENT;
+                anime.entry.setState(watching_state);
+            }
             emit requestSetAnimeProgress({anime}, this->playing_episode_);
             break;
         }
