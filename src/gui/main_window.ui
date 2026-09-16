@@ -124,7 +124,7 @@
      <x>0</x>
      <y>0</y>
      <width>1100</width>
-     <height>30</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="focusPolicy">
@@ -233,6 +233,8 @@
    <addaction name="separator"/>
    <addaction name="actionAccountSetup"/>
    <addaction name="actionUpdateUserInfo"/>
+   <addaction name="separator"/>
+   <addaction name="actionSettings"/>
   </widget>
   <action name="actionExit">
    <property name="icon">

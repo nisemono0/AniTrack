@@ -91,6 +91,7 @@ void MainWindow::initUi() {
     this->login_token_dialog_ = new LoginTokenDialog(this);
     this->about_dialog_ = new AboutDialog(this);
     this->anime_info_edit_dialog_ = new AnimeInfoEditDialog(this);
+    this->settings_dialog_ = new SettingsDialog(this);
 }
 
 void MainWindow::setupFileMenu() {
@@ -128,11 +129,7 @@ void MainWindow::setupToolsMenu() {
 
     connect(this->ui_->actionRecreateDatabase, &QAction::triggered, this->app_controller_, &AppController::requestRecreateDatabase);
 
-#ifdef ENABLE_WIP_FEATURES
-    connect(this->ui_->actionSettings, &QAction::triggered, this, [] { qDebug() << "TODO"; });
-#else
-    this->ui_->actionSettings->setEnabled(false);
-#endif // ENABLE_WIP_FEATURES
+    connect(this->ui_->actionSettings, &QAction::triggered, this->settings_dialog_, &SettingsDialog::showOrFocus);
 }
 
 void MainWindow::setupViewMenu() {
