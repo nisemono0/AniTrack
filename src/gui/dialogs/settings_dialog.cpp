@@ -67,7 +67,7 @@ void SettingsDialog::updateRecognitionSettings() {
         Settings::get(Settings::Recognition::EnableRecognitionPopup, true)
     );
     this->ui_->spinBoxMaxMatches->setValue(
-        Settings::get(Settings::Recognition::MaxCacheMatches, 5)
+        Settings::get(Settings::Recognition::MaxCacheMatches, 10)
     );
     this->ui_->doubleSpinBoxMatchScore->setValue(
         Settings::get(Settings::Recognition::MinMatchScore, 0.5)
@@ -168,7 +168,7 @@ void SettingsDialog::onResetClicked() {
     // Reset recognition settings
     Settings::set(Settings::Recognition::EnableAnimeRecognition, true);
     Settings::set(Settings::Recognition::EnableRecognitionPopup, true);
-    Settings::set(Settings::Recognition::MaxCacheMatches, 5);
+    Settings::set(Settings::Recognition::MaxCacheMatches, 10);
     Settings::set(Settings::Recognition::MinMatchScore, 0.5);
     Settings::set(Settings::Recognition::RecognitionPopupDelay, 120);
 
