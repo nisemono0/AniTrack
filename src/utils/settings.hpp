@@ -54,8 +54,30 @@ inline const QString StandardDeviation = QStringLiteral("AnilistUserStats/Standa
 } // namespace UserStats
 } // namespace Settings::Anilist
 
+// Sync settings keys
+namespace Settings::Sync {
+inline const QString UpdateUseInfoOnStart   = QStringLiteral("Sync/UpdateUseInfoOnStart");
+inline const QString UpdateAnimeInfoOnStart = QStringLiteral("Sync/UpdateAnimeInfoOnStart");
+inline const QString SyncAnimeOnStart       = QStringLiteral("Sync/SyncAnimeOnStart");
+} // namespace Settings::Sync
 
+// Recognition settings keys
+namespace Settings::Recognition {
+inline const QString EnableAnimeRecognition = QStringLiteral("Recognition/EnableAnimeRecognition");
+inline const QString EnableRecognitionPopup = QStringLiteral("Recognition/EnableRecognitionPopup");
+inline const QString MaxCacheMatches        = QStringLiteral("Recognition/MaxCacheMatches");
+inline const QString MinMatchScore          = QStringLiteral("Recognition/MinMatchScore");
+inline const QString RecognitionPopupDelay  = QStringLiteral("Recognition/RecognitionPopupDelay");
+} // namespace Settings::Recognition
+
+// Ui settings keys
 namespace Settings::Ui {
+namespace Window {
+inline const QString StartMinimized        = QStringLiteral("Window/StartMinimized");
+inline const QString SaveStateOnQuit       = QStringLiteral("Window/SaveStateOnQuit");
+inline const QString SaveAnimeHeaderState  = QStringLiteral("Window/SaveAnimeHeaderState");
+inline const QString SaveSearchHeaderState = QStringLiteral("Window/SaveSearchHeaderState");
+} // namespace Window
 namespace AnimeListView {
 inline const QString HeaderState = QStringLiteral("AnimeListView/HeaderState");
 }
