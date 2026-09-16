@@ -25,6 +25,9 @@ inline void set(const QString &key, const T &value) {
 // Save enum types as their underlying int value
 void syncToDisk();
 
+// Signal that settings have changed
+void signalChanges();
+
 } // namespace Settings
 
 

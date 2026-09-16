@@ -37,3 +37,8 @@ void AppSettings::syncToDisk() const {
 
     settings.sync();
 }
+
+void AppSettings::signalChanges() {
+    emit settingsChanged();
+}
+

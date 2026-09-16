@@ -40,6 +40,12 @@ public:
     // Save enum types as their underlying int value
     void syncToDisk() const;
 
+    // Signal that settings have changed
+    void signalChanges();
+
+signals:
+    void settingsChanged();
+
 private:
     QVariantMap settings_variantmap_;
 
