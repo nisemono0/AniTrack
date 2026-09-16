@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>928</width>
-    <height>566</height>
+    <width>894</width>
+    <height>534</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -17,6 +17,18 @@
    <string>Statistics</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QLabel" name="label_5">
      <property name="sizePolicy">
@@ -28,13 +40,13 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>40</height>
+       <height>0</height>
       </size>
      </property>
      <property name="font">
       <font>
-       <pointsize>12</pointsize>
-       <underline>true</underline>
+       <pointsize>14</pointsize>
+       <underline>false</underline>
       </font>
      </property>
      <property name="text">
@@ -42,6 +54,13 @@
      </property>
      <property name="wordWrap">
       <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
    </item>
@@ -311,13 +330,13 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>40</height>
+       <height>0</height>
       </size>
      </property>
      <property name="font">
       <font>
-       <pointsize>12</pointsize>
-       <underline>true</underline>
+       <pointsize>14</pointsize>
+       <underline>false</underline>
       </font>
      </property>
      <property name="text">
@@ -325,6 +344,13 @@
      </property>
      <property name="wordWrap">
       <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
    </item>
@@ -454,13 +480,13 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>40</height>
+       <height>0</height>
       </size>
      </property>
      <property name="font">
       <font>
-       <pointsize>12</pointsize>
-       <underline>true</underline>
+       <pointsize>14</pointsize>
+       <underline>false</underline>
       </font>
      </property>
      <property name="text">
@@ -468,6 +494,13 @@
      </property>
      <property name="wordWrap">
       <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
    </item>
