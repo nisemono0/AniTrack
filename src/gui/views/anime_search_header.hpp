@@ -7,7 +7,7 @@ class AnimeSearchHeader final : public HeaderView {
     Q_OBJECT;
 public:
     explicit AnimeSearchHeader(QWidget *parent = nullptr);
-    ~AnimeSearchHeader();
+    ~AnimeSearchHeader() = default;
 
 private slots:
     void onCustomContextMenuRequested(const QPoint &pos);

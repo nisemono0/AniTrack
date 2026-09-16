@@ -7,7 +7,7 @@ class AnimeListHeader final : public HeaderView {
     Q_OBJECT;
 public:
     explicit AnimeListHeader(QWidget *parent = nullptr);
-    ~AnimeListHeader();
+    ~AnimeListHeader() = default;
 
 private slots:
     void onCustomContextMenuRequested(const QPoint &pos);

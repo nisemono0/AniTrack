@@ -54,8 +54,9 @@ private:
     QList<RecognizedAnime> recognized_anime_;
     QHash<int, int> missing_ids_to_redirected_episode_;
 
+    bool recognition_enabled_ = true;
     double min_score_ = 0.5;
-    int max_matches_ = 5;
+    int max_matches_ = 10;
 
     MprisWatcher *mpris_watcher_;
     RecognitionCache *recognition_cache_;
@@ -74,6 +75,8 @@ private:
 private slots:
     void onMediaFileChanged(const QString &filename);
     void onMediaPlayerClosed();
+
+    void applySettings();
 
 };
 

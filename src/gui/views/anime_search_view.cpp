@@ -29,11 +29,23 @@ struct MediaAddAction {
 AnimeSearchView::AnimeSearchView(QWidget *parent) : QTreeView(parent) {
     this->initView();
 
+    this->applySettings();
+
     this->setupModel();
     this->setupDelegates();
     this->setupHeader();
 
     connect(this, &QTreeView::customContextMenuRequested, this, &AnimeSearchView::onCustomContextMenuRequested);
+    connect(App::instance()->settings(), &AppSettings::settingsChanged, this, &AnimeSearchView::applySettings);
+}
+
+AnimeSearchView::~AnimeSearchView() {
+    if (this->save_load_header_state_) {
+        Settings::set(
+            Settings::Ui::Window::AnimeSearch::HeaderState,
+            this->anime_search_header_->saveState()
+        );
+    }
 }
 
 void AnimeSearchView::updateUserPreferences(const AnilistAccount::User &user) {
@@ -128,11 +140,16 @@ void AnimeSearchView::setupHeader() {
         this->anime_search_header_->setSectionHidden(static_cast<int>(setting.column), setting.hidden);
     }
 
+    // Save the above state as default
     this->anime_search_header_->saveCurrentState();
 
-    const QByteArray saved_header_state = Settings::get(Settings::Ui::AnimeSearchView::HeaderState, QByteArray());
-    if (!saved_header_state.isEmpty()) {
-        this->anime_search_header_->restoreState(saved_header_state);
+    // load the saved header state if option is set
+    if (this->save_load_header_state_) {
+        const QByteArray saved_header_state = Settings::get(Settings::Ui::Window::AnimeSearch::HeaderState, QByteArray());
+
+        if (!saved_header_state.isEmpty()) {
+            this->anime_search_header_->restoreState(saved_header_state);
+        }
     }
 }
 
@@ -201,4 +218,8 @@ void AnimeSearchView::onCustomContextMenuRequested(const QPoint &pos) {
     }
 
     menu.exec(this->viewport()->mapToGlobal(pos));
+}
+
+void AnimeSearchView::applySettings() {
+    this->save_load_header_state_ = Settings::get(Settings::Ui::Window::SaveLoadSearchHeaderState, false);
 }

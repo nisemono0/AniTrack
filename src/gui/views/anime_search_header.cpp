@@ -4,8 +4,6 @@
 
 #include "app/app_resources.hpp"
 
-#include "utils/settings.hpp"
-
 #include <QMenu>
 
 
@@ -18,10 +16,6 @@ AnimeSearchHeader::AnimeSearchHeader(QWidget *parent) : HeaderView(Qt::Horizonta
     this->setSectionsMovable(true);
 
     connect(this, &QHeaderView::customContextMenuRequested, this, &AnimeSearchHeader::onCustomContextMenuRequested);
-}
-
-AnimeSearchHeader::~AnimeSearchHeader() {
-    Settings::set(Settings::Ui::AnimeSearchView::HeaderState, this->saveState());
 }
 
 void AnimeSearchHeader::onCustomContextMenuRequested(const QPoint &pos) {

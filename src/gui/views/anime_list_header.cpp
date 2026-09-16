@@ -4,8 +4,6 @@
 
 #include "app/app_resources.hpp"
 
-#include "utils/settings.hpp"
-
 #include <QMenu>
 
 
@@ -18,11 +16,6 @@ AnimeListHeader::AnimeListHeader(QWidget *parent) : HeaderView(Qt::Horizontal, p
     this->setSectionsMovable(true);
 
     connect(this, &QHeaderView::customContextMenuRequested, this, &AnimeListHeader::onCustomContextMenuRequested);
-}
-
-AnimeListHeader::~AnimeListHeader() {
-    // Save the header state on destruction
-    Settings::set(Settings::Ui::AnimeListView::HeaderState, this->saveState());
 }
 
 void AnimeListHeader::onCustomContextMenuRequested(const QPoint &pos) {

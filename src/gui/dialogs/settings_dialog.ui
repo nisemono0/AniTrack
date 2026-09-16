@@ -222,7 +222,7 @@
    <item>
     <widget class="QCheckBox" name="checkBoxSaveWindowState">
      <property name="text">
-      <string>Save window state on quit</string>
+      <string>Save/Load window state on quit/start</string>
      </property>
     </widget>
    </item>
@@ -232,7 +232,7 @@
       <enum>Qt::FocusPolicy::ClickFocus</enum>
      </property>
      <property name="text">
-      <string>Save anime list header state on quit</string>
+      <string>Save/Load anime list header state on quit/start</string>
      </property>
     </widget>
    </item>
@@ -242,7 +242,7 @@
       <enum>Qt::FocusPolicy::ClickFocus</enum>
      </property>
      <property name="text">
-      <string>Save search list header state on quit</string>
+      <string>Save/Load search list header state on quit/start</string>
      </property>
     </widget>
    </item>

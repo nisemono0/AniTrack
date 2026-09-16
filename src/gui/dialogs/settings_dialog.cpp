@@ -10,6 +10,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     ui_(new Ui::SettingsDialog) {
 
     this->initDialog();
+    this->setupDialog();
     this->updateDialog();
 
     for (auto &button : this->ui_->buttonBox->buttons()) {
@@ -39,6 +40,26 @@ void SettingsDialog::showOrFocus() {
 
 void SettingsDialog::initDialog() {
     this->ui_->setupUi(this);
+}
+
+void SettingsDialog::setupDialog() {
+    connect(this->ui_->checkBoxEnableRecognition, &QCheckBox::checkStateChanged, this, [this] (Qt::CheckState state) {
+        const bool recognition_enabled = state == Qt::Checked;
+        const bool recognition_popup_enabled = this->ui_->checkBoxEnableRecognitionPopup->checkState() == Qt::Checked;
+
+        this->ui_->checkBoxEnableRecognitionPopup->setEnabled(recognition_enabled);
+        this->ui_->spinBoxMaxMatches->setEnabled(recognition_enabled);
+        this->ui_->doubleSpinBoxMatchScore->setEnabled(recognition_enabled);
+
+        this->ui_->spinBoxPopupTimerDelay->setEnabled(recognition_enabled && recognition_popup_enabled);
+    });
+
+    connect(this->ui_->checkBoxEnableRecognitionPopup, &QCheckBox::checkStateChanged, this, [this] (Qt::CheckState state) {
+        const bool recognition_enabled = this->ui_->checkBoxEnableRecognition->checkState() == Qt::Checked;
+        const bool recognition_popup_enabled = (state == Qt::Checked) && recognition_enabled;
+
+        this->ui_->spinBoxPopupTimerDelay->setEnabled(recognition_popup_enabled);
+    });
 }
 
 void SettingsDialog::updateDialog() {
@@ -75,14 +96,6 @@ void SettingsDialog::updateRecognitionSettings() {
     this->ui_->spinBoxPopupTimerDelay->setValue(
         Settings::get(Settings::Recognition::RecognitionPopupDelay, 120)
     );
-
-    const bool recognition_enabled = this->ui_->checkBoxEnableRecognition->isChecked();
-    this->ui_->checkBoxEnableRecognitionPopup->setEnabled(recognition_enabled);
-    this->ui_->spinBoxMaxMatches->setEnabled(recognition_enabled);
-    this->ui_->doubleSpinBoxMatchScore->setEnabled(recognition_enabled);
-
-    const bool recognition_popup_enabled = this->ui_->checkBoxEnableRecognitionPopup->isChecked() && recognition_enabled;
-    this->ui_->spinBoxPopupTimerDelay->setEnabled(recognition_popup_enabled);
 }
 
 void SettingsDialog::updateUiSettings() {
@@ -90,13 +103,13 @@ void SettingsDialog::updateUiSettings() {
         Settings::get(Settings::Ui::Window::StartMinimized, false)
     );
     this->ui_->checkBoxSaveWindowState->setChecked(
-        Settings::get(Settings::Ui::Window::SaveStateOnQuit, false)
+        Settings::get(Settings::Ui::Window::SaveLoadWindowState, false)
     );
     this->ui_->checkBoxSaveAnimeHeaderState->setChecked(
-        Settings::get(Settings::Ui::Window::SaveAnimeHeaderState, false)
+        Settings::get(Settings::Ui::Window::SaveLoadAnimeHeaderState, false)
     );
     this->ui_->checkBoxSaveSearchHeaderState->setChecked(
-        Settings::get(Settings::Ui::Window::SaveSearchHeaderState, false)
+        Settings::get(Settings::Ui::Window::SaveLoadSearchHeaderState, false)
     );
 }
 
@@ -138,24 +151,25 @@ void SettingsDialog::onDialogAccepted() {
     );
 
     // Ui settings
-    Settings::get(
+    Settings::set(
         Settings::Ui::Window::StartMinimized,
         this->ui_->checkBoxStartMinimized->isChecked()
     );
-    Settings::get(
-        Settings::Ui::Window::SaveStateOnQuit,
+    Settings::set(
+        Settings::Ui::Window::SaveLoadWindowState,
         this->ui_->checkBoxSaveWindowState->isChecked()
     );
-    Settings::get(
-        Settings::Ui::Window::SaveAnimeHeaderState,
+    Settings::set(
+        Settings::Ui::Window::SaveLoadAnimeHeaderState,
         this->ui_->checkBoxSaveAnimeHeaderState->isChecked()
     );
-    Settings::get(
-        Settings::Ui::Window::SaveSearchHeaderState,
+    Settings::set(
+        Settings::Ui::Window::SaveLoadSearchHeaderState,
         this->ui_->checkBoxSaveSearchHeaderState->isChecked()
     );
 
-    // Signal settings changes
+    // Sync new settings to disk and signal the changes
+    Settings::syncToDisk();
     Settings::signalChanges();
 }
 
@@ -174,9 +188,9 @@ void SettingsDialog::onResetClicked() {
 
     // Reset ui settings
     Settings::set(Settings::Ui::Window::StartMinimized, false);
-    Settings::set(Settings::Ui::Window::SaveStateOnQuit, false);
-    Settings::set(Settings::Ui::Window::SaveAnimeHeaderState, false);
-    Settings::set(Settings::Ui::Window::SaveSearchHeaderState, false);
+    Settings::set(Settings::Ui::Window::SaveLoadWindowState, false);
+    Settings::set(Settings::Ui::Window::SaveLoadAnimeHeaderState, false);
+    Settings::set(Settings::Ui::Window::SaveLoadSearchHeaderState, false);
 
     this->updateDialog();
 }

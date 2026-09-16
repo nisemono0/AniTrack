@@ -26,9 +26,6 @@ public slots:
 
     void setAuthToken(const QString &auth_token);
 
-    void onUserFetchFailed(const QString &message);
-    void onUserFetchFinished(const AnilistAccount::User &user);
-
 signals:
     void authUrlReady(const QUrl &auth_url);
 
@@ -55,5 +52,8 @@ private:
     void fetchUser();
 
 private slots:
+    void onUserFetchFailed(const QString &message);
+    void onUserFetchFinished(const AnilistAccount::User &user);
+
 };
 

@@ -35,8 +35,6 @@ public:
     void startPopupTimer();
     void stopPopupTimer();
 
-    void setPopupTimerDelay(std::chrono::minutes minutes);
-
 signals:
     void requestShowAnimeInfoEditDialog(const AnilistAnime &anime, AnimeInfoEditDialog::Page page);
     void requestAddMedia(const QList<AnilistMedia> &media_list, AnilistEntry::Status status);
@@ -50,6 +48,7 @@ private:
     AnilistAccount::TitleLanguage title_language_;
 
     QTimer *popup_timer_;
+    bool is_popup_enabled_ = true;
     QPointer<NowPlayingPopupDialog> popup_dialog_;
 
     QString playing_title_;
@@ -75,4 +74,5 @@ private slots:
     void onPopupTimerTimeout();
     void onPopupAccepted(NowPlayingPopupDialog::PopupType popup_type);
 
+    void applySettings();
 };

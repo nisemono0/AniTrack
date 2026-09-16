@@ -3,6 +3,7 @@
 #include "app/system_tray_icon.hpp"
 
 #include "utils/dialog.hpp"
+#include "utils/settings.hpp"
 
 #include "gui/main_window.hpp"
 
@@ -65,7 +66,9 @@ int main (int argc, char *argv[]) {
     }
 
     app.controller()->init();
-    main_window->show();
+    if (!app.settings()->get(Settings::Ui::Window::StartMinimized, false)) {
+        main_window->show();
+    }
 
     const int app_return_code = app.exec();
     delete main_window;

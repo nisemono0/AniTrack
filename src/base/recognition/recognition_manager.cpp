@@ -1,6 +1,9 @@
 #include "base/recognition/recognition_manager.hpp"
 
+#include "base/settings/app_settings.hpp"
+
 #include "utils/log.hpp"
+#include "utils/settings.hpp"
 
 #include "base/recognition/title_normalizer.hpp"
 
@@ -15,6 +18,9 @@ RecognitionManager::RecognitionManager(
     this->initWatcher();
 
     this->anime_redirection_ = new AnimeRedirection(this);
+
+    this->applySettings();
+    connect(App::instance()->settings(), &AppSettings::settingsChanged, this, &RecognitionManager::applySettings);
 }
 
 void RecognitionManager::registerRunningPlayers() {
@@ -329,6 +335,13 @@ void RecognitionManager::onMediaFileChanged(const QString &filename) {
 
     this->resetRecognition();
 
+    if (!this->recognition_enabled_) {
+        emit requestShowNoMatchPage(
+            QStringLiteral("Recognition disabled")
+        );
+        return;
+    }
+
     const auto file_info = AnimeFileParser::parse(filename);
     if (file_info.title.isEmpty() || file_info.episode == AnimeFileParser::InvalidEpisode) {
         this->failRecognition(
@@ -371,5 +384,16 @@ void RecognitionManager::onMediaFileChanged(const QString &filename) {
 void RecognitionManager::onMediaPlayerClosed() {
     this->resetRecognition();
     emit requestShowIdlePage();
+}
+
+void RecognitionManager::applySettings() {
+    this->recognition_enabled_ = Settings::get(Settings::Recognition::EnableAnimeRecognition, true);
+    this->min_score_ = Settings::get(Settings::Recognition::MinMatchScore, 0.5);
+    this->max_matches_ = Settings::get(Settings::Recognition::MaxCacheMatches, 10);
+
+    if (!this->recognition_enabled_) {
+        this->resetRecognition();
+        emit requestShowIdlePage();
+    }
 }
 

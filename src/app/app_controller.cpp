@@ -1,5 +1,7 @@
 #include "app/app_controller.hpp"
 
+#include "utils/settings.hpp"
+
 
 AppController::AppController(
     Logger *logger,
@@ -29,6 +31,19 @@ void AppController::init() {
     this->account_manager_->ensureLoggedIn();
     this->database_controller_->initialLoad();
     this->recognition_manager_->registerRunningPlayers();
+
+    if (Settings::get(Settings::Sync::UpdateUseInfoOnStart, false)) {
+        this->account_manager_->requestUserUpdate();
+    }
+
+    const bool anime_update = Settings::get(Settings::Sync::UpdateAnimeInfoOnStart, false);
+    const bool anime_sync = Settings::get(Settings::Sync::SyncAnimeOnStart, false);
+
+    if (anime_sync) {
+        this->sync_manager_->requestSync();
+    } else if (anime_update) {
+        this->sync_manager_->requestMediaSync();
+    }
 }
 
 void AppController::setupLoggerConnections() {

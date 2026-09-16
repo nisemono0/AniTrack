@@ -20,7 +20,7 @@ class AnimeSearchView final : public QTreeView {
     Q_OBJECT;
 public:
     explicit AnimeSearchView(QWidget *parent = nullptr);
-    ~AnimeSearchView() = default;
+    ~AnimeSearchView();
 
     void updateUserPreferences(const AnilistAccount::User &user);
 
@@ -48,6 +48,8 @@ private:
     AnimeSearchAdultDelegate *adult_delegate_;
     AnimeSearchInListDelegate *in_list_delegate_;
 
+    bool save_load_header_state_ = false;
+
     void initView();
 
     void setupModel();
@@ -56,6 +58,6 @@ private:
 
 private slots:
     void onCustomContextMenuRequested(const QPoint &pos);
-
+    void applySettings();
 };
 

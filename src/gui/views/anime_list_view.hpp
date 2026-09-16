@@ -26,7 +26,7 @@ class AnimeListView final : public QTreeView {
     Q_OBJECT;
 public:
     explicit AnimeListView(QWidget *parent = nullptr);
-    ~AnimeListView() = default;
+    ~AnimeListView();
 
     void updateUserPreferences(const AnilistAccount::User &user);
 
@@ -86,6 +86,8 @@ private:
     AnimeListStartedDateDelegate *started_delegate_;
     AnimeListCompletedDateDelegate *completed_delegate_;
 
+    bool save_load_header_state_ = false;
+
     void initView();
 
     void setupModel();
@@ -103,6 +105,7 @@ private:
 
 private slots:
     void onCustomContextMenuRequested(const QPoint &pos);
+    void applySettings();
 
 };
 

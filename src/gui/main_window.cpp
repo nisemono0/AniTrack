@@ -3,6 +3,7 @@
 #include "utils/dialog.hpp"
 #include "utils/links.hpp"
 #include "utils/web.hpp"
+#include "utils/settings.hpp"
 
 #include <QShortcut>
 
@@ -15,6 +16,8 @@ MainWindow::MainWindow(
     app_controller_(app_controller) {
 
     this->initUi();
+
+    this->applySettings();
 
     this->setupFileMenu();
     this->setupAnilistMenu();
@@ -38,9 +41,17 @@ MainWindow::MainWindow(
 
     this->setupMainWindow();
     this->setupTray();
+
+    connect(App::instance()->settings(), &AppSettings::settingsChanged, this, &MainWindow::applySettings);
 }
 
 MainWindow::~MainWindow() {
+    if (this->save_load_window_state_) {
+        Settings::set(
+            Settings::Ui::Window::State,
+            this->saveGeometry()
+        );
+    }
     delete this->ui_;
 }
 
@@ -324,6 +335,12 @@ void MainWindow::setupMainWindow() {
     connect(this->app_controller_, &AppController::requestShowInfoDialog, this, &MainWindow::showInfo);
     connect(this->app_controller_, &AppController::requestShowWarningDialog, this, &MainWindow::showWarning);
     connect(this->app_controller_, &AppController::requestShowErrorDialog, this, &MainWindow::showError);
+
+    if (this->save_load_window_state_) {
+        this->restoreGeometry(
+            Settings::get(Settings::Ui::Window::State, QByteArray())
+        );
+    }
 }
 
 void MainWindow::setupTray() {
@@ -424,5 +441,9 @@ void MainWindow::showPage(ListWidgetNavigation::Page page) {
         default:
             break;
     }
+}
+
+void MainWindow::applySettings() {
+    this->save_load_window_state_ = Settings::get(Settings::Ui::Window::SaveLoadWindowState, false);
 }
 

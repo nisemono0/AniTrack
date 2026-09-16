@@ -75,11 +75,23 @@ struct StatusMenuAction {
 AnimeListView::AnimeListView(QWidget *parent) : QTreeView(parent) {
     this->initView();
 
+    this->applySettings();
+
     this->setupModel();
     this->setupDelegates();
     this->setupHeader();
 
     connect(this, &QTreeView::customContextMenuRequested, this, &AnimeListView::onCustomContextMenuRequested);
+    connect(App::instance()->settings(), &AppSettings::settingsChanged, this, &AnimeListView::applySettings);
+}
+
+AnimeListView::~AnimeListView() {
+    if (this->save_load_header_state_) {
+        Settings::set(
+            Settings::Ui::Window::AnimeList::HeaderState,
+            this->anime_list_header_->saveState()
+        );
+    }
 }
 
 void AnimeListView::updateUserPreferences(const AnilistAccount::User &user) {
@@ -252,10 +264,16 @@ void AnimeListView::setupHeader() {
     // Save the above state as default;
     this->anime_list_header_->saveCurrentState();
 
-    // Set the previous user's header state if any, while keeping the above as default
-    const QByteArray saved_header_state = Settings::get(Settings::Ui::AnimeListView::HeaderState, QByteArray());
-    if (!saved_header_state.isEmpty()) {
-        this->anime_list_header_->restoreState(saved_header_state);
+    // load the saved header state if option is set
+    if (this->save_load_header_state_) {
+        const QByteArray saved_header_state = Settings::get(
+            Settings::Ui::Window::AnimeList::HeaderState,
+            QByteArray()
+        );
+
+        if (!saved_header_state.isEmpty()) {
+            this->anime_list_header_->restoreState(saved_header_state);
+        }
     }
 }
 
@@ -550,5 +568,9 @@ void AnimeListView::onCustomContextMenuRequested(const QPoint &pos) {
     this->addStatusActions(menu, selected_anime);
 
     menu.exec(this->viewport()->mapToGlobal(pos));
+}
+
+void AnimeListView::applySettings() {
+    this->save_load_header_state_ = Settings::get(Settings::Ui::Window::SaveLoadAnimeHeaderState, false);
 }
 

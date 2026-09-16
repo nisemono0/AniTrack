@@ -4,6 +4,8 @@
 #include "utils/links.hpp"
 #include "utils/cache.hpp"
 #include "utils/log.hpp"
+#include "utils/settings.hpp"
+
 
 RecognitionNowPlayingPage::RecognitionNowPlayingPage(QWidget *parent) :
     QWidget(parent),
@@ -11,6 +13,9 @@ RecognitionNowPlayingPage::RecognitionNowPlayingPage(QWidget *parent) :
 
     this->initPage();
     this->setupPage();
+
+    this->applySettings();
+    connect(App::instance()->settings(), &AppSettings::settingsChanged, this, &RecognitionNowPlayingPage::applySettings);
 }
 
 RecognitionNowPlayingPage::~RecognitionNowPlayingPage() {
@@ -54,15 +59,13 @@ void RecognitionNowPlayingPage::setNowPlayingAnime(const RecognizedAnime &recogn
 }
 
 void RecognitionNowPlayingPage::startPopupTimer() {
-    this->popup_timer_->start();
+    if (this->is_popup_enabled_) {
+        this->popup_timer_->start();
+    }
 }
 
 void RecognitionNowPlayingPage::stopPopupTimer() {
     this->popup_timer_->stop();
-}
-
-void RecognitionNowPlayingPage::setPopupTimerDelay(std::chrono::minutes minutes) {
-    this->popup_timer_->setInterval(minutes);
 }
 
 void RecognitionNowPlayingPage::showEdit() {
@@ -80,7 +83,6 @@ void RecognitionNowPlayingPage::initPage() {
     this->ui_->setupUi(this);
 
     this->popup_timer_ = new QTimer(this);
-    this->popup_timer_->setInterval(std::chrono::seconds(120));;
     this->popup_timer_->setSingleShot(true);
 }
 
@@ -250,3 +252,18 @@ void RecognitionNowPlayingPage::onPopupAccepted(NowPlayingPopupDialog::PopupType
         }
     }
 }
+
+void RecognitionNowPlayingPage::applySettings() {
+    this->is_popup_enabled_ = Settings::get(Settings::Recognition::EnableRecognitionPopup, true);
+
+    if (!this->is_popup_enabled_) {
+        this->popup_timer_->stop();
+    }
+
+    this->popup_timer_->setInterval(
+        std::chrono::seconds(
+            Settings::get(Settings::Recognition::RecognitionPopupDelay, 120)
+        )
+    );
+}
+

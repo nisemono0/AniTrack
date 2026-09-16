@@ -23,6 +23,7 @@ private:
     Ui::SettingsDialog *ui_;
 
     void initDialog();
+    void setupDialog();
     void updateDialog();
 
     void updateSyncSettings();

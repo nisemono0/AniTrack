@@ -73,15 +73,17 @@ inline const QString RecognitionPopupDelay  = QStringLiteral("Recognition/Recogn
 // Ui settings keys
 namespace Settings::Ui {
 namespace Window {
-inline const QString StartMinimized        = QStringLiteral("Window/StartMinimized");
-inline const QString SaveStateOnQuit       = QStringLiteral("Window/SaveStateOnQuit");
-inline const QString SaveAnimeHeaderState  = QStringLiteral("Window/SaveAnimeHeaderState");
-inline const QString SaveSearchHeaderState = QStringLiteral("Window/SaveSearchHeaderState");
+inline const QString StartMinimized            = QStringLiteral("Window/StartMinimized");
+inline const QString SaveLoadWindowState       = QStringLiteral("Window/SaveLoadWindowState");
+inline const QString SaveLoadAnimeHeaderState  = QStringLiteral("Window/SaveLoadAnimeHeaderState");
+inline const QString SaveLoadSearchHeaderState = QStringLiteral("Window/SaveLoadSearchHeaderState");
+inline const QString State                     = QStringLiteral("Window/WindowState");
+namespace AnimeList {
+inline const QString HeaderState = QStringLiteral("Window/AnimeList/HeaderState");
+}
+namespace AnimeSearch {
+inline const QString HeaderState = QStringLiteral("Window/AnimeSearch/HeaderState");
+}
 } // namespace Window
-namespace AnimeListView {
-inline const QString HeaderState = QStringLiteral("AnimeListView/HeaderState");
-}
-namespace AnimeSearchView {
-inline const QString HeaderState = QStringLiteral("AnimeSearchView/HeaderState");
-}
 } // namespace Settings::Ui
+

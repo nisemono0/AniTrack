@@ -34,7 +34,6 @@ public:
     );
     ~MainWindow();
 
-
 public slots:
     // Show and focus mainwindow
     void showAndFocus();
@@ -74,6 +73,9 @@ private:
     // Widgets
     QPointer<InfiniteProgressDialog> infinite_progress_dialog_;
     QPointer<ProgressDialog> progress_dialog_;
+
+    // Settings
+    bool save_load_window_state_ = false;
 
     // Setup
     void initUi();
@@ -122,5 +124,8 @@ private slots:
 
     // Display the stacked page
     void showPage(ListWidgetNavigation::Page page);
+
+    // Apply settings
+    void applySettings();
 };
 
