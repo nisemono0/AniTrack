@@ -16,14 +16,28 @@ public slots:
 
 signals:
     void toggleVisibleTriggered();
+
+    void accountSetupTriggered();
+    void userUpdateTriggered();
+
+    void syncTriggered();
+    void syncAnimeInfoTriggered();
+
+    void settingsTriggered();
+
     void exitTriggered();
 
 private:
     QMenu *tray_menu_;
     QAction *toggle_visible_action_;
-    QAction *exit_action_;
 
     void setupTrayMenu();
+
+    void addToggleVisibleAction();
+    void addAccountActions();
+    void addSyncActions();
+    void addSettingsAtion();
+    void addExitAction();
 
 private slots:
     void onTrayActivated(QSystemTrayIcon::ActivationReason reason);
