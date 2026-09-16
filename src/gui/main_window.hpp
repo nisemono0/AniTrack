@@ -41,9 +41,18 @@ public slots:
     // Toggle window visibility
     void toggleWindowVisibility();
 
-
 signals:
     void windowVisibilityChanged(bool visible);
+
+    // Tray menu
+    void trayAccountSetupTriggered();
+    void trayUserUpdateTriggered();
+
+    void traySyncTriggered();
+    void traySyncAnimeInfoTriggered();
+
+    void traySettingsTriggered();
+
     void exitTriggered();
 
 protected:
@@ -90,6 +99,8 @@ private:
     void setupProgressDialogs();
 
     void setupMainWindow();
+
+    void setupTray();
 
 private slots:
     // Show/Close the infinite progress dialog

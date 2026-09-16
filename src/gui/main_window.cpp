@@ -37,6 +37,7 @@ MainWindow::MainWindow(
     this->setupProgressDialogs();
 
     this->setupMainWindow();
+    this->setupTray();
 }
 
 MainWindow::~MainWindow() {
@@ -323,6 +324,16 @@ void MainWindow::setupMainWindow() {
     connect(this->app_controller_, &AppController::requestShowInfoDialog, this, &MainWindow::showInfo);
     connect(this->app_controller_, &AppController::requestShowWarningDialog, this, &MainWindow::showWarning);
     connect(this->app_controller_, &AppController::requestShowErrorDialog, this, &MainWindow::showError);
+}
+
+void MainWindow::setupTray() {
+    connect(this, &MainWindow::trayAccountSetupTriggered, this->ui_->actionAccountSetup, &QAction::trigger);
+    connect(this, &MainWindow::trayUserUpdateTriggered, this->ui_->actionUpdateUserInfo, &QAction::trigger);
+
+    connect(this, &MainWindow::traySyncTriggered, this->ui_->actionSync, &QAction::trigger);
+    connect(this, &MainWindow::traySyncAnimeInfoTriggered, this->ui_->actionSyncAnimeInfo, &QAction::trigger);
+
+    connect(this, &MainWindow::traySettingsTriggered, this->ui_->actionSettings, &QAction::trigger);
 }
 
 void MainWindow::showInfiniteProgressDialog(const QString &title, const QString &message) {
