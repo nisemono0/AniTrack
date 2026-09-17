@@ -217,13 +217,6 @@ void MprisWatcher::onPropertiesChanged(const QString &interface_name,
     }
 
     if (!changed_properties.contains(MprisKeys::Metadata)) {
-        const QStringList keys = changed_properties.keys();
-        Log::warning(
-            CONTEXT_CLASS,
-            QStringLiteral("No Metadata in PropertiesChanged signal. Changed: %1").arg(
-                keys.join(QChar::Space)
-            )
-        );
         return;
     }
 
