@@ -45,6 +45,9 @@ int main (int argc, char *argv[]) {
     QObject::connect(system_tray, &SystemTrayIcon::syncAnimeInfoTriggered, main_window, &MainWindow::traySyncAnimeInfoTriggered);
     // Tray settings
     QObject::connect(system_tray, &SystemTrayIcon::settingsTriggered, main_window, &MainWindow::traySettingsTriggered);
+    // Tray view
+    QObject::connect(system_tray, &SystemTrayIcon::logsTriggered, main_window, &MainWindow::trayLogsTriggered);
+    QObject::connect(system_tray, &SystemTrayIcon::aboutTriggered, main_window, &MainWindow::trayAboutTriggered);
     // Tray exit
     QObject::connect(system_tray, &SystemTrayIcon::exitTriggered, &app, App::quit);
     QObject::connect(main_window, &MainWindow::exitTriggered, &app, App::quit);

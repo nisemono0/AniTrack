@@ -45,6 +45,7 @@ inline const QString Account           = QStringLiteral(":/icons/account");
 inline const QString AccountInfoUpdate = QStringLiteral(":/icons/account-info-update");
 inline const QString Sync              = QStringLiteral(":/icons/sync");
 inline const QString CloudDown         = QStringLiteral(":/icons/cloud-down");
+inline const QString Logs              = QStringLiteral(":/icons/logs");
 } // namespace Icons
 } // namespace AppResources
 

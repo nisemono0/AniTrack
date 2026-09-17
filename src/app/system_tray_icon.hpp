@@ -25,6 +25,9 @@ signals:
 
     void settingsTriggered();
 
+    void logsTriggered();
+    void aboutTriggered();
+
     void exitTriggered();
 
 private:
@@ -37,6 +40,7 @@ private:
     void addAccountActions();
     void addSyncActions();
     void addSettingsAction();
+    void addViewActions();
     void addExitAction();
 
 private slots:

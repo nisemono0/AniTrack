@@ -351,6 +351,9 @@ void MainWindow::setupTray() {
     connect(this, &MainWindow::traySyncAnimeInfoTriggered, this->ui_->actionSyncAnimeInfo, &QAction::trigger);
 
     connect(this, &MainWindow::traySettingsTriggered, this->ui_->actionSettings, &QAction::trigger);
+
+    connect(this, &MainWindow::trayLogsTriggered, this->ui_->actionLogs, &QAction::trigger);
+    connect(this, &MainWindow::trayAboutTriggered, this->ui_->actionAbout, &QAction::trigger);
 }
 
 void MainWindow::showInfiniteProgressDialog(const QString &title, const QString &message) {

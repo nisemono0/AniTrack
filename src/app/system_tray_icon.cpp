@@ -34,9 +34,15 @@ void SystemTrayIcon::setupTrayMenu() {
     this->tray_menu_ = new QMenu(AppConfig::Name);
 
     this->addToggleVisibleAction();
+    this->tray_menu_->addSeparator();
     this->addAccountActions();
+    this->tray_menu_->addSeparator();
     this->addSyncActions();
+    this->tray_menu_->addSeparator();
     this->addSettingsAction();
+    this->tray_menu_->addSeparator();
+    this->addViewActions();
+    this->tray_menu_->addSeparator();
     this->addExitAction();
 
     this->setContextMenu(this->tray_menu_);
@@ -51,8 +57,6 @@ void SystemTrayIcon::addToggleVisibleAction() {
     this->tray_menu_->addAction(this->toggle_visible_action_);
 
     connect(this->toggle_visible_action_, &QAction::triggered, this, &SystemTrayIcon::toggleVisibleTriggered);
-
-    this->tray_menu_->addSeparator();
 }
 
 void SystemTrayIcon::addAccountActions() {
@@ -67,8 +71,6 @@ void SystemTrayIcon::addAccountActions() {
         QStringLiteral("Update user info")
     );
     connect(user_update, &QAction::triggered, this, &SystemTrayIcon::userUpdateTriggered);
-
-    this->tray_menu_->addSeparator();
 }
 
 void SystemTrayIcon::addSyncActions() {
@@ -83,8 +85,6 @@ void SystemTrayIcon::addSyncActions() {
         QStringLiteral("Sync anime info")
     );
     connect(sync_anime_info_action, &QAction::triggered, this, &SystemTrayIcon::syncAnimeInfoTriggered);
-
-    this->tray_menu_->addSeparator();
 }
 
 void SystemTrayIcon::addSettingsAction() {
@@ -93,8 +93,20 @@ void SystemTrayIcon::addSettingsAction() {
         QStringLiteral("Settings")
     );
     connect(settings_action, &QAction::triggered, this, &SystemTrayIcon::settingsTriggered);
+}
 
-    this->tray_menu_->addSeparator();
+void SystemTrayIcon::addViewActions() {
+    auto *logs_action = this->tray_menu_->addAction(
+        QIcon(AppResources::Icons::Logs),
+        QStringLiteral("Logs")
+    );
+    connect(logs_action, &QAction::triggered, this, &SystemTrayIcon::logsTriggered);
+
+    auto *about_action = this->tray_menu_->addAction(
+        QIcon(AppResources::Icons::Info),
+        QStringLiteral("About")
+    );
+    connect(about_action, &QAction::triggered, this, &SystemTrayIcon::aboutTriggered);
 }
 
 void SystemTrayIcon::addExitAction() {

@@ -52,6 +52,9 @@ signals:
 
     void traySettingsTriggered();
 
+    void trayLogsTriggered();
+    void trayAboutTriggered();
+
     void exitTriggered();
 
 protected:
