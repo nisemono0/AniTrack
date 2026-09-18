@@ -15,6 +15,7 @@
 
 #include "app/app_controller.hpp"
 
+#include <QPalette>
 #include <QApplication>
 #include <QLocalServer>
 
@@ -60,6 +61,8 @@ private:
 
     void setupApp();
     void setupSingleInstance();
+
+    QPalette darkPalette() const;
 
 private slots:
     void onNewInstanceConnection();

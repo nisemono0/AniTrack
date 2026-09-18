@@ -63,10 +63,6 @@ int main (int argc, char *argv[]) {
     if (cmd_parser.isWindowOptionSet()) {
         main_window->setWindowFlag(Qt::Dialog, true);
     }
-    // Force set the selected style
-    if (!cmd_parser.selectedStyle().isEmpty()) {
-        app.setStyle(cmd_parser.selectedStyle());
-    }
 
     app.controller()->init();
     if (!app.settings()->get(Settings::Ui::Window::StartMinimized, false)) {
