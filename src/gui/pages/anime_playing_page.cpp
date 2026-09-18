@@ -47,8 +47,12 @@ void AnimePlayingPage::showIdlePage() {
     this->stopNowPlayingTimer();
 }
 
-void AnimePlayingPage::showSelectAnimePage(const QList<RecognizedAnime> &recognized_anime, const QString &title, int episode) {
-    this->ui_->pageRecognitionSelectAnime->setPlayingAnime(title, episode);
+void AnimePlayingPage::showSelectAnimePage(const QList<RecognizedAnime> &recognized_anime,
+                                           const QString &title,
+                                           int episode,
+                                           const QString &release_group) {
+
+    this->ui_->pageRecognitionSelectAnime->setPlayingAnime(title, episode, release_group);
     this->ui_->pageRecognitionSelectAnime->setAnimeSelection(recognized_anime);
 
     this->ui_->stackedWidgetAnimePlaying->setCurrentWidget(

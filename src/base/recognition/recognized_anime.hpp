@@ -12,6 +12,7 @@
 
 struct RecognizedAnime {
     int episode = AnimeFileParser::InvalidEpisode;
+    QString release_group;
     AnilistMedia media;
     std::optional<AnilistEntry> entry = std::nullopt;
 };

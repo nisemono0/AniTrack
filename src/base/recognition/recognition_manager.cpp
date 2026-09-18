@@ -64,6 +64,7 @@ void RecognitionManager::onQuietSearchFinished(const QList<AnilistMedia> &media_
         RecognizedAnime recognized;
         recognized.media = anime.media;
         recognized.entry = anime.entry;
+        recognized.release_group = this->recognized_release_group_;
         recognized.episode = redirected_id_to_episode.value(
             anime.media.id,
             this->recognized_episode_
@@ -85,6 +86,7 @@ void RecognitionManager::onQuietSearchFinished(const QList<AnilistMedia> &media_
         RecognizedAnime recognized;
         recognized.media = media;
         recognized.entry = std::nullopt;
+        recognized.release_group = this->recognized_release_group_;
         recognized.episode = redirected_id_to_episode.value(
             redirected_id,
             this->recognized_episode_
@@ -111,7 +113,8 @@ void RecognitionManager::onQuietSearchFinished(const QList<AnilistMedia> &media_
     emit requestShowSelectAnimePage(
         this->recognized_anime_,
         this->recognized_title_,
-        this->recognized_episode_
+        this->recognized_episode_,
+        this->recognized_release_group_
     );
 }
 
@@ -126,9 +129,10 @@ void RecognitionManager::onIdSearchFinished(const QList<AnilistMedia> &media_lis
         }
 
         RecognizedAnime recognized;
-        recognized.episode = this->missing_ids_to_redirected_episode_.value(media.id);
         recognized.media = media;
         recognized.entry = std::nullopt;
+        recognized.release_group = this->recognized_release_group_;
+        recognized.episode = this->missing_ids_to_redirected_episode_.value(media.id);
 
         this->recognized_anime_.append(std::move(recognized));
     }
@@ -154,7 +158,8 @@ void RecognitionManager::onIdSearchFinished(const QList<AnilistMedia> &media_lis
     emit requestShowSelectAnimePage(
         this->recognized_anime_,
         this->recognized_title_,
-        this->recognized_episode_
+        this->recognized_episode_,
+        this->recognized_release_group_
     );
 }
 
@@ -241,9 +246,10 @@ void RecognitionManager::handleExactMatch(const int media_id) {
     const auto &anime = local_anime->constFirst();
 
     RecognizedAnime recognized;
-    recognized.episode = redirection.episode;
     recognized.entry = anime.entry;
     recognized.media = anime.media;
+    recognized.release_group = this->recognized_release_group_;
+    recognized.episode = redirection.episode;
 
     this->recognized_anime_.append(recognized);
 
@@ -281,6 +287,7 @@ void RecognitionManager::handlePartialMatches(const QList<int> &media_ids) {
         RecognizedAnime recognized;
         recognized.media = anime.media;
         recognized.entry = anime.entry;
+        recognized.release_group = this->recognized_release_group_;
         recognized.episode = redirected_id_to_episode.value(
             anime.media.id,
             this->recognized_episode_
@@ -318,7 +325,8 @@ void RecognitionManager::handlePartialMatches(const QList<int> &media_ids) {
         emit requestShowSelectAnimePage(
             this->recognized_anime_,
             this->recognized_title_,
-            this->recognized_episode_
+            this->recognized_episode_,
+            this->recognized_release_group_
         );
         return;
     }
@@ -352,6 +360,7 @@ void RecognitionManager::onMediaFileChanged(const QString &filename) {
 
     this->recognized_title_ = file_info.title;
     this->recognized_episode_ = file_info.episode;
+    this->recognized_release_group_ = file_info.release_group;
 
     const auto matches = this->recognition_cache_->findMatches(
         file_info.title,

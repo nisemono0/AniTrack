@@ -27,14 +27,16 @@ void RecognitionSelectAnimePage::setAnimeSelection(const QList<RecognizedAnime> 
     this->updateSelection();
 }
 
-void RecognitionSelectAnimePage::setPlayingAnime(const QString &title, int episode) {
+void RecognitionSelectAnimePage::setPlayingAnime(const QString &title, int episode, const QString &release_group) {
     this->playing_title_ = title;
 
     this->ui_->lineEditSearchText->clear();
     this->ui_->lineEditSearchText->setPlaceholderText(title);
 
     this->ui_->labelPlayingTitle->setText(
-        QStringLiteral("%1 [Episode %2]").arg(title).arg(episode)
+        QStringLiteral("%1 [Episode %2 by %3]").arg(title)
+                                               .arg(episode)
+                                               .arg(release_group)
     );
 }
 

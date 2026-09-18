@@ -38,7 +38,10 @@ public slots:
 signals:
     void requestShowNoMatchPage(const QString &message);
     void requestShowIdlePage();
-    void requestShowSelectAnimePage(const QList<RecognizedAnime> &recognized_anime, const QString &title, int episode);
+    void requestShowSelectAnimePage(const QList<RecognizedAnime> &recognized_anime,
+                                    const QString &title,
+                                    int episode,
+                                    const QString &release_group);
     void requestShowNowPlayingPage(const RecognizedAnime &recognized_anime, const QString &title);
 
     void requestShowSearchPage(const QString &title, int episode);
@@ -49,6 +52,7 @@ private:
     Database *database_;
 
     QString recognized_title_;
+    QString recognized_release_group_;
     int recognized_episode_;
 
     QList<RecognizedAnime> recognized_anime_;

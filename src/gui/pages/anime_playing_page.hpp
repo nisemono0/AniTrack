@@ -25,7 +25,10 @@ public slots:
 
     void showNoMatchPage(const QString &message);
     void showIdlePage();
-    void showSelectAnimePage(const QList<RecognizedAnime> &recognized_anime, const QString &title, int episode);
+    void showSelectAnimePage(const QList<RecognizedAnime> &recognized_anime,
+                             const QString &title,
+                             int episode,
+                             const QString &release_group);
     void showNowPlayingPage(const RecognizedAnime &recognized_anime, const QString &title);
 
     void showSearchPage(const QString &title, int episode);

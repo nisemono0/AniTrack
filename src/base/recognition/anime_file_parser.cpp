@@ -53,6 +53,14 @@ AnimeFileParser::AnimeFileInfo AnimeFileParser::parse(const QString &filename) {
         );
     }
 
+    // Get the parsed release group
+    const auto release_group_element = std::ranges::find_if(elements, [] (const anitomy::Element &element) {
+        return element.kind == anitomy::ElementKind::ReleaseGroup;
+    });
+    if (release_group_element != elements.end()) {
+        parsed_anime_file.release_group = QString::fromStdString(release_group_element->value);
+    }
+
     return parsed_anime_file;
 }
 

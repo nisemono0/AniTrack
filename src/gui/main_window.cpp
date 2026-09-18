@@ -190,9 +190,9 @@ void MainWindow::setupPlayingPage() {
     connect(this->app_controller_, &AppController::requestShowIdlePage, this->ui_->pagePlaying, &AnimePlayingPage::showIdlePage);
     connect(
         this->app_controller_, &AppController::requestShowSelectAnimePage,
-        this->ui_->pagePlaying, [this] (const QList<RecognizedAnime> &recognized_anime, const QString &title, int episode) {
+        this->ui_->pagePlaying, [this] (const QList<RecognizedAnime> &recognized_anime, const QString &title, int episode, const QString &release_group) {
             this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::Playing);
-            this->ui_->pagePlaying->showSelectAnimePage(recognized_anime, title, episode);
+            this->ui_->pagePlaying->showSelectAnimePage(recognized_anime, title, episode, release_group);
         }
     );
     connect(

@@ -43,6 +43,7 @@ void RecognitionNowPlayingPage::handleAnimeAddUpdateFinished(const QList<Anilist
 
 void RecognitionNowPlayingPage::setNowPlayingAnime(const RecognizedAnime &recognized_anime, const QString &title) {
     this->playing_episode_ = recognized_anime.episode;
+    this->release_group_ = recognized_anime.release_group;
 
     this->media_ = recognized_anime.media;
     // entry_ is nullopt if anime not in our list
@@ -142,7 +143,8 @@ void RecognitionNowPlayingPage::updateNowPlayingInfo() {
 
     // Now playing episode
     this->ui_->labelPlayingTitle->setText(
-        QStringLiteral("Episode %1").arg(this->playing_episode_)
+        QStringLiteral("Episode %1 by %2").arg(this->playing_episode_)
+                                          .arg(this->release_group_)
     );
 
     // Top title

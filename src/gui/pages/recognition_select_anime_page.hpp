@@ -23,7 +23,7 @@ public:
     void updateUserPreferences(const AnilistAccount::User &user);
 
     void setAnimeSelection(const QList<RecognizedAnime> &recognized_anime);
-    void setPlayingAnime(const QString &title, int episode);
+    void setPlayingAnime(const QString &title, int episode, const QString &release_group);
 
 signals:
     void recognizedAnimeSelected(const RecognizedAnime &recognized_anime);

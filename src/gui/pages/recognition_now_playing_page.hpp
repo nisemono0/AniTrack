@@ -53,6 +53,7 @@ private:
 
     QString playing_title_;
     int playing_episode_;
+    QString release_group_;
 
     std::optional<AnilistEntry> entry_;
     AnilistMedia media_;
