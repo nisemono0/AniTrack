@@ -46,7 +46,7 @@ void MprisWatcher::registerRunningPlayers() {
 
     const auto services = registered_services.value();
     for (const auto &service : services) {
-        if (MprisConfig::AllowedServices.contains(service)) {
+        if (this->isAllowedService(service)) {
             // Register the player for PropertiesChanged signal
             this->onServiceRegistered(service);
             // Get the running's player metadata since PropertiesChanged signal
@@ -89,6 +89,15 @@ void MprisWatcher::processMetadataAndNotify(const QVariantMap &metadata_vmap) {
     emit mediaFileChanged(file_name.value());
 }
 
+bool MprisWatcher::isAllowedService(const QString &service) {
+    for (const auto &allowed : MprisConfig::AllowedServices) {
+        if (service == allowed || service.startsWith(allowed)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void MprisWatcher::readRunningPlayersMetadata(const QString &service_name) {
     QDBusMessage metadata_method = QDBusMessage::createMethodCall(
         service_name,
@@ -129,7 +138,7 @@ void MprisWatcher::readRunningPlayersMetadata(const QString &service_name) {
 
 void MprisWatcher::onServiceRegistered(const QString &service_name) {
     // Only allow whitelisted mpris services
-    if (!MprisConfig::AllowedServices.contains(service_name)) {
+    if (!this->isAllowedService(service_name)) {
         return;
     }
 
@@ -165,7 +174,7 @@ void MprisWatcher::onServiceRegistered(const QString &service_name) {
 
 void MprisWatcher::onServiceUnregistered(const QString &service_name) {
     // Only allow whitelisted mpris services
-    if (!MprisConfig::AllowedServices.contains(service_name)) {
+    if (!this->isAllowedService(service_name)) {
         return;
     }
 

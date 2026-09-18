@@ -28,6 +28,8 @@ private:
     void readRunningPlayersMetadata(const QString &service_name);
     void processMetadataAndNotify(const QVariantMap &metadata_vmap);
 
+    bool isAllowedService(const QString &service);
+
 private slots:
     void onServiceRegistered(const QString &service_name);
     void onServiceUnregistered(const QString &service_name);
