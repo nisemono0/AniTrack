@@ -63,11 +63,15 @@ inline const QString SyncAnimeOnStart       = QStringLiteral("Sync/SyncAnimeOnSt
 
 // Recognition settings keys
 namespace Settings::Recognition {
-inline const QString EnableAnimeRecognition = QStringLiteral("Recognition/EnableAnimeRecognition");
-inline const QString EnableRecognitionPopup = QStringLiteral("Recognition/EnableRecognitionPopup");
-inline const QString MaxCacheMatches        = QStringLiteral("Recognition/MaxCacheMatches");
-inline const QString MinMatchScore          = QStringLiteral("Recognition/MinMatchScore");
-inline const QString RecognitionPopupDelay  = QStringLiteral("Recognition/RecognitionPopupDelay");
+inline const QString EnableAnimeRecognition           = QStringLiteral("Recognition/EnableAnimeRecognition");
+inline const QString EnableRecognitionPopup           = QStringLiteral("Recognition/EnableRecognitionPopup");
+inline const QString MaxCacheMatches                  = QStringLiteral("Recognition/MaxCacheMatches");
+inline const QString MinMatchScore                    = QStringLiteral("Recognition/MinMatchScore");
+inline const QString RecognitionPopupDelay            = QStringLiteral("Recognition/RecognitionPopupDelay");
+inline const QString RecognitionSuccessGotoNowPlaying = QStringLiteral("Recognition/RecognitionSuccessGotoNowPlaying");
+inline const QString RecognitionSuccessMessageDialog  = QStringLiteral("Recognition/RecognitionSuccessMessageDialog");
+inline const QString RecognitionFailGotoNowPlaying    = QStringLiteral("Recognition/RecognitionFailGotoNowPlaying");
+inline const QString RecognitionFailMessageDialog     = QStringLiteral("Recognition/RecognitionFailMessageDialog");
 } // namespace Settings::Recognition
 
 // Ui settings keys

@@ -79,6 +79,10 @@ private:
 
     // Settings
     bool save_load_window_state_ = false;
+    bool recognition_success_goto_now_playing_ = true;
+    bool recognition_success_message_dialog_ = false;
+    bool recognition_fail_goto_now_playing_ = true;
+    bool recognition_fail_message_dialog_ = false;
 
     // Setup
     void initUi();

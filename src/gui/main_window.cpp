@@ -186,26 +186,70 @@ void MainWindow::setupPlayingPage() {
     connect(this->app_controller_, &AppController::animeUpdateFinished, this->ui_->pagePlaying, &AnimePlayingPage::handleAnimeAddUpdateFinished);
     connect(this->app_controller_, &AppController::animeAddFinished, this->ui_->pagePlaying, &AnimePlayingPage::handleAnimeAddUpdateFinished);
 
-    connect(this->app_controller_, &AppController::requestShowNoMatchPage, this->ui_->pagePlaying, &AnimePlayingPage::showNoMatchPage);
+    connect(
+        this->app_controller_, &AppController::requestShowNoMatchPage,
+        this->ui_->pagePlaying, [this] (const QString &message) {
+            if (this->recognition_fail_goto_now_playing_) {
+                this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::Playing);
+            }
+            if (this->recognition_fail_message_dialog_) {
+                this->showInfo(
+                    QStringLiteral("Recognition"),
+                    QStringLiteral("Anime not recognized")
+                );
+            }
+            this->ui_->pagePlaying->showNoMatchPage(message);
+        }
+    );
     connect(this->app_controller_, &AppController::requestShowIdlePage, this->ui_->pagePlaying, &AnimePlayingPage::showIdlePage);
     connect(
         this->app_controller_, &AppController::requestShowSelectAnimePage,
         this->ui_->pagePlaying, [this] (const QList<RecognizedAnime> &recognized_anime, const QString &title, int episode, const QString &release_group) {
-            this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::Playing);
+            if (this->recognition_fail_goto_now_playing_) {
+                this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::Playing);
+            }
+            if (this->recognition_fail_message_dialog_) {
+                this->showInfo(
+                    QStringLiteral("Recognition"),
+                    QStringLiteral(
+                        "Anime not recognized\n"
+                        "Please select the correct one"
+                    )
+                );
+            }
             this->ui_->pagePlaying->showSelectAnimePage(recognized_anime, title, episode, release_group);
         }
     );
     connect(
         this->app_controller_, &AppController::requestShowNowPlayingPage,
         this->ui_->pagePlaying, [this] (const RecognizedAnime &recognized_anime, const QString &title) {
-            this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::Playing);
+            if (this->recognition_success_goto_now_playing_) {
+                this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::Playing);
+            }
+            if (this->recognition_success_message_dialog_) {
+                this->showInfo(
+                    QStringLiteral("Recognition"),
+                    QStringLiteral("Anime recognized")
+                );
+            }
             this->ui_->pagePlaying->showNowPlayingPage(recognized_anime, title);
         }
     );
     connect(
         this->app_controller_, &AppController::requestShowSearchPage,
         this->ui_->pagePlaying, [this] (const QString &title, int episode) {
-            this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::Playing);
+            if (this->recognition_fail_goto_now_playing_) {
+                this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::Playing);
+            }
+            if (this->recognition_fail_message_dialog_) {
+                this->showInfo(
+                    QStringLiteral("Recognition"),
+                    QStringLiteral(
+                        "Anime not recognized\n"
+                        "Please manually search for it"
+                    )
+                );
+            }
             this->ui_->pagePlaying->showSearchPage(title, episode);
         }
     );
@@ -448,5 +492,19 @@ void MainWindow::showPage(ListWidgetNavigation::Page page) {
 
 void MainWindow::applySettings() {
     this->save_load_window_state_ = Settings::get(Settings::Ui::Window::SaveLoadWindowState, false);
+
+    const bool recognition_enabled = Settings::get(Settings::Recognition::EnableAnimeRecognition, true);
+
+    const bool recognition_success_now_playing = Settings::get(Settings::Recognition::RecognitionSuccessGotoNowPlaying, true);
+    const bool recognition_success_message_dialog = Settings::get(Settings::Recognition::RecognitionSuccessMessageDialog, false);
+
+    this->recognition_success_goto_now_playing_ = recognition_success_now_playing && recognition_enabled;
+    this->recognition_success_message_dialog_ = recognition_success_message_dialog && recognition_enabled;
+
+    const bool recognition_fail_now_playing = Settings::get(Settings::Recognition::RecognitionFailGotoNowPlaying, true);
+    const bool recognition_fail_message_dialog = Settings::get(Settings::Recognition::RecognitionFailMessageDialog, false);
+
+    this->recognition_fail_goto_now_playing_ = recognition_fail_now_playing && recognition_enabled;
+    this->recognition_fail_message_dialog_ = recognition_fail_message_dialog && recognition_enabled;
 }
 

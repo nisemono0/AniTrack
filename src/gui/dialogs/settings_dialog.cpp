@@ -52,6 +52,11 @@ void SettingsDialog::setupDialog() {
         this->ui_->doubleSpinBoxMatchScore->setEnabled(recognition_enabled);
 
         this->ui_->spinBoxPopupTimerDelay->setEnabled(recognition_enabled && recognition_popup_enabled);
+
+        this->ui_->checkBoxRecognitionSuccessGotoNowPlaying->setEnabled(recognition_enabled);
+        this->ui_->checkBoxRecognitionSuccessMessageDialog->setEnabled(recognition_enabled);
+        this->ui_->checkBoxRecognitionFailGotoNowPlaying->setEnabled(recognition_enabled);
+        this->ui_->checkBoxRecognitionFailMessageDialog->setEnabled(recognition_enabled);
     });
 
     connect(this->ui_->checkBoxEnableRecognitionPopup, &QCheckBox::checkStateChanged, this, [this] (Qt::CheckState state) {
@@ -95,6 +100,18 @@ void SettingsDialog::updateRecognitionSettings() {
     );
     this->ui_->spinBoxPopupTimerDelay->setValue(
         Settings::get(Settings::Recognition::RecognitionPopupDelay, 120)
+    );
+    this->ui_->checkBoxRecognitionSuccessGotoNowPlaying->setChecked(
+        Settings::get(Settings::Recognition::RecognitionSuccessGotoNowPlaying, true)
+    );
+    this->ui_->checkBoxRecognitionSuccessMessageDialog->setChecked(
+        Settings::get(Settings::Recognition::RecognitionSuccessMessageDialog, false)
+    );
+    this->ui_->checkBoxRecognitionFailGotoNowPlaying->setChecked(
+        Settings::get(Settings::Recognition::RecognitionFailGotoNowPlaying, true)
+    );
+    this->ui_->checkBoxRecognitionFailMessageDialog->setChecked(
+        Settings::get(Settings::Recognition::RecognitionFailMessageDialog, false)
     );
 }
 
@@ -149,6 +166,22 @@ void SettingsDialog::onDialogAccepted() {
         Settings::Recognition::RecognitionPopupDelay,
         this->ui_->spinBoxPopupTimerDelay->value()
     );
+    Settings::set(
+        Settings::Recognition::RecognitionSuccessGotoNowPlaying,
+        this->ui_->checkBoxRecognitionSuccessGotoNowPlaying->isChecked()
+    );
+    Settings::set(
+        Settings::Recognition::RecognitionSuccessMessageDialog,
+        this->ui_->checkBoxRecognitionSuccessMessageDialog->isChecked()
+    );
+    Settings::set(
+        Settings::Recognition::RecognitionFailGotoNowPlaying,
+        this->ui_->checkBoxRecognitionFailGotoNowPlaying->isChecked()
+    );
+    Settings::set(
+        Settings::Recognition::RecognitionFailMessageDialog,
+        this->ui_->checkBoxRecognitionFailMessageDialog->isChecked()
+    );
 
     // Ui settings
     Settings::set(
@@ -185,6 +218,10 @@ void SettingsDialog::onResetClicked() {
     this->ui_->spinBoxMaxMatches->setValue(10);
     this->ui_->doubleSpinBoxMatchScore->setValue(0.5);
     this->ui_->spinBoxPopupTimerDelay->setValue(120);
+    this->ui_->checkBoxRecognitionSuccessGotoNowPlaying->setChecked(true);
+    this->ui_->checkBoxRecognitionSuccessMessageDialog->setChecked(false);
+    this->ui_->checkBoxRecognitionFailGotoNowPlaying->setChecked(true);
+    this->ui_->checkBoxRecognitionFailMessageDialog->setChecked(false);
 
     // Reset ui settings
     this->ui_->checkBoxStartMinimized->setChecked(false);
