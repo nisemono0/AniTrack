@@ -175,6 +175,30 @@ void MainWindow::setupNavigationListWidget() {
 
     // Set the default startup page to the animelist page
     this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::AnimeList);
+
+    auto *goto_playing_shortcut = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_1), this);
+    goto_playing_shortcut->setContext(Qt::WindowShortcut);
+    connect(goto_playing_shortcut, &QShortcut::activated, this, [this] {
+        this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::Playing);
+    });
+
+    auto *goto_animelist_shortcut = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_2), this);
+    goto_animelist_shortcut->setContext(Qt::WindowShortcut);
+    connect(goto_animelist_shortcut, &QShortcut::activated, this, [this] {
+        this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::AnimeList);
+    });
+
+    auto *goto_statistics_shortcut = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_3), this);
+    goto_animelist_shortcut->setContext(Qt::WindowShortcut);
+    connect(goto_statistics_shortcut, &QShortcut::activated, this, [this] {
+        this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::Statistics);
+    });
+
+    auto *goto_search_shortcut = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_4), this);
+    goto_animelist_shortcut->setContext(Qt::WindowShortcut);
+    connect(goto_search_shortcut, &QShortcut::activated, this, [this] {
+        this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::Search);
+    });
 }
 
 void MainWindow::setupStatusBar() {
