@@ -97,6 +97,9 @@
      <property name="text">
       <string>Application to track watched anime on &lt;a href=&quot;https://anilist.co/home&quot;&gt;AniList&lt;/a&gt; built with C++/Qt.</string>
      </property>
+     <property name="openExternalLinks">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>
@@ -129,6 +132,9 @@
      </property>
      <property name="text">
       <string>Special thanks to &lt;a href=&quot;https://github.com/erengy&quot;&gt;erengy&lt;/a&gt; for creating &lt;a href=&quot;https://github.com/erengy/taiga&quot;&gt;Taiga&lt;/a&gt;, which greatly inspired this program.</string>
+     </property>
+     <property name="openExternalLinks">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -164,6 +170,9 @@
        <property name="text">
         <string>&lt;a href=&quot;https://www.qt.io/&quot;&gt;Qt&lt;/a&gt;:</string>
        </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item row="0" column="1">
@@ -190,6 +199,9 @@
        </property>
        <property name="text">
         <string>&lt;a href=&quot;https://github.com/tabler/tabler-icons&quot;&gt;tabler-icons&lt;/a&gt;:</string>
+       </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -218,6 +230,9 @@
        <property name="text">
         <string>&lt;a href=&quot;https://github.com/erengy/anitomy&quot;&gt;anitomy&lt;/a&gt;:</string>
        </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item row="2" column="1">
@@ -244,6 +259,9 @@
        </property>
        <property name="text">
         <string>&lt;a href=&quot;https://github.com/erengy/anime-relations&quot;&gt;anime-relations&lt;/a&gt;:</string>
+       </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -280,6 +298,9 @@
       <widget class="QLabel" name="labelUtf8proc">
        <property name="text">
         <string>&lt;a href=&quot;https://github.com/JuliaStrings/utf8proc&quot;&gt;utf8proc&lt;/a&gt;:</string>
+       </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
