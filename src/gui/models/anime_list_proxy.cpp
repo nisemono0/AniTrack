@@ -10,13 +10,29 @@ AnimeListProxy::AnimeListProxy(QObject *parent) : QSortFilterProxyModel(parent) 
 
 void AnimeListProxy::setFilterText(const QString &text) {
     beginFilterChange();
+
     this->filter_text_ = text;
+
+    if (text.isEmpty()) {
+        this->filter_tab_ = this->selected_tab_;
+    } else {
+        this->filter_tab_ = AnimeListTabBar::Tab::All;
+    }
+
     endFilterChange(QSortFilterProxyModel::Direction::Rows);
 }
 
 void AnimeListProxy::setFilterTab(AnimeListTabBar::Tab tab) {
+    this->selected_tab_ = tab;
+
+    if (this->filter_tab_ == tab) {
+        return;
+    }
+
     beginFilterChange();
+
     this->filter_tab_ = tab;
+
     endFilterChange(QSortFilterProxyModel::Direction::Rows);
 }
 

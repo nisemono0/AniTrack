@@ -20,6 +20,8 @@ protected:
 
 private:
     QString filter_text_;
+
     AnimeListTabBar::Tab filter_tab_;
+    AnimeListTabBar::Tab selected_tab_;
 };
 
