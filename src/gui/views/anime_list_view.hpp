@@ -20,6 +20,8 @@
 
 #include <QTreeView>
 #include <QWidget>
+#include <QWheelEvent>
+#include <QKeyEvent>
 
 
 class AnimeListView final : public QTreeView {
@@ -68,6 +70,7 @@ signals:
 
 protected:
     void wheelEvent(QWheelEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
 
 private:
     AnilistAccount::ScoreFormat score_format_;
@@ -93,6 +96,8 @@ private:
     void setupModel();
     void setupDelegates();
     void setupHeader();
+
+    QList<AnilistAnime> selectedAnime();
 
     void addInfoEditActions(QMenu &menu, const AnilistAnime &selected_anime);
     void addStateHistoryActions(QMenu &menu, const AnilistAnime &selected_anime);

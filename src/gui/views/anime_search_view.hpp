@@ -14,6 +14,7 @@
 #include <QTreeView>
 #include <QWidget>
 #include <QWheelEvent>
+#include <QKeyEvent>
 
 
 class AnimeSearchView final : public QTreeView {
@@ -36,6 +37,7 @@ signals:
 
 protected:
     void wheelEvent(QWheelEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
 
 private:
     AnilistAccount::ScoreFormat score_format_;
@@ -55,6 +57,8 @@ private:
     void setupModel();
     void setupDelegates();
     void setupHeader();
+
+    QList<AnilistMedia> selectedMedia();
 
 private slots:
     void onCustomContextMenuRequested(const QPoint &pos);

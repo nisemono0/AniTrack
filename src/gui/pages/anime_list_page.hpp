@@ -20,6 +20,8 @@ public:
     void selectNextTab();
     void selectPreviousTab();
 
+    void focusAnimeList();
+
 public slots:
     void onUserUpdated(const AnilistAccount::User &user);
 

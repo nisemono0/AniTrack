@@ -142,6 +142,77 @@ void AnimeListView::wheelEvent(QWheelEvent *event) {
     QTreeView::wheelEvent(event);
 }
 
+void AnimeListView::keyPressEvent(QKeyEvent *event) {
+    QTreeView::keyPressEvent(event);
+
+    switch (event->key()) {
+        case Qt::Key_Minus: {
+            const auto selected_anime = this->selectedAnime();
+            if (selected_anime.isEmpty()) {
+                event->ignore();
+            } else {
+                emit requestDecreaseAnimeProgress(selected_anime);
+                event->accept();
+            }
+            break;
+        }
+        case Qt::Key_Equal:
+        case Qt::Key_Plus: {
+            const auto selected_anime = this->selectedAnime();
+            if (selected_anime.isEmpty()) {
+                event->ignore();
+            } else {
+                emit requestIncreaseAnimeProgress(selected_anime);
+                event->accept();
+            }
+            break;
+        }
+        case Qt::Key_Enter:
+        case Qt::Key_Return: {
+            const auto selected_anime = this->selectedAnime();
+            if (selected_anime.isEmpty()) {
+                event->ignore();
+            } else {
+                if (event->modifiers().testFlag(Qt::ControlModifier)) {
+                    emit requestShowAnimeInfoEditDialog(selected_anime.constFirst(), AnimeInfoEditDialog::Page::Edit);
+                } else {
+                    emit requestShowAnimeInfoEditDialog(selected_anime.constFirst(), AnimeInfoEditDialog::Page::Info);
+                }
+                event->accept();
+            }
+            break;
+        }
+        case Qt::Key_I: {
+            if (event->modifiers().testFlag(Qt::ControlModifier)) {
+                const auto selected_anime = this->selectedAnime();
+                if (!selected_anime.isEmpty()) {
+                    emit requestShowAnimeInfoEditDialog(selected_anime.constFirst(), AnimeInfoEditDialog::Page::Info);
+                }
+                event->accept();
+            } else {
+                event->ignore();
+            }
+            break;
+        }
+        case Qt::Key_E: {
+            if (event->modifiers().testFlag(Qt::ControlModifier)) {
+                const auto selected_anime = this->selectedAnime();
+                if (!selected_anime.isEmpty()) {
+                    emit requestShowAnimeInfoEditDialog(selected_anime.constFirst(), AnimeInfoEditDialog::Page::Edit);
+                }
+                event->accept();
+            } else {
+                event->ignore();
+            }
+            break;
+        }
+        default:
+            // this should propagate the key event back to a parent
+            // widget (main window) where it will be processed
+            event->ignore();
+    }
+}
+
 void AnimeListView::initView() {
     this->anime_list_model_ = new AnimeListModel(this);
     this->anime_list_proxy_ = new AnimeListProxy(this);
@@ -275,6 +346,19 @@ void AnimeListView::setupHeader() {
             this->anime_list_header_->restoreState(saved_header_state);
         }
     }
+}
+
+QList<AnilistAnime> AnimeListView::selectedAnime() {
+    QList<AnilistAnime> selected_anime;
+
+    const QModelIndexList selected_rows = this->selectionModel()->selectedRows();
+    for (const auto &row : selected_rows) {
+        selected_anime.append(
+            row.data(AnimeListModel::UserRoles::Anime).value<AnilistAnime>()
+        );
+    }
+
+    return selected_anime;
 }
 
 void AnimeListView::addInfoEditActions(QMenu &menu, const AnilistAnime &selected_anime) {
@@ -537,14 +621,7 @@ void AnimeListView::onCustomContextMenuRequested(const QPoint &pos) {
         );
     }
 
-    QList<AnilistAnime> selected_anime;
-
-    const QModelIndexList selected_rows = this->selectionModel()->selectedRows();
-    for (const auto &row : selected_rows) {
-        selected_anime.append(
-            row.data(AnimeListModel::UserRoles::Anime).value<AnilistAnime>()
-        );
-    }
+    QList<AnilistAnime> selected_anime = this->selectedAnime();
 
     QMenu menu(this);
 

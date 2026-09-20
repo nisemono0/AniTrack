@@ -18,6 +18,8 @@ public:
     explicit AnimeSearchPage(QWidget *parent = nullptr);
     ~AnimeSearchPage();
 
+    void focusSearch();
+
 public slots:
     void onSearchFinished(const QList<AnilistMedia> &media_list);
     void onUserUpdated(const AnilistAccount::User &user);

@@ -16,6 +16,7 @@ public:
 
     bool hasSearchFocus();
     void focusSearchInput();
+    void clearSearchInputFocus();
     void insertSearchText(const QString &text);
     void selectSearchText();
 

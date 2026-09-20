@@ -23,6 +23,10 @@ void AnimeListPage::selectPreviousTab() {
     this->ui_->widgetTabBar->selectPreviousTab();
 }
 
+void AnimeListPage::focusAnimeList() {
+    this->ui_->treeViewAnimeList->setFocus();
+}
+
 void AnimeListPage::onUserUpdated(const AnilistAccount::User &user) {
     this->ui_->treeViewAnimeList->updateUserPreferences(user);
 }

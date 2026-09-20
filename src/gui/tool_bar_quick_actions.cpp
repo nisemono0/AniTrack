@@ -38,6 +38,10 @@ void ToolBarQuickActions::focusSearchInput() {
     this->filter_line_edit_->setFocus();
 }
 
+void ToolBarQuickActions::clearSearchInputFocus() {
+    this->filter_line_edit_->clearFocus();
+}
+
 void ToolBarQuickActions::insertSearchText(const QString &text) {
     this->filter_line_edit_->insert(text);
 }

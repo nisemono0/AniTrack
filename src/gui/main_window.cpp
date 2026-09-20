@@ -161,12 +161,27 @@ void MainWindow::setupQuickActionsToolBar() {
         QKeySequence(Qt::Key_Slash),
         QKeySequence(Qt::CTRL | Qt::Key_F)
     });
-
     connect(focus_search_shortcut, &QShortcut::activated, this, [this] {
         if (!this->ui_->toolBarQuickActions->hasSearchFocus()) {
             this->ui_->toolBarQuickActions->focusSearchInput();
             this->ui_->toolBarQuickActions->selectSearchText();
         }
+    });
+
+    auto *unfocus_search_shortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
+    unfocus_search_shortcut->setContext(Qt::WindowShortcut);
+    connect(unfocus_search_shortcut, &QShortcut::activated, this, [this] {
+        if (this->ui_->pageAnimeList->isVisible()) {
+            this->ui_->pageAnimeList->focusAnimeList();
+            return;
+        }
+
+        if (this->ui_->pageSearch->isVisible()) {
+            this->ui_->pageSearch->focusSearch();
+            return;
+        }
+
+        this->ui_->toolBarQuickActions->clearSearchInputFocus();
     });
 }
 
@@ -495,6 +510,11 @@ void MainWindow::showPage(ListWidgetNavigation::Page page) {
             this->ui_->stackedWidgetMainWindow->setCurrentWidget(
                 this->ui_->pageAnimeList
             );
+
+            if (!this->ui_->toolBarQuickActions->hasSearchFocus()) {
+                this->ui_->pageAnimeList->focusAnimeList();
+            }
+
             break;
         }
         case ListWidgetNavigation::Page::Statistics: {
@@ -507,6 +527,11 @@ void MainWindow::showPage(ListWidgetNavigation::Page page) {
             this->ui_->stackedWidgetMainWindow->setCurrentWidget(
                 this->ui_->pageSearch
             );
+
+            if (!this->ui_->toolBarQuickActions->hasSearchFocus()) {
+                this->ui_->pageSearch->focusSearch();
+            }
+
             break;
         }
         default:

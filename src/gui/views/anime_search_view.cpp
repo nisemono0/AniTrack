@@ -84,6 +84,37 @@ void AnimeSearchView::wheelEvent(QWheelEvent *event) {
     QTreeView::wheelEvent(event);
 }
 
+void AnimeSearchView::keyPressEvent(QKeyEvent *event) {
+    QTreeView::keyPressEvent(event);
+
+    switch (event->key()) {
+        case Qt::Key_Enter:
+        case Qt::Key_Return: {
+            const auto selected_media = this->selectedMedia();
+            if (selected_media.isEmpty()) {
+                event->ignore();
+            } else {
+                emit requestShowAnimeInfoEditDialog(selected_media.constFirst());
+            }
+            break;
+        }
+        case Qt::Key_I: {
+            if (event->modifiers().testFlag(Qt::ControlModifier)) {
+                const auto selected_media = this->selectedMedia();
+                if (!selected_media.isEmpty()) {
+                    emit requestShowAnimeInfoEditDialog(selected_media.constFirst());
+                }
+                event->accept();
+            } else {
+                event->ignore();
+            }
+            break;
+        }
+        default:
+            event->ignore();
+    }
+}
+
 void AnimeSearchView::initView() {
     this->anime_search_model_ = new AnimeSearchModel(this);
     this->anime_search_proxy_ = new AnimeSearchProxy(this);
@@ -153,6 +184,19 @@ void AnimeSearchView::setupHeader() {
     }
 }
 
+QList<AnilistMedia> AnimeSearchView::selectedMedia() {
+    QList<AnilistMedia> selected_media;
+
+    const QModelIndexList selected_rows = this->selectionModel()->selectedRows();
+    for (const auto &row : selected_rows) {
+        selected_media.append(
+            row.data(AnimeSearchModel::UserRoles::Media).value<AnilistMedia>()
+        );
+    }
+
+    return selected_media;
+}
+
 void AnimeSearchView::onCustomContextMenuRequested(const QPoint &pos) {
     const QModelIndex index = this->indexAt(pos);
 
@@ -167,14 +211,7 @@ void AnimeSearchView::onCustomContextMenuRequested(const QPoint &pos) {
         );
     }
 
-    QList<AnilistMedia> selected_media;
-
-    const QModelIndexList selected_rows = this->selectionModel()->selectedRows();
-    for (const auto &row : selected_rows) {
-        selected_media.append(
-            row.data(AnimeSearchModel::UserRoles::Media).value<AnilistMedia>()
-        );
-    }
+    QList<AnilistMedia> selected_media = this->selectedMedia();
 
     QMenu menu(this);
 

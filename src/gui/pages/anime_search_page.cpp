@@ -13,6 +13,10 @@ AnimeSearchPage::~AnimeSearchPage() {
     delete this->ui_;
 }
 
+void AnimeSearchPage::focusSearch() {
+    this->ui_->treeViewAnimeSearch->setFocus();
+}
+
 void AnimeSearchPage::onSearchFinished(const QList<AnilistMedia> &media_list) {
     this->ui_->treeViewAnimeSearch->setMedia(media_list);
 }
