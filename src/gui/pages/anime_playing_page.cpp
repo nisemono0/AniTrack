@@ -104,8 +104,8 @@ void AnimePlayingPage::setupNowPlayingPage() {
     );
 
     connect(
-        this->ui_->pageRecognitionNowPlaying, &RecognitionNowPlayingPage::requestSetAnimeProgress,
-        this, &AnimePlayingPage::requestSetAnimeProgress
+        this->ui_->pageRecognitionNowPlaying, &RecognitionNowPlayingPage::requestSetNowPlayingAnimeProgress,
+        this, &AnimePlayingPage::requestSetNowPlayingAnimeProgress
     );
 }
 

@@ -296,7 +296,8 @@ void MainWindow::setupPlayingPage() {
 
     connect(this->ui_->pagePlaying, &AnimePlayingPage::requestShowAnimeInfoEditDialog, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::showOrFocusInfoEdit);
     connect(this->ui_->pagePlaying, &AnimePlayingPage::requestAddMedia, this->app_controller_, &AppController::requestAddMedia);
-    connect(this->ui_->pagePlaying, &AnimePlayingPage::requestSetAnimeProgress, this->app_controller_, &AppController::requestSetAnimeProgress);
+
+    connect(this->ui_->pagePlaying, &AnimePlayingPage::requestSetNowPlayingAnimeProgress, this->app_controller_, &AppController::requestSetNowPlayingAnimeProgress);
 
     connect(this->ui_->pagePlaying, &AnimePlayingPage::recognizedAnimeSelected, this->app_controller_, &AppController::recognizedAnimeSelected);
 }

@@ -225,6 +225,53 @@ void DatabaseController::requestSetAnimeProgress(const QList<AnilistAnime> &anim
     );
 }
 
+void DatabaseController::requestSetNowPlayingAnimeProgress(const AnilistAnime &anime, int progress) {
+    if (progress < 0) {
+        return;
+    }
+
+    auto updated_anime = anime;
+    auto new_state = anime.entry.state();
+
+    int new_progress;
+    if (anime.media.episodes > 0) {
+        new_progress = qMin(progress, anime.media.episodes);
+    } else {
+        new_progress = progress;
+    }
+
+    if (new_progress == new_state.progress) {
+        return;
+    }
+
+    new_state.progress = new_progress;
+
+    if (new_progress == anime.media.episodes && anime.media.episodes > 0 ) {
+        new_state.status = AnilistEntry::Status::COMPLETED;
+        new_state.completed_at = DateUtils::currentDate();
+    } else if (new_state.status != AnilistEntry::Status::CURRENT &&
+               new_state.status != AnilistEntry::Status::REPEATING) {
+
+        new_state.status = AnilistEntry::Status::CURRENT;
+    }
+
+    new_state.pending_operation = SyncUtils::mergePendingOperation(
+        new_state.pending_operation,
+        AnilistEntry::PendingOperation::UPDATE
+    );
+
+    new_state.updated_at = DateUtils::currentEpochTime();
+    new_state.name = QStringLiteral("Set playing progress: %1").arg(new_progress);
+
+    updated_anime.entry.addState(new_state);
+
+    this->upsertEntriesAndNotify(
+        {updated_anime},
+        QStringLiteral("Set progress"),
+        QStringLiteral("Failed to set now playing anime progress")
+    );
+}
+
 void DatabaseController::requestUndoAnimeState(const QList<AnilistAnime> &anime_list) {
     QList<AnilistAnime> updated_anime;
 

@@ -29,6 +29,8 @@ public slots:
     void requestDecreaseAnimeProgress(const QList<AnilistAnime> &anime_list);
     void requestSetAnimeProgress(const QList<AnilistAnime> &anime_list, int progress);
 
+    void requestSetNowPlayingAnimeProgress(const AnilistAnime &anime, int progress);
+
     void requestUndoAnimeState(const QList<AnilistAnime> &anime_list);
     void requestRedoAnimeState(const QList<AnilistAnime> &anime_list);
 

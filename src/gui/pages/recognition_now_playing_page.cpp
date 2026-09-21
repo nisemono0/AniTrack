@@ -259,25 +259,19 @@ void RecognitionNowPlayingPage::onPopupAccepted(NowPlayingPopupDialog::PopupType
                 this->entry_.value(),
                 this->media_
             };
-            // Set anime as watching if not already watching/rewatching
-            auto watching_state = anime.entry.state();
-            if (watching_state.status != AnilistEntry::Status::CURRENT &&
-                watching_state.status != AnilistEntry::Status::REPEATING) {
-                watching_state.status = AnilistEntry::Status::CURRENT;
-                anime.entry.setState(watching_state);
-            }
-            emit requestSetAnimeProgress({anime}, this->playing_episode_);
+            emit requestSetNowPlayingAnimeProgress(anime, this->playing_episode_);
             break;
         }
         case NowPlayingPopupDialog::PopupType::Complete: {
+            if (this->media_.episodes <= 0) {
+                return;
+            }
+
             AnilistAnime anime{
                 this->entry_.value(),
                 this->media_
             };
-            if (anime.media.episodes <= 0) {
-                return;
-            }
-            emit requestSetAnimeProgress({anime}, anime.media.episodes);
+            emit requestSetNowPlayingAnimeProgress(anime, anime.media.episodes);
             break;
         }
     }
