@@ -44,7 +44,7 @@ void SyncManager::requestMediaSync() {
 
     emit listFetchStarted(
         QStringLiteral("Media sync"),
-        QStringLiteral("Fetching anime list...")
+        QStringLiteral("Fetching anime info...")
     );
 
     connect(this->anilist_api_, &AnilistApi::fetchListFinished, this, &SyncManager::onMediaSyncFetchListFinished, Qt::SingleShotConnection);
