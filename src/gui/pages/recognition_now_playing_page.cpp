@@ -199,9 +199,13 @@ void RecognitionNowPlayingPage::updateNowPlayingInfo() {
 void RecognitionNowPlayingPage::openPopupDialog(const QString &header_text,
                                                 const QString &body_text,
                                                 NowPlayingPopupDialog::PopupType popup_type) {
-    // create a new dialog if it doesnt exist
+    // create a new dialog if it doesnt exist and
+    // connect to its accepted signal once
     if (!this->popup_dialog_) {
         this->popup_dialog_ = new NowPlayingPopupDialog(header_text, body_text, popup_type, this);
+
+        connect(this->popup_dialog_, &NowPlayingPopupDialog::popupAccepted, this, &RecognitionNowPlayingPage::onPopupAccepted);
+
         this->popup_dialog_->open();
         return;
     }
@@ -224,8 +228,10 @@ void RecognitionNowPlayingPage::onPopupTimerTimeout() {
     } else {
         // anime in list, update it
         // ask to set it as completed if current episode >= total episodes
+        // and anime has a known number of episodes media.episodes > 0
         // don't show the popup if current episode == entry progress
-        if (this->playing_episode_ >= this->media_.episodes) {
+        if (this->playing_episode_ >= this->media_.episodes &&
+            this->media_.episodes > 0) {
             this->openPopupDialog(
                 this->playing_title_,
                 QStringLiteral("Set as completed"),
@@ -240,12 +246,6 @@ void RecognitionNowPlayingPage::onPopupTimerTimeout() {
             );
         }
     }
-
-    // connect the accepted signal only if dialog exists
-    if (!this->popup_dialog_) {
-        return;
-    }
-    connect(this->popup_dialog_, &NowPlayingPopupDialog::popupAccepted, this, &RecognitionNowPlayingPage::onPopupAccepted);
 }
 
 void RecognitionNowPlayingPage::onPopupAccepted(NowPlayingPopupDialog::PopupType popup_type) {
