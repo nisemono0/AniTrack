@@ -107,6 +107,11 @@ void AnimePlayingPage::setupNowPlayingPage() {
         this->ui_->pageRecognitionNowPlaying, &RecognitionNowPlayingPage::requestSetNowPlayingAnimeProgress,
         this, &AnimePlayingPage::requestSetNowPlayingAnimeProgress
     );
+
+    connect(
+        this->ui_->pageRecognitionNowPlaying, &RecognitionNowPlayingPage::requestShowPopupRemainingTime,
+        this, &AnimePlayingPage::requestShowPopupRemainingTime
+    );
 }
 
 void AnimePlayingPage::setupSearchPage() {

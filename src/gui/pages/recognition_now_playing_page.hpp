@@ -41,6 +41,8 @@ signals:
 
     void requestSetNowPlayingAnimeProgress(const AnilistAnime &anime, int progress);
 
+    void requestShowPopupRemainingTime(const QString &message, int timeout);
+
 private:
     Ui::RecognitionNowPlayingWidget *ui_;
 
@@ -49,6 +51,8 @@ private:
     AnilistAccount::TitleLanguage title_language_;
 
     QTimer *popup_timer_;
+    QTimer *display_timer_;
+
     bool is_popup_enabled_ = true;
     QPointer<NowPlayingPopupDialog> popup_dialog_;
 

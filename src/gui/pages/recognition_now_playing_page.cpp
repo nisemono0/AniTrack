@@ -62,11 +62,13 @@ void RecognitionNowPlayingPage::setNowPlayingAnime(const RecognizedAnime &recogn
 void RecognitionNowPlayingPage::startPopupTimer() {
     if (this->is_popup_enabled_) {
         this->popup_timer_->start();
+        this->display_timer_->start();
     }
 }
 
 void RecognitionNowPlayingPage::stopPopupTimer() {
     this->popup_timer_->stop();
+    this->display_timer_->stop();
 }
 
 void RecognitionNowPlayingPage::showEdit() {
@@ -85,6 +87,10 @@ void RecognitionNowPlayingPage::initPage() {
 
     this->popup_timer_ = new QTimer(this);
     this->popup_timer_->setSingleShot(true);
+
+    this->display_timer_ = new QTimer(this);
+    this->display_timer_->setInterval(std::chrono::seconds(1));
+    this->display_timer_->setSingleShot(false);
 }
 
 void RecognitionNowPlayingPage::setupPage() {
@@ -102,6 +108,17 @@ void RecognitionNowPlayingPage::setupPage() {
     });
 
     connect(this->popup_timer_, &QTimer::timeout, this, &RecognitionNowPlayingPage::onPopupTimerTimeout);
+
+    connect(this->display_timer_, &QTimer::timeout, this, [this] {
+        emit requestShowPopupRemainingTime(
+            QStringLiteral("Time until popup: %1s").arg(
+                std::chrono::duration_cast<std::chrono::seconds>(
+                    this->popup_timer_->remainingTimeAsDuration()
+                ).count()
+            ),
+            1000
+        );
+    });
 }
 
 void RecognitionNowPlayingPage::updateCoverImage() {
@@ -218,6 +235,8 @@ void RecognitionNowPlayingPage::openPopupDialog(const QString &header_text,
 }
 
 void RecognitionNowPlayingPage::onPopupTimerTimeout() {
+    this->display_timer_->stop();
+
     // anime not in list, ask to add
     if (!this->entry_) {
         this->openPopupDialog(
@@ -282,6 +301,7 @@ void RecognitionNowPlayingPage::applySettings() {
 
     if (!this->is_popup_enabled_) {
         this->popup_timer_->stop();
+        this->display_timer_->stop();
     }
 
     this->popup_timer_->setInterval(
