@@ -54,6 +54,7 @@ private:
     QTimer *display_timer_;
 
     bool is_popup_enabled_ = true;
+    bool is_popup_timer_enabled_ = true;
     QPointer<NowPlayingPopupDialog> popup_dialog_;
 
     QString playing_title_;

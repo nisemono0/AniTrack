@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>550</width>
-    <height>570</height>
+    <width>585</width>
+    <height>575</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>550</width>
-    <height>570</height>
+    <width>585</width>
+    <height>575</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>550</width>
-    <height>570</height>
+    <width>585</width>
+    <height>575</height>
    </size>
   </property>
   <property name="focusPolicy">
@@ -98,8 +98,11 @@
     </widget>
    </item>
    <item>
-    <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
       <widget class="QCheckBox" name="checkBoxEnableRecognition">
        <property name="focusPolicy">
         <enum>Qt::FocusPolicy::ClickFocus</enum>
@@ -112,7 +115,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item>
       <widget class="QCheckBox" name="checkBoxEnableRecognitionPopup">
        <property name="focusPolicy">
         <enum>Qt::FocusPolicy::ClickFocus</enum>
@@ -125,6 +128,20 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QCheckBox" name="checkBoxDisplayPopupTimeLeft">
+       <property name="text">
+        <string>Display popup time left</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="formLayout">
      <item row="1" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">

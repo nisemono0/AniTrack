@@ -62,7 +62,10 @@ void RecognitionNowPlayingPage::setNowPlayingAnime(const RecognizedAnime &recogn
 void RecognitionNowPlayingPage::startPopupTimer() {
     if (this->is_popup_enabled_) {
         this->popup_timer_->start();
-        this->display_timer_->start();
+
+        if (this->is_popup_timer_enabled_) {
+            this->display_timer_->start();
+        }
     }
 }
 
@@ -298,9 +301,12 @@ void RecognitionNowPlayingPage::onPopupAccepted(NowPlayingPopupDialog::PopupType
 
 void RecognitionNowPlayingPage::applySettings() {
     this->is_popup_enabled_ = Settings::get(Settings::Recognition::EnableRecognitionPopup, true);
+    this->is_popup_timer_enabled_ = Settings::get(Settings::Recognition::EnablePopupTimer, true);
 
     if (!this->is_popup_enabled_) {
         this->popup_timer_->stop();
+        this->display_timer_->stop();
+    } else if (!this->is_popup_timer_enabled_) {
         this->display_timer_->stop();
     }
 
