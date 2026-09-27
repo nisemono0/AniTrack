@@ -152,6 +152,7 @@ void MainWindow::setupViewMenu() {
 void MainWindow::setupQuickActionsToolBar() {
     this->ui_->toolBarQuickActions->setupToolBar();
 
+    connect(this->ui_->toolBarQuickActions, &ToolBarQuickActions::requestLoadRandomAnime, this->app_controller_, &AppController::requestLoadRandomAnime);
     connect(this->ui_->toolBarQuickActions, &ToolBarQuickActions::filterTextChanged, this->ui_->pageAnimeList, &AnimeListPage::onFilterTextChanged);
     connect(this->ui_->toolBarQuickActions, &ToolBarQuickActions::searchRequested, this->app_controller_, &AppController::requestAnimeSearch);
 
@@ -403,6 +404,10 @@ void MainWindow::setupAnimeInfoEditDialog() {
     connect(this->app_controller_, &AppController::userUpdated, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::onUserUpdated);
     connect(this->app_controller_, &AppController::animeUpdateFinished, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::handleAnimeAddUpdateFinished);
     connect(this->app_controller_, &AppController::animeAddFinished, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::handleAnimeAddUpdateFinished);
+
+    connect(this->app_controller_, &AppController::randomAnimeLoadFinished, this, [this] (const AnilistAnime &anime) {
+        this->anime_info_edit_dialog_->showOrFocusInfoEdit(anime, AnimeInfoEditDialog::Page::Info);
+    });
 
     connect(this->anime_info_edit_dialog_, &AnimeInfoEditDialog::requestUpdateAnime, this->app_controller_, &AppController::requestUpdateAnime);
     connect(this->anime_info_edit_dialog_, &AnimeInfoEditDialog::requestAddMedia, this->app_controller_, &AppController::requestAddMedia);

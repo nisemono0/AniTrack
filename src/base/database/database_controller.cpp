@@ -4,6 +4,8 @@
 #include "utils/date.hpp"
 #include "utils/anilist.hpp"
 
+#include <QRandomGenerator>
+
 
 DatabaseController::DatabaseController(
     Database *database,
@@ -43,6 +45,36 @@ void DatabaseController::requestLoadAnime() {
     emit animeLoadFinished(entries.value());
 
     this->countEntriesAndNotifiy();
+}
+
+void DatabaseController::requestLoadRandomAnime(AnilistEntry::Status status) {
+    const auto entries = this->database_->selectAllEntries();
+
+    if (!entries) {
+        emit errorOccurred(
+            QStringLiteral("Random anime"),
+            entries.error()
+        );
+        return;
+    }
+
+    const AnilistAnime *random_anime = nullptr;
+
+    int count = 0;
+    for (const auto &anime : entries.value()) {
+        if (anime.entry.state().status != status) {
+            continue;
+        }
+
+        count++;
+        if (QRandomGenerator::global()->bounded(count) < 1) {
+            random_anime = &anime;
+        }
+    }
+
+    if (random_anime) {
+        emit randomAnimeLoadFinished(*random_anime);
+    }
 }
 
 void DatabaseController::requestAddMedia(const QList<AnilistMedia> &media_list, AnilistEntry::Status status) {

@@ -55,6 +55,8 @@ signals:
     void requestDecreaseAnimeProgress(const QList<AnilistAnime> &anime_list);
     void requestSetAnimeProgress(const QList<AnilistAnime> &anime_list, int progress);
 
+    void requestLoadRandomAnime(AnilistEntry::Status status);
+
     void requestSetNowPlayingAnimeProgress(const AnilistAnime &anime, int progress);
 
     void requestAddMedia(const QList<AnilistMedia> &media_list, AnilistEntry::Status status);
@@ -62,6 +64,7 @@ signals:
     void databasePathChanged(const QString &database_path);
 
     void animeLoadFinished(const QList<AnilistAnime> &anime_list);
+    void randomAnimeLoadFinished(const AnilistAnime &anime);
 
     void animeUpdateFinished(const QList<AnilistAnime> &anime_list);
 

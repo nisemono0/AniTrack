@@ -20,6 +20,7 @@ public:
 
 public slots:
     void requestLoadAnime();
+    void requestLoadRandomAnime(AnilistEntry::Status status);
 
     void requestAddMedia(const QList<AnilistMedia> &media_list, AnilistEntry::Status status);
 
@@ -64,6 +65,7 @@ signals:
     void animeAddFinished(const QList<AnilistAnime> &anime_list);
 
     void animeLoadFinished(const QList<AnilistAnime> &anime_list);
+    void randomAnimeLoadFinished(const AnilistAnime &anime);
 
     void animeUpdateFinished(const QList<AnilistAnime> &anime_list);
 

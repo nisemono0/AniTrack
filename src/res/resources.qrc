@@ -6,6 +6,7 @@
     <file alias="anime-relations">../../deps/anime-relations/anime-relations.txt</file>
   </qresource>
   <qresource prefix="icons">
+    <file alias="arrows-random">icons/arrows-random.svg</file>
     <file alias="cloud-down">icons/cloud-down.svg</file>
     <file alias="history">icons/history.svg</file>
     <file alias="account-info-update">icons/account-info-update.svg</file>

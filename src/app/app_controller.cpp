@@ -55,6 +55,8 @@ void AppController::setupDatabaseConnections() {
     connect(this, &AppController::requestDecreaseAnimeProgress, this->database_controller_, &DatabaseController::requestDecreaseAnimeProgress);
     connect(this, &AppController::requestSetAnimeProgress, this->database_controller_, &DatabaseController::requestSetAnimeProgress);
 
+    connect(this, &AppController::requestLoadRandomAnime, this->database_controller_, &DatabaseController::requestLoadRandomAnime);
+
     connect(this, &AppController::requestSetNowPlayingAnimeProgress, this->database_controller_, &DatabaseController::requestSetNowPlayingAnimeProgress);
 
     connect(this, &AppController::requestAddMedia, this->database_controller_, &DatabaseController::requestAddMedia);
@@ -65,6 +67,7 @@ void AppController::setupDatabaseConnections() {
     connect(this->database_controller_, &DatabaseController::databasePathChanged, this, &AppController::databasePathChanged);
 
     connect(this->database_controller_, &DatabaseController::animeLoadFinished, this, &AppController::animeLoadFinished);
+    connect(this->database_controller_, &DatabaseController::randomAnimeLoadFinished, this, &AppController::randomAnimeLoadFinished);
 
     connect(this->database_controller_, &DatabaseController::animeUpdateFinished, this, &AppController::animeUpdateFinished);
 
