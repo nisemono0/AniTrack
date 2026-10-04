@@ -59,7 +59,7 @@ private:
     QHash<int, int> missing_ids_to_redirected_episode_;
 
     bool recognition_enabled_ = true;
-    double min_score_ = 0.5;
+    double min_score_ = 0.6;
     int max_matches_ = 10;
 
     MprisWatcher *mpris_watcher_;

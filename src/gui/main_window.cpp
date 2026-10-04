@@ -559,7 +559,7 @@ void MainWindow::applySettings() {
     this->recognition_success_message_dialog_ = recognition_success_message_dialog && recognition_enabled;
 
     const bool recognition_fail_now_playing = Settings::get(Settings::Recognition::RecognitionFailGotoNowPlaying, true);
-    const bool recognition_fail_message_dialog = Settings::get(Settings::Recognition::RecognitionFailMessageDialog, false);
+    const bool recognition_fail_message_dialog = Settings::get(Settings::Recognition::RecognitionFailMessageDialog, true);
 
     this->recognition_fail_goto_now_playing_ = recognition_fail_now_playing && recognition_enabled;
     this->recognition_fail_message_dialog_ = recognition_fail_message_dialog && recognition_enabled;

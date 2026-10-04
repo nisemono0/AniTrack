@@ -29,7 +29,7 @@ public:
     void remove(int media_id);
 
     QList<TitleMatch> findMatches(const QString &title,
-                                  double min_levenshtein_score = 0.5,
+                                  double min_levenshtein_score = 0.6,
                                   int max_matches = 10);
 
 private:

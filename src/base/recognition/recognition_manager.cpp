@@ -397,7 +397,7 @@ void RecognitionManager::onMediaPlayerClosed() {
 
 void RecognitionManager::applySettings() {
     this->recognition_enabled_ = Settings::get(Settings::Recognition::EnableAnimeRecognition, true);
-    this->min_score_ = Settings::get(Settings::Recognition::MinMatchScore, 0.5);
+    this->min_score_ = Settings::get(Settings::Recognition::MinMatchScore, 0.6);
     this->max_matches_ = Settings::get(Settings::Recognition::MaxCacheMatches, 10);
 
     if (!this->recognition_enabled_) {
