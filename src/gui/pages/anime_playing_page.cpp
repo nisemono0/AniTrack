@@ -94,6 +94,11 @@ void AnimePlayingPage::setupSelectAnimePage() {
 
 void AnimePlayingPage::setupNowPlayingPage() {
     connect(
+        this->ui_->pageRecognitionNowPlaying, &RecognitionNowPlayingPage::requestShowSearchPage,
+        this, &AnimePlayingPage::showSearchPage
+    );
+
+    connect(
         this->ui_->pageRecognitionNowPlaying, &RecognitionNowPlayingPage::requestShowAnimeInfoEditDialog,
         this, &AnimePlayingPage::requestShowAnimeInfoEditDialog
     );

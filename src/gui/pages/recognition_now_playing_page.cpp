@@ -97,6 +97,13 @@ void RecognitionNowPlayingPage::initPage() {
 }
 
 void RecognitionNowPlayingPage::setupPage() {
+    connect(this->ui_->pushButtonManualSearch, &QPushButton::clicked, this, [this] {
+        emit requestShowSearchPage(
+            this->playing_title_,
+            this->playing_episode_
+        );
+    });
+
     connect(this->ui_->comboBoxAnimeStatus, &AnimeStatusComboBox::animeStatusActivated, this, [this] (AnilistEntry::Status status) {
         emit requestAddMedia({this->media_}, status);
     });

@@ -43,6 +43,8 @@ signals:
 
     void requestShowPopupRemainingTime(const QString &message, int timeout);
 
+    void requestShowSearchPage(const QString &title, int episode);
+
 private:
     Ui::RecognitionNowPlayingWidget *ui_;
 
