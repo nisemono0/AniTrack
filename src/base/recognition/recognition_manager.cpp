@@ -315,10 +315,10 @@ void RecognitionManager::handlePartialMatches(const QList<int> &media_ids) {
     // the now playing if only 1 exists
     if (missing_ids.isEmpty()) {
         if (this->recognized_anime_.size() == 1) {
-            const auto recognized = this->recognized_anime_.constFirst();
-            this->recognition_cache_->add(this->recognized_title_, recognized.media.id);
-
-            emit requestShowNowPlayingPage(recognized, this->recognized_title_);
+            emit requestShowNowPlayingPage(
+                this->recognized_anime_.constFirst(),
+                this->recognized_title_
+            );
             return;
         }
 
