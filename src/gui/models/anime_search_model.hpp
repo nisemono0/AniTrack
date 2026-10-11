@@ -27,6 +27,13 @@ public:
 
     enum UserRoles {
         Media = Qt::UserRole + 1,
+        // For tooltip
+        ToolTipCoverUrl,
+        ToolTipTitle,
+        ToolTipFormat,
+        ToolTipEpisodes,
+        ToolTipStatus,
+        ToolTipSeason,
         // For delegates
         IsAdult,
         InList,

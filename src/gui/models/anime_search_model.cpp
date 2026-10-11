@@ -87,6 +87,19 @@ QVariant AnimeSearchModel::data(const QModelIndex &index, int role) const {
             }
             break;
         }
+        // Tooltip data
+        case UserRoles::ToolTipCoverUrl:
+            return media.cover_url;
+        case UserRoles::ToolTipTitle:
+            return AnilistUtils::animeTitleToPrettyString(media.title, this->title_language_);
+        case UserRoles::ToolTipFormat:
+            return AnilistUtils::mediaFormatToPrettyString(media.format);
+        case UserRoles::ToolTipEpisodes:
+            return AnilistUtils::mediaEpisodesToPrettyString(media.episodes);
+        case UserRoles::ToolTipStatus:
+            return AnilistUtils::mediaStatusToPrettyString(media.status);
+        case UserRoles::ToolTipSeason:
+            return AnilistUtils::mediaSeasonToPrettyString(media.season, media.season_year);
         // Display role
         case Qt::DisplayRole: {
             switch (column) {

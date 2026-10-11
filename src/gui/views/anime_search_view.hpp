@@ -5,6 +5,8 @@
 
 #include "gui/views/anime_search_header.hpp"
 
+#include "gui/widgets/anime_tooltip.hpp"
+
 #include "gui/models/anime_search_model.hpp"
 #include "gui/models/anime_search_proxy.hpp"
 
@@ -15,6 +17,8 @@
 #include <QWidget>
 #include <QWheelEvent>
 #include <QKeyEvent>
+#include <QEvent>
+#include <QModelIndex>
 
 
 class AnimeSearchView final : public QTreeView {
@@ -38,6 +42,7 @@ signals:
 protected:
     void wheelEvent(QWheelEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
+    bool viewportEvent(QEvent *event) override;
 
 private:
     AnilistAccount::ScoreFormat score_format_;
@@ -49,6 +54,9 @@ private:
 
     AnimeSearchAdultDelegate *adult_delegate_;
     AnimeSearchInListDelegate *in_list_delegate_;
+
+    QModelIndex last_tooltip_index_;
+    AnimeTooltip *anime_tooltip_;
 
     bool save_load_header_state_ = false;
 

@@ -115,6 +115,45 @@ void AnimeSearchView::keyPressEvent(QKeyEvent *event) {
     }
 }
 
+bool AnimeSearchView::viewportEvent(QEvent *event) {
+    switch (event->type()) {
+        case QEvent::ToolTip: {
+            auto *tooltip_event = static_cast<QHelpEvent*>(event);
+            const QModelIndex index = this->indexAt(tooltip_event->pos());
+            if (!index.isValid()) {
+                this->last_tooltip_index_ = {};
+                this->anime_tooltip_->hide();
+                return true;
+            }
+
+            if (this->last_tooltip_index_ != index) {
+                this->last_tooltip_index_ = index;
+                this->anime_tooltip_->updateAnimeInfo(
+                    index.data(AnimeSearchModel::UserRoles::ToolTipCoverUrl).toString(),
+                    index.data(AnimeSearchModel::UserRoles::ToolTipTitle).toString(),
+                    index.data(AnimeSearchModel::UserRoles::ToolTipFormat).toString(),
+                    index.data(AnimeSearchModel::UserRoles::ToolTipEpisodes).toString(),
+                    index.data(AnimeSearchModel::UserRoles::ToolTipStatus).toString(),
+                    index.data(AnimeSearchModel::UserRoles::ToolTipSeason).toString()
+                );
+            }
+
+            this->anime_tooltip_->showAtPosition(tooltip_event->globalPos());
+
+            return true;
+        }
+        case QEvent::MouseMove: {
+            auto *mouse_event = static_cast<QMouseEvent*>(event);
+            this->anime_tooltip_->updatePosition(mouse_event->globalPosition().toPoint());
+            return QTreeView::viewportEvent(event);
+        }
+        default: {
+            this->anime_tooltip_->hide();
+            return QTreeView::viewportEvent(event);
+        }
+    }
+}
+
 void AnimeSearchView::initView() {
     this->anime_search_model_ = new AnimeSearchModel(this);
     this->anime_search_proxy_ = new AnimeSearchProxy(this);
@@ -123,8 +162,12 @@ void AnimeSearchView::initView() {
     this->adult_delegate_ = new AnimeSearchAdultDelegate(this);
     this->in_list_delegate_ = new AnimeSearchInListDelegate(this);
 
+    this->anime_tooltip_ = new AnimeTooltip(this);
+
     this->setHeader(this->anime_search_header_);
     this->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    this->viewport()->setMouseTracking(true);
 }
 
 void AnimeSearchView::setupModel() {
