@@ -18,7 +18,6 @@
 #include <QWheelEvent>
 #include <QKeyEvent>
 #include <QEvent>
-#include <QModelIndex>
 
 
 class AnimeSearchView final : public QTreeView {
@@ -55,7 +54,7 @@ private:
     AnimeSearchAdultDelegate *adult_delegate_;
     AnimeSearchInListDelegate *in_list_delegate_;
 
-    QModelIndex last_tooltip_index_;
+    int last_tooltip_media_id_;
     AnimeTooltip *anime_tooltip_;
 
     bool save_load_header_state_ = false;

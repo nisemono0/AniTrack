@@ -53,6 +53,8 @@ QVariant AnimeSearchModel::data(const QModelIndex &index, int role) const {
         // User roles
         case UserRoles::Media:
             return QVariant::fromValue(media);
+        case UserRoles::MediaId:
+            return media.id;
         case UserRoles::IsAdult:
             return media.is_adult;
         case UserRoles::InList:

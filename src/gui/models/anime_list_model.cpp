@@ -71,6 +71,8 @@ QVariant AnimeListModel::data(const QModelIndex &index, int role) const {
         // User roles
         case UserRoles::Anime:
             return QVariant::fromValue(anime);
+        case UserRoles::MediaId:
+            return anime.media.id;
         case UserRoles::PendingOperation:
             return QVariant::fromValue(anime.entry.state().pending_operation);
         case UserRoles::EntryProgress:

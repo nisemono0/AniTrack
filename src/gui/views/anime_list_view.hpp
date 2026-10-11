@@ -25,7 +25,6 @@
 #include <QWheelEvent>
 #include <QKeyEvent>
 #include <QEvent>
-#include <QModelIndex>
 
 
 class AnimeListView final : public QTreeView {
@@ -94,7 +93,7 @@ private:
     AnimeListStartedDateDelegate *started_delegate_;
     AnimeListCompletedDateDelegate *completed_delegate_;
 
-    QModelIndex last_tooltip_index_;
+    int last_tooltip_media_id_;
     AnimeTooltip *anime_tooltip_;
 
     bool save_load_header_state_ = false;

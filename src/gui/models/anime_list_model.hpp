@@ -36,6 +36,7 @@ public:
 
     enum UserRoles {
         Anime = Qt::UserRole + 1,
+        MediaId,
         // For tooltip
         ToolTipCoverUrl,
         ToolTipTitle,

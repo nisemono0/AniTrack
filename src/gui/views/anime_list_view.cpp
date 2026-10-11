@@ -217,15 +217,17 @@ bool AnimeListView::viewportEvent(QEvent *event) {
     switch (event->type()) {
         case QEvent::ToolTip: {
             auto *tooltip_event = static_cast<QHelpEvent*>(event);
+
             const QModelIndex index = this->indexAt(tooltip_event->pos());
             if (!index.isValid()) {
-                this->last_tooltip_index_ = {};
+                this->last_tooltip_media_id_ = AnilistMedia::InvalidId;
                 this->anime_tooltip_->hide();
                 return true;
             }
 
-            if (this->last_tooltip_index_ != index) {
-                this->last_tooltip_index_ = index;
+            const int index_media_id = index.data(AnimeListModel::UserRoles::MediaId).toInt();
+            if (this->last_tooltip_media_id_ != index_media_id) {
+                this->last_tooltip_media_id_ = index_media_id;
                 this->anime_tooltip_->updateAnimeInfo(
                     index.data(AnimeListModel::UserRoles::ToolTipCoverUrl).toString(),
                     index.data(AnimeListModel::UserRoles::ToolTipTitle).toString(),
