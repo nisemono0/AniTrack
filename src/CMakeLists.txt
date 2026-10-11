@@ -157,6 +157,8 @@ qt_add_executable(AniTrack
     gui/views/anime_search_view.hpp
     gui/widgets/anime_status_combo_box.cpp
     gui/widgets/anime_status_combo_box.hpp
+    gui/widgets/anime_tooltip.cpp
+    gui/widgets/anime_tooltip.hpp
     gui/widgets/date_picker.cpp
     gui/widgets/date_picker.hpp
     gui/widgets/header_view.cpp
