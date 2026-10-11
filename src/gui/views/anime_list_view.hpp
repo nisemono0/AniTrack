@@ -7,6 +7,8 @@
 
 #include "gui/views/anime_list_header.hpp"
 
+#include "gui/widgets/anime_tooltip.hpp"
+
 #include "gui/delegates/anime_list_progress_delegate.hpp"
 #include "gui/delegates/anime_list_pending_delegate.hpp"
 #include "gui/delegates/anime_list_adult_delegate.hpp"
@@ -22,6 +24,8 @@
 #include <QWidget>
 #include <QWheelEvent>
 #include <QKeyEvent>
+#include <QEvent>
+#include <QModelIndex>
 
 
 class AnimeListView final : public QTreeView {
@@ -71,6 +75,7 @@ signals:
 protected:
     void wheelEvent(QWheelEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
+    bool viewportEvent(QEvent *event) override;
 
 private:
     AnilistAccount::ScoreFormat score_format_;
@@ -88,6 +93,9 @@ private:
     AnimeListStatusDelegate *status_delegate_;
     AnimeListStartedDateDelegate *started_delegate_;
     AnimeListCompletedDateDelegate *completed_delegate_;
+
+    QModelIndex last_tooltip_index_;
+    AnimeTooltip *anime_tooltip_;
 
     bool save_load_header_state_ = false;
 

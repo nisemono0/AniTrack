@@ -213,6 +213,45 @@ void AnimeListView::keyPressEvent(QKeyEvent *event) {
     }
 }
 
+bool AnimeListView::viewportEvent(QEvent *event) {
+    switch (event->type()) {
+        case QEvent::ToolTip: {
+            auto *tooltip_event = static_cast<QHelpEvent*>(event);
+            const QModelIndex index = this->indexAt(tooltip_event->pos());
+            if (!index.isValid()) {
+                this->last_tooltip_index_ = {};
+                this->anime_tooltip_->hide();
+                return true;
+            }
+
+            if (this->last_tooltip_index_ != index) {
+                this->last_tooltip_index_ = index;
+                this->anime_tooltip_->updateAnimeInfo(
+                    index.data(AnimeListModel::UserRoles::ToolTipCoverUrl).toString(),
+                    index.data(AnimeListModel::UserRoles::ToolTipTitle).toString(),
+                    index.data(AnimeListModel::UserRoles::ToolTipFormat).toString(),
+                    index.data(AnimeListModel::UserRoles::ToolTipEpisodes).toString(),
+                    index.data(AnimeListModel::UserRoles::ToolTipStatus).toString(),
+                    index.data(AnimeListModel::UserRoles::ToolTipSeason).toString()
+                );
+            }
+
+            this->anime_tooltip_->showAtPosition(tooltip_event->globalPos());
+
+            return true;
+        }
+        case QEvent::MouseMove: {
+            auto *mouse_event = static_cast<QMouseEvent*>(event);
+            this->anime_tooltip_->updatePosition(mouse_event->globalPosition().toPoint());
+            return QTreeView::viewportEvent(event);
+        }
+        default: {
+            this->anime_tooltip_->hide();
+            return QTreeView::viewportEvent(event);
+        }
+    }
+}
+
 void AnimeListView::initView() {
     this->anime_list_model_ = new AnimeListModel(this);
     this->anime_list_proxy_ = new AnimeListProxy(this);
@@ -227,8 +266,12 @@ void AnimeListView::initView() {
     this->started_delegate_ = new AnimeListStartedDateDelegate(this);
     this->completed_delegate_ = new AnimeListCompletedDateDelegate(this);
 
+    this->anime_tooltip_ = new AnimeTooltip(this);
+
     this->setHeader(this->anime_list_header_);
     this->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    this->viewport()->setMouseTracking(true);
 }
 
 void AnimeListView::setupModel() {

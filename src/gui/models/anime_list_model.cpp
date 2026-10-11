@@ -87,6 +87,19 @@ QVariant AnimeListModel::data(const QModelIndex &index, int role) const {
             return QVariant::fromValue(anime.media.title);
         case UserRoles::EntryStatus:
             return QVariant::fromValue(anime.entry.state().status);
+        // Tooltip data
+        case UserRoles::ToolTipCoverUrl:
+            return anime.media.cover_url;
+        case UserRoles::ToolTipTitle:
+            return AnilistUtils::animeTitleToPrettyString(anime.media.title, this->title_language_);
+        case UserRoles::ToolTipFormat:
+            return AnilistUtils::mediaFormatToPrettyString(anime.media.format);
+        case UserRoles::ToolTipEpisodes:
+            return AnilistUtils::mediaEpisodesToPrettyString(anime.media.episodes);
+        case UserRoles::ToolTipStatus:
+            return AnilistUtils::mediaStatusToPrettyString(anime.media.status);
+        case UserRoles::ToolTipSeason:
+            return AnilistUtils::mediaSeasonToPrettyString(anime.media.season, anime.media.season_year);
         // Role used to sort the columns
         case UserRoles::Sort: {
             switch (column) {

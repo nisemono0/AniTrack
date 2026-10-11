@@ -36,6 +36,13 @@ public:
 
     enum UserRoles {
         Anime = Qt::UserRole + 1,
+        // For tooltip
+        ToolTipCoverUrl,
+        ToolTipTitle,
+        ToolTipFormat,
+        ToolTipEpisodes,
+        ToolTipStatus,
+        ToolTipSeason,
         // For delegate
         PendingOperation,
         EntryProgress,
