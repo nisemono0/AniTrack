@@ -100,6 +100,8 @@ QVariant AnimeSearchModel::data(const QModelIndex &index, int role) const {
             return AnilistUtils::mediaStatusToPrettyString(media.status);
         case UserRoles::ToolTipSeason:
             return AnilistUtils::mediaSeasonToPrettyString(media.season, media.season_year);
+        case UserRoles::ToolTipGenres:
+            return media.genres.join(QStringLiteral(", "));
         // Display role
         case Qt::DisplayRole: {
             switch (column) {

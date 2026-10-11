@@ -232,7 +232,8 @@ bool AnimeListView::viewportEvent(QEvent *event) {
                     index.data(AnimeListModel::UserRoles::ToolTipFormat).toString(),
                     index.data(AnimeListModel::UserRoles::ToolTipEpisodes).toString(),
                     index.data(AnimeListModel::UserRoles::ToolTipStatus).toString(),
-                    index.data(AnimeListModel::UserRoles::ToolTipSeason).toString()
+                    index.data(AnimeListModel::UserRoles::ToolTipSeason).toString(),
+                    index.data(AnimeListModel::UserRoles::ToolTipGenres).toString()
                 );
             }
 

@@ -21,7 +21,8 @@ void AnimeTooltip::updateAnimeInfo(const QString &cover_url,
                                    const QString &format,
                                    const QString &episodes,
                                    const QString &status,
-                                   const QString &season) {
+                                   const QString &season,
+                                   const QString &genres) {
 
     auto *image_request = Cache::requestPixmap(cover_url);
     connect(image_request, &ImageRequest::finished, this, [this] (const QPixmap &pixmap) {
@@ -50,6 +51,7 @@ void AnimeTooltip::updateAnimeInfo(const QString &cover_url,
     this->episodes_->setText(episodes);
     this->status_->setText(status);
     this->season_->setText(season);
+    this->genres_->setText(genres);
 }
 
 void AnimeTooltip::showAtPosition(const QPoint &global_pos) {
@@ -87,6 +89,9 @@ void AnimeTooltip::initWidget() {
     this->episodes_ = new QLabel(this);
     this->status_ = new QLabel(this);
     this->season_ = new QLabel(this);
+    this->genres_ = new QLabel(this);
+
+    this->genres_->setWordWrap(true);
 }
 
 void AnimeTooltip::setupWidget() {
@@ -144,6 +149,9 @@ void AnimeTooltip::setupLayout() {
 
     g_layout->addWidget(new QLabel(QStringLiteral("Season:"), this), 3, 0);
     g_layout->addWidget(this->season_, 3, 1);
+
+    g_layout->addWidget(new QLabel(QStringLiteral("Genres:"), this), 4, 0);
+    g_layout->addWidget(this->genres_, 4, 1);
 
     v_layout->addStretch();
 }
