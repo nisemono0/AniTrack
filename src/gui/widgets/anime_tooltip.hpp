@@ -2,12 +2,13 @@
 
 #include "app/app_resources.hpp"
 
+#include <QFrame>
 #include <QWidget>
 #include <QLabel>
 #include <QPixmap>
 
 
-class AnimeTooltip final : public QWidget {
+class AnimeTooltip final : public QFrame {
     Q_OBJECT;
 public:
     explicit AnimeTooltip(QWidget *parent = nullptr);

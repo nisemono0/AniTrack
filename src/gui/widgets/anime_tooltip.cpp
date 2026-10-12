@@ -10,7 +10,7 @@
 #include <QFontMetrics>
 
 
-AnimeTooltip::AnimeTooltip(QWidget *parent) : QWidget(parent) {
+AnimeTooltip::AnimeTooltip(QWidget *parent) : QFrame(parent) {
     this->initWidget();
     this->setupWidget();
     this->setupLayout();
@@ -108,6 +108,18 @@ void AnimeTooltip::setupWidget() {
     this->setMaximumWidth(450);
 
     this->setContentsMargins(0, 0, 0, 0);
+
+    // Hacky way to change the frame's color
+    this->setFrameShape(QFrame::Box);
+    this->setFrameShadow(QFrame::Sunken);
+
+    this->setLineWidth(0);
+    this->setMidLineWidth(1);
+
+    QPalette frame_palette = this->palette();
+    frame_palette.setColor(QPalette::Mid, frame_palette.color(QPalette::Accent).darker(120));
+
+    this->setPalette(frame_palette);
 }
 
 void AnimeTooltip::setupLayout() {
