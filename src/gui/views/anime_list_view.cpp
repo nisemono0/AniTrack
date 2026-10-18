@@ -9,6 +9,7 @@
 
 #include <QScrollBar>
 #include <QMenu>
+#include <QClipboard>
 
 namespace {
 // Used to initialize the default header view
@@ -424,6 +425,16 @@ void AnimeListView::addInfoEditActions(QMenu &menu, const AnilistAnime &selected
     }
 }
 
+void AnimeListView::addCopyLinkActions(QMenu &menu, const AnilistAnime &selected_anime) {
+    QAction *copy_anilist_link_action = menu.addAction(
+        QIcon(AppResources::Icons::Copy),
+        QStringLiteral("Copy AniList link")
+    );
+    connect(copy_anilist_link_action, &QAction::triggered, this, [this, selected_anime] {
+        QApplication::clipboard()->setText(selected_anime.media.site_url);
+    });
+}
+
 void AnimeListView::addStateHistoryActions(QMenu &menu, const AnilistAnime &selected_anime) {
     QMenu *history_menu = menu.addMenu(
         QIcon(AppResources::Icons::History),
@@ -674,7 +685,11 @@ void AnimeListView::onCustomContextMenuRequested(const QPoint &pos) {
     if (selected_anime.size() == 1) {
         this->addInfoEditActions(menu, selected_anime.constFirst());
         menu.addSeparator();
+
         this->addStateHistoryActions(menu, selected_anime.constFirst());
+        menu.addSeparator();
+
+        this->addCopyLinkActions(menu, selected_anime.constFirst());
         menu.addSeparator();
     }
 

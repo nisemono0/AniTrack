@@ -6,6 +6,7 @@
 
 #include <QScrollBar>
 #include <QMenu>
+#include <QClipboard>
 
 
 namespace {
@@ -269,6 +270,17 @@ void AnimeSearchView::onCustomContextMenuRequested(const QPoint &pos) {
         );
         connect(info_add_action, &QAction::triggered, this, [this, selected_media] {
             emit requestShowAnimeInfoEditDialog(selected_media.constFirst());
+        });
+        menu.addSeparator();
+
+        QAction *copy_anilist_link_action = menu.addAction(
+            QIcon(AppResources::Icons::Copy),
+            QStringLiteral("Copy AniList link")
+        );
+        connect(copy_anilist_link_action, &QAction::triggered, this, [this, selected_media] {
+            QApplication::clipboard()->setText(
+                selected_media.constFirst().site_url
+            );
         });
         menu.addSeparator();
     }
