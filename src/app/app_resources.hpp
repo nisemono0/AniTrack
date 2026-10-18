@@ -47,6 +47,7 @@ inline const QString Sync              = QStringLiteral(":/icons/sync");
 inline const QString CloudDown         = QStringLiteral(":/icons/cloud-down");
 inline const QString Logs              = QStringLiteral(":/icons/logs");
 inline const QString ArrowsRandom      = QStringLiteral(":/icons/arrows-random");
+inline const QString Copy              = QStringLiteral(":/icons/copy");
 } // namespace Icons
 } // namespace AppResources
 
