@@ -48,6 +48,12 @@ inline const QString CloudDown         = QStringLiteral(":/icons/cloud-down");
 inline const QString Logs              = QStringLiteral(":/icons/logs");
 inline const QString ArrowsRandom      = QStringLiteral(":/icons/arrows-random");
 inline const QString Copy              = QStringLiteral(":/icons/copy");
+inline const QString CircleCheck       = QStringLiteral(":/icons/circle-check");
+inline const QString CircleClock       = QStringLiteral(":/icons/circle-clock");
+inline const QString CirclePause       = QStringLiteral(":/icons/circle-pause");
+inline const QString CirclePlay        = QStringLiteral(":/icons/circle-play");
+inline const QString CircleReplay      = QStringLiteral(":/icons/circle-replay");
+inline const QString CircleX           = QStringLiteral(":/icons/circle-x");
 } // namespace Icons
 } // namespace AppResources
 
