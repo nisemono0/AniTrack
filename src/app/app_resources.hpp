@@ -55,6 +55,7 @@ inline const QString CirclePlay        = QStringLiteral(":/icons/circle-play");
 inline const QString CircleReplay      = QStringLiteral(":/icons/circle-replay");
 inline const QString CircleX           = QStringLiteral(":/icons/circle-x");
 inline const QString CirclePlus        = QStringLiteral(":/icons/circle-plus");
+inline const QString CircleAsterisk    = QStringLiteral(":/icons/circle-asterisk");
 } // namespace Icons
 } // namespace AppResources
 
