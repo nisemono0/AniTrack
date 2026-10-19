@@ -4,6 +4,8 @@
 
 #include "base/database/database.hpp"
 
+#include <optional>
+
 #include <QObject>
 
 
@@ -20,7 +22,7 @@ public:
 
 public slots:
     void requestLoadAnime();
-    void requestLoadRandomAnime(AnilistEntry::Status status);
+    void requestLoadRandomAnime(std::optional<AnilistEntry::Status> status);
 
     void requestAddMedia(const QList<AnilistMedia> &media_list, AnilistEntry::Status status);
 

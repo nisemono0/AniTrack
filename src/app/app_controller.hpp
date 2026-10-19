@@ -7,6 +7,8 @@
 #include "base/search/search_manager.hpp"
 #include "base/recognition/recognition_manager.hpp"
 
+#include <optional>
+
 #include <QObject>
 
 
@@ -55,7 +57,7 @@ signals:
     void requestDecreaseAnimeProgress(const QList<AnilistAnime> &anime_list);
     void requestSetAnimeProgress(const QList<AnilistAnime> &anime_list, int progress);
 
-    void requestLoadRandomAnime(AnilistEntry::Status status);
+    void requestLoadRandomAnime(std::optional<AnilistEntry::Status> status);
 
     void requestSetNowPlayingAnimeProgress(const AnilistAnime &anime, int progress);
 

@@ -4,6 +4,8 @@
 
 #include "base/anilist/anilist_entry.hpp"
 
+#include <optional>
+
 #include <QWidget>
 #include <QToolBar>
 #include <QToolButton>
@@ -27,7 +29,7 @@ signals:
     void filterTextChanged(const QString &text);
     void searchRequested(const QString &text);
 
-    void requestLoadRandomAnime(AnilistEntry::Status status);
+    void requestLoadRandomAnime(std::optional<AnilistEntry::Status> status);
 
 private:
     QWidget *spacer_widget_;

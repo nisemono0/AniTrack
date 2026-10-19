@@ -54,6 +54,14 @@ ToolBarQuickActions::ToolBarQuickActions(QWidget *parent) : QToolBar(parent) {
         });
     }
 
+    auto *random_all_action = tool_menu->addAction(
+        QIcon(AppResources::Icons::CircleAsterisk),
+        QStringLiteral("All")
+    );
+    connect(random_all_action, &QAction::triggered, this, [this] {
+        emit requestLoadRandomAnime(std::nullopt);
+    });
+
     this->random_toolbutton_->setMenu(tool_menu);
 
     connect(this->filter_line_edit_, &QLineEdit::textChanged, this, &ToolBarQuickActions::filterTextChanged);

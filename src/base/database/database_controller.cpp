@@ -47,7 +47,7 @@ void DatabaseController::requestLoadAnime() {
     this->countEntriesAndNotifiy();
 }
 
-void DatabaseController::requestLoadRandomAnime(AnilistEntry::Status status) {
+void DatabaseController::requestLoadRandomAnime(std::optional<AnilistEntry::Status> status) {
     const auto entries = this->database_->selectAllEntries();
 
     if (!entries) {
@@ -62,7 +62,8 @@ void DatabaseController::requestLoadRandomAnime(AnilistEntry::Status status) {
 
     int count = 0;
     for (const auto &anime : entries.value()) {
-        if (anime.entry.state().status != status) {
+        if (status.has_value() &&
+            anime.entry.state().status != status.value()) {
             continue;
         }
 
