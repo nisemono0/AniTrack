@@ -36,6 +36,7 @@ public:
         ToolTipStatus,
         ToolTipSeason,
         ToolTipGenres,
+        ToolTipScore,
         // For delegates
         IsAdult,
         InList,

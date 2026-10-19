@@ -45,6 +45,7 @@ public:
         ToolTipStatus,
         ToolTipSeason,
         ToolTipGenres,
+        ToolTipScore,
         // For delegate
         PendingOperation,
         EntryProgress,

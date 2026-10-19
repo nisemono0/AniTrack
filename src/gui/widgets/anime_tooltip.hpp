@@ -20,7 +20,8 @@ public:
                          const QString &episodes,
                          const QString &status,
                          const QString &season,
-                         const QString &genres);
+                         const QString &genres,
+                         const QString &score);
 
     void showAtPosition(const QPoint &global_pos);
     void updatePosition(const QPoint &global_pos);
@@ -38,6 +39,7 @@ private:
     QLabel *status_;
     QLabel *season_;
     QLabel *genres_;
+    QLabel *score_;
 
     void initWidget();
     void setupWidget();

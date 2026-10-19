@@ -138,7 +138,8 @@ bool AnimeSearchView::viewportEvent(QEvent *event) {
                     index.data(AnimeSearchModel::UserRoles::ToolTipEpisodes).toString(),
                     index.data(AnimeSearchModel::UserRoles::ToolTipStatus).toString(),
                     index.data(AnimeSearchModel::UserRoles::ToolTipSeason).toString(),
-                    index.data(AnimeSearchModel::UserRoles::ToolTipGenres).toString()
+                    index.data(AnimeSearchModel::UserRoles::ToolTipGenres).toString(),
+                    index.data(AnimeSearchModel::UserRoles::ToolTipScore).toString()
                 );
             }
 
