@@ -1,6 +1,9 @@
 #include "gui/widgets/anime_status_combo_box.hpp"
 
+#include "app/app_resources.hpp"
+
 #include <QMetaEnum>
+
 
 AnimeStatusComboBox::AnimeStatusComboBox(QWidget *parent) : QComboBox(parent) {
     const QMetaEnum meta_enum = QMetaEnum::fromType<StatusItems>();
@@ -8,7 +11,38 @@ AnimeStatusComboBox::AnimeStatusComboBox(QWidget *parent) : QComboBox(parent) {
     for (int i = 0; i < meta_enum.keyCount(); i++) {
         const QString name = QString::fromLatin1(meta_enum.key(i));
 
+        QIcon icon;
+        switch (static_cast<StatusItems>(meta_enum.value(i))) {
+            case StatusItems::Watching: {
+                icon = QIcon(AppResources::Icons::CirclePlay);
+                break;
+            }
+            case StatusItems::Planning: {
+                icon = QIcon(AppResources::Icons::CircleClock);
+                break;
+            }
+            case StatusItems::Completed: {
+                icon = QIcon(AppResources::Icons::CircleCheck);
+                break;
+            }
+            case StatusItems::Dropped: {
+                icon = QIcon(AppResources::Icons::CircleX);
+                break;
+            }
+            case StatusItems::Paused: {
+                icon = QIcon(AppResources::Icons::CirclePause);
+                break;
+            }
+            case StatusItems::Rewatching: {
+                icon = QIcon(AppResources::Icons::CircleReplay);
+                break;
+            }
+            default:
+                break;
+        }
+
         this->addItem(
+            icon,
             name,
             // StatusItems enum corresponds to AnilistEntry::Status enum
             // minus the INVALID status so we have to +1 to correspond to it
