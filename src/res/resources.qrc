@@ -6,6 +6,7 @@
     <file alias="anime-relations">../../deps/anime-relations/anime-relations.txt</file>
   </qresource>
   <qresource prefix="icons">
+    <file alias="circle-plus">icons/circle-plus.svg</file>
     <file alias="circle-check">icons/circle-check.svg</file>
     <file alias="circle-clock">icons/circle-clock.svg</file>
     <file alias="circle-pause">icons/circle-pause.svg</file>
