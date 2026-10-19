@@ -1,5 +1,7 @@
 #include "gui/pages/anime_list_tab_bar.hpp"
 
+#include "app/app_resources.hpp"
+
 #include <QMetaEnum>
 
 
@@ -52,5 +54,33 @@ void AnimeListTabBar::initTabs() {
             this->addTab(name),
             static_cast<int>(tab)
         );
+
+        switch (tab) {
+            case Tab::Watching: {
+                this->setTabIcon(i, QIcon(AppResources::Icons::CirclePlay));
+                break;
+            }
+            case Tab::Completed: {
+                this->setTabIcon(i, QIcon(AppResources::Icons::CircleCheck));
+                break;
+            }
+            case Tab::Paused: {
+                this->setTabIcon(i, QIcon(AppResources::Icons::CirclePause));
+                break;
+            }
+            case Tab::Dropped: {
+                this->setTabIcon(i, QIcon(AppResources::Icons::CircleX));
+                break;
+            }
+            case Tab::Planning: {
+                this->setTabIcon(i, QIcon(AppResources::Icons::CircleClock));
+                break;
+            }
+            case Tab::All: {
+                this->setTabIcon(i, QIcon(AppResources::Icons::CircleAsterisk));
+                break;
+            }
+        }
     }
 }
+
