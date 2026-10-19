@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.22)
 
 project(AniTrack
-    VERSION 1.10.0
+    VERSION 1.11.0
     LANGUAGES CXX
 )
 
 # Set tabler-icons version used
-set(TABLER_ICONS_VERSION "3.46.0")
+set(TABLER_ICONS_VERSION "3.49.0")
 
 # Get anitomy submodule short commit
 execute_process(
