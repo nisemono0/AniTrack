@@ -287,19 +287,19 @@ void AnimeSearchView::onCustomContextMenuRequested(const QPoint &pos) {
     }
 
     QMenu *add_to_list_menu = menu.addMenu(
-        QIcon(AppResources::Icons::Edit),
+        QIcon(AppResources::Icons::CirclePlus),
         QStringLiteral("Add to list")
     );
     if (is_single_media && selected_media.constFirst().in_list) {
         add_to_list_menu->setEnabled(false);
     } else {
         static const QList<MediaAddAction> media_add_actions{
-            { QStringLiteral("Watching"),   AnilistEntry::Status::CURRENT,   AppResources::Icons::Edit },
-            { QStringLiteral("Planning"),   AnilistEntry::Status::PLANNING,  AppResources::Icons::Edit },
-            { QStringLiteral("Completed"),  AnilistEntry::Status::COMPLETED, AppResources::Icons::Edit },
-            { QStringLiteral("Dropped"),    AnilistEntry::Status::DROPPED,   AppResources::Icons::Edit },
-            { QStringLiteral("Paused"),     AnilistEntry::Status::PAUSED,    AppResources::Icons::Edit },
-            { QStringLiteral("Rewatching"), AnilistEntry::Status::REPEATING, AppResources::Icons::Edit },
+            { QStringLiteral("Watching"),   AnilistEntry::Status::CURRENT,   AppResources::Icons::CirclePlay },
+            { QStringLiteral("Planning"),   AnilistEntry::Status::PLANNING,  AppResources::Icons::CircleClock },
+            { QStringLiteral("Completed"),  AnilistEntry::Status::COMPLETED, AppResources::Icons::CircleCheck },
+            { QStringLiteral("Dropped"),    AnilistEntry::Status::DROPPED,   AppResources::Icons::CircleX },
+            { QStringLiteral("Paused"),     AnilistEntry::Status::PAUSED,    AppResources::Icons::CirclePause },
+            { QStringLiteral("Rewatching"), AnilistEntry::Status::REPEATING, AppResources::Icons::CircleReplay },
         };
 
         for (const auto &action : media_add_actions) {

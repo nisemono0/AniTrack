@@ -9,6 +9,7 @@ namespace {
 struct RandomAction {
     QString name;
     AnilistEntry::Status status;
+    QString icon;
 };
 } // namespace
 
@@ -36,15 +37,18 @@ ToolBarQuickActions::ToolBarQuickActions(QWidget *parent) : QToolBar(parent) {
 
     QMenu *tool_menu = new QMenu(this->random_toolbutton_);
     static const QList<RandomAction> random_actions{
-        { QStringLiteral("Watching"),   AnilistEntry::Status::CURRENT },
-        { QStringLiteral("Rewatching"), AnilistEntry::Status::REPEATING },
-        { QStringLiteral("Completed"),  AnilistEntry::Status::COMPLETED },
-        { QStringLiteral("Paused"),     AnilistEntry::Status::PAUSED },
-        { QStringLiteral("Dropped"),    AnilistEntry::Status::DROPPED },
-        { QStringLiteral("Planning"),   AnilistEntry::Status::PLANNING },
+        { QStringLiteral("Watching"),   AnilistEntry::Status::CURRENT,   AppResources::Icons::CirclePlay },
+        { QStringLiteral("Rewatching"), AnilistEntry::Status::REPEATING, AppResources::Icons::CircleReplay },
+        { QStringLiteral("Completed"),  AnilistEntry::Status::COMPLETED, AppResources::Icons::CircleCheck },
+        { QStringLiteral("Paused"),     AnilistEntry::Status::PAUSED,    AppResources::Icons::CirclePause },
+        { QStringLiteral("Dropped"),    AnilistEntry::Status::DROPPED,   AppResources::Icons::CircleX },
+        { QStringLiteral("Planning"),   AnilistEntry::Status::PLANNING,  AppResources::Icons::CircleClock }
     };
     for (const auto &action : random_actions) {
-        auto *menu_action = tool_menu->addAction(action.name);
+        auto *menu_action = tool_menu->addAction(
+            QIcon(action.icon),
+            action.name
+        );
         connect(menu_action, &QAction::triggered, this, [this, status = action.status] {
             emit requestLoadRandomAnime(status);
         });
