@@ -443,7 +443,7 @@ void AnimeListModel::rebuildLocalIdHash() {
 void AnimeListModel::rebuildStatusCount() {
     this->entry_status_to_count_.clear();
 
-    for (const auto &anime : this->anime_list_) {
+    for (const auto &anime : std::as_const(this->anime_list_)) {
         this->entry_status_to_count_[anime.entry.state().status]++;
     }
 }
