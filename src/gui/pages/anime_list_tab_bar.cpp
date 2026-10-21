@@ -39,6 +39,74 @@ void AnimeListTabBar::selectPreviousTab() {
     }
 }
 
+void AnimeListTabBar::setTabName(Tab tab, const QString &name) {
+    this->setTabText(
+        static_cast<int>(tab),
+        name
+    );
+}
+
+void AnimeListTabBar::updateTabCount(AnimeListModel::AnimeListStatusCount status_count) {
+    const QMetaEnum meta_enum = QMetaEnum::fromType<AnimeListTabBar::Tab>();
+
+    for (int i = 0; i < meta_enum.keyCount(); i++) {
+        const Tab tab = static_cast<AnimeListTabBar::Tab>(meta_enum.value(i));
+
+        switch (tab) {
+            case Tab::Watching: {
+                this->setTabName(
+                    tab,
+                    QStringLiteral("%1 (%2)").arg(QString::fromLatin1(meta_enum.key(i)))
+                                             .arg(status_count.watching)
+                );
+                break;
+            }
+            case Tab::Completed: {
+                this->setTabName(
+                    tab,
+                    QStringLiteral("%1 (%2)").arg(QString::fromLatin1(meta_enum.key(i)))
+                                             .arg(status_count.completed)
+                );
+                break;
+            }
+            case Tab::Paused: {
+                this->setTabName(
+                    tab,
+                    QStringLiteral("%1 (%2)").arg(QString::fromLatin1(meta_enum.key(i)))
+                                             .arg(status_count.paused)
+                );
+                break;
+            }
+            case Tab::Dropped: {
+                this->setTabName(
+                    tab,
+                    QStringLiteral("%1 (%2)").arg(QString::fromLatin1(meta_enum.key(i)))
+                                             .arg(status_count.dropped)
+                );
+                break;
+            }
+            case Tab::Planning: {
+                this->setTabName(
+                    tab,
+                    QStringLiteral("%1 (%2)").arg(QString::fromLatin1(meta_enum.key(i)))
+                                             .arg(status_count.planning)
+                );
+                break;
+            }
+            case Tab::All: {
+                this->setTabName(
+                    tab,
+                    QStringLiteral("%1 (%2)").arg(QString::fromLatin1(meta_enum.key(i)))
+                                             .arg(status_count.all)
+                );
+                break;
+            }
+            default:
+                break;
+        }
+    }
+}
+
 void AnimeListTabBar::wheelEvent(QWheelEvent *event) {
     event->ignore();
 }
@@ -48,7 +116,10 @@ void AnimeListTabBar::initTabs() {
 
     for (int i = 0; i < meta_enum.keyCount(); i++) {
         const Tab tab = static_cast<AnimeListTabBar::Tab>(meta_enum.value(i));
-        const QString name = QString::fromLatin1(meta_enum.key(i));
+        const QString name = QStringLiteral("%1 (%2)").arg(
+            QString::fromLatin1(meta_enum.key(i)),
+            QStringLiteral("?")
+        );
 
         this->setTabData(
             this->addTab(name),

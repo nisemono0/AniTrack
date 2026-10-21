@@ -71,6 +71,8 @@ signals:
 
     void requestRestoreAnimeState(const AnilistAnime &anime, int index);
 
+    void animeListStatusCountChanged(AnimeListModel::AnimeListStatusCount status_count);
+
 protected:
     void wheelEvent(QWheelEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;

@@ -73,5 +73,6 @@ private:
 
 private slots:
     void onCurrentTabChanged(AnimeListTabBar::Tab tab);
+
 };
 

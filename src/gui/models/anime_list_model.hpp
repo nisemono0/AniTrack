@@ -9,6 +9,7 @@
 #include <QModelIndex>
 #include <QHash>
 #include <QTimer>
+#include <QMetaType>
 
 
 class AnimeListModel final : public QAbstractItemModel {
@@ -65,6 +66,14 @@ public:
     };
     Q_ENUM(HeaderRoles);
 
+    struct AnimeListStatusCount {
+        int watching = 0;
+        int completed = 0;
+        int paused = 0;
+        int dropped = 0;
+        int planning = 0;
+        int all = 0;
+    };
 
     explicit AnimeListModel(QObject *parent = nullptr);
     ~AnimeListModel() = default;
@@ -83,6 +92,8 @@ public:
     void updateAnime(const QList<AnilistAnime> &anime_list);
     void addAnime(const QList<AnilistAnime> &anime_list);
 
+    AnimeListStatusCount statusCount() const;
+
 private:
     AnilistAccount::ScoreFormat score_format_;
     AnilistAccount::TitleLanguage title_language_;
@@ -93,7 +104,15 @@ private:
     QList<AnilistAnime> anime_list_;
     QHash<int, int> local_id_to_anime_;
 
+    QHash<AnilistEntry::Status, int> entry_status_to_count_;
+
     void rebuildLocalIdHash();
+
+    void rebuildStatusCount();
+    void updateStatusCount(AnilistEntry::Status old_status, AnilistEntry::Status new_status);
+
     void updateCurrentEpoch();
 };
+
+Q_DECLARE_METATYPE(AnimeListModel::AnimeListStatusCount);
 

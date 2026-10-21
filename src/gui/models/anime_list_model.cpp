@@ -364,7 +364,9 @@ void AnimeListModel::setAnime(const QList<AnilistAnime> &anime_list) {
     beginResetModel();
 
     this->anime_list_ = anime_list;
+
     this->rebuildLocalIdHash();
+    this->rebuildStatusCount();
 
     endResetModel();
 }
@@ -379,6 +381,12 @@ void AnimeListModel::updateAnime(const QList<AnilistAnime> &anime_list) {
         }
 
         const int entry_idx = it.value();
+
+        const auto old_status = this->anime_list_.at(entry_idx).entry.state().status;
+        const auto new_status = anime.entry.state().status;
+
+        this->updateStatusCount(old_status, new_status);
+
         this->anime_list_[entry_idx] = anime;
 
         emit dataChanged(
@@ -400,10 +408,24 @@ void AnimeListModel::addAnime(const QList<AnilistAnime> &anime_list) {
         const int anime_idx = this->anime_list_.size();
 
         this->anime_list_.append(anime);
+
         this->local_id_to_anime_.insert(anime.entry.localId(), anime_idx);
+        this->entry_status_to_count_[anime.entry.state().status]++;
     }
 
     endInsertRows();
+}
+
+AnimeListModel::AnimeListStatusCount AnimeListModel::statusCount() const {
+    return {
+        .watching = this->entry_status_to_count_.value(AnilistEntry::Status::CURRENT) +
+                    this->entry_status_to_count_.value(AnilistEntry::Status::REPEATING),
+        .completed = this->entry_status_to_count_.value(AnilistEntry::Status::COMPLETED),
+        .paused = this->entry_status_to_count_.value(AnilistEntry::Status::PAUSED),
+        .dropped = this->entry_status_to_count_.value(AnilistEntry::Status::DROPPED),
+        .planning = this->entry_status_to_count_.value(AnilistEntry::Status::PLANNING),
+        .all = this->rowCount()
+    };
 }
 
 void AnimeListModel::rebuildLocalIdHash() {
@@ -416,6 +438,23 @@ void AnimeListModel::rebuildLocalIdHash() {
             i
         );
     }
+}
+
+void AnimeListModel::rebuildStatusCount() {
+    this->entry_status_to_count_.clear();
+
+    for (const auto &anime : this->anime_list_) {
+        this->entry_status_to_count_[anime.entry.state().status]++;
+    }
+}
+
+void AnimeListModel::updateStatusCount(AnilistEntry::Status old_status, AnilistEntry::Status new_status) {
+    if (old_status == new_status) {
+        return;
+    }
+
+    this->entry_status_to_count_[old_status]--;
+    this->entry_status_to_count_[new_status]++;
 }
 
 void AnimeListModel::updateCurrentEpoch() {

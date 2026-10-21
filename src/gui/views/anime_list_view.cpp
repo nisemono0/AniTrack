@@ -103,14 +103,20 @@ void AnimeListView::updateUserPreferences(const AnilistAccount::User &user) {
 
 void AnimeListView::setAnime(const QList<AnilistAnime> &anime_list) {
     this->anime_list_model_->setAnime(anime_list);
+
+    emit animeListStatusCountChanged(this->anime_list_model_->statusCount());
 }
 
 void AnimeListView::updateAnime(const QList<AnilistAnime> &anime_list) {
     this->anime_list_model_->updateAnime(anime_list);
+
+    emit animeListStatusCountChanged(this->anime_list_model_->statusCount());
 }
 
 void AnimeListView::addAnime(const QList<AnilistAnime> &anime_list) {
     this->anime_list_model_->addAnime(anime_list);
+
+    emit animeListStatusCountChanged(this->anime_list_model_->statusCount());
 }
 
 void AnimeListView::stopEditing() {

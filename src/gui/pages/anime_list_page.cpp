@@ -53,6 +53,10 @@ void AnimeListPage::initPage() {
 
 void AnimeListPage::setupTabBar() {
     connect(this->ui_->widgetTabBar, &AnimeListTabBar::currentTabChanged, this, &AnimeListPage::onCurrentTabChanged);
+    connect(
+        this->ui_->treeViewAnimeList, &AnimeListView::animeListStatusCountChanged,
+        this->ui_->widgetTabBar, &AnimeListTabBar::updateTabCount
+    );
 
     this->ui_->widgetTabBar->setCurrentTab(AnimeListTabBar::Tab::Watching);
 }
@@ -90,3 +94,4 @@ void AnimeListPage::setupPage() {
 void AnimeListPage::onCurrentTabChanged(AnimeListTabBar::Tab tab) {
     this->ui_->treeViewAnimeList->setFilterTab(tab);
 }
+
