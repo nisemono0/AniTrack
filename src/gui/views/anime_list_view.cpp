@@ -291,6 +291,9 @@ void AnimeListView::initView() {
     this->setHeader(this->anime_list_header_);
     this->setContextMenuPolicy(Qt::CustomContextMenu);
 
+    this->setSortingEnabled(true);
+    this->anime_list_header_->setSortIndicatorShown(false);
+
     this->viewport()->setMouseTracking(true);
 }
 

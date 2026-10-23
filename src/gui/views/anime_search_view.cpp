@@ -186,6 +186,9 @@ void AnimeSearchView::initView() {
     this->setHeader(this->anime_search_header_);
     this->setContextMenuPolicy(Qt::CustomContextMenu);
 
+    this->setSortingEnabled(true);
+    this->anime_search_header_->setSortIndicatorShown(false);
+
     this->viewport()->setMouseTracking(true);
 }
 
