@@ -67,6 +67,11 @@ private:
 
     QList<AnilistMedia> selectedMedia();
 
+    void addInfoAddActions(QMenu &menu, const AnilistMedia &selected_media);
+    void addCopyActions(QMenu &menu, const AnilistMedia &selected_media);
+    void addLinkActions(QMenu &menu, const QList<AnilistMedia> &selected_media);
+    void addAddToListActions(QMenu &menu, const QList<AnilistMedia> &selected_media);
+
 private slots:
     void onCustomContextMenuRequested(const QPoint &pos);
     void applySettings();

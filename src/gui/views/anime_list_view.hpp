@@ -109,8 +109,9 @@ private:
     QList<AnilistAnime> selectedAnime();
 
     void addInfoEditActions(QMenu &menu, const AnilistAnime &selected_anime);
-    void addCopyLinkActions(QMenu &menu, const AnilistAnime &selected_anime);
     void addStateHistoryActions(QMenu &menu, const AnilistAnime &selected_anime);
+    void addCopyActions(QMenu &menu, const AnilistAnime &selected_anime);
+    void addLinkActions(QMenu &menu, const QList<AnilistAnime> &selected_anime);
     void addUndoRedoActions(QMenu &menu, const QList<AnilistAnime> &selected_anime);
     void addDeleteActions(QMenu &menu, const QList<AnilistAnime> &selected_anime);
     void addEpisodeActions(QMenu &menu, const QList<AnilistAnime> &selected_anime);

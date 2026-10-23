@@ -3,6 +3,8 @@
 #include "app/app_resources.hpp"
 
 #include "utils/settings.hpp"
+#include "utils/dialog.hpp"
+#include "utils/web.hpp"
 
 #include <QScrollBar>
 #include <QMenu>
@@ -17,6 +19,18 @@ struct HeaderSettings {
     int padding;
     int resize;
     bool hidden;
+};
+// Used to initialize the copy actions
+enum class CopyType {
+    AnilistUrl,
+    TitleRomaji,
+    TitleNative,
+    TitleEnglish
+};
+struct CopyActions {
+    QString name;
+    CopyType type;
+    QString icon;
 };
 // Used to initialize the context menu
 struct MediaAddAction {
@@ -245,6 +259,103 @@ QList<AnilistMedia> AnimeSearchView::selectedMedia() {
     return selected_media;
 }
 
+void AnimeSearchView::addInfoAddActions(QMenu &menu, const AnilistMedia &selected_media) {
+    QAction *info_add_action = menu.addAction(
+        QIcon(AppResources::Icons::Info),
+        QStringLiteral("Information")
+    );
+    connect(info_add_action, &QAction::triggered, this, [this, selected_media] {
+        emit requestShowAnimeInfoEditDialog(selected_media);
+    });
+}
+
+void AnimeSearchView::addCopyActions(QMenu &menu, const AnilistMedia &selected_media) {
+    static const QList<CopyActions> copy_actions{
+        { QStringLiteral("AniList link"),  CopyType::AnilistUrl,   AppResources::Icons::Copy },
+        { QStringLiteral("Romaji title"),  CopyType::TitleRomaji,  AppResources::Icons::Copy },
+        { QStringLiteral("Native title"),  CopyType::TitleNative,  AppResources::Icons::Copy },
+        { QStringLiteral("English title"), CopyType::TitleEnglish, AppResources::Icons::Copy },
+    };
+
+    auto *copy_menu = menu.addMenu(
+        QIcon(AppResources::Icons::Copy),
+        QStringLiteral("Copy")
+    );
+    for (const auto &action : copy_actions) {
+        QAction *menu_action = copy_menu->addAction(
+            QIcon(action.icon),
+            action.name
+        );
+
+        if (action.type == CopyType::AnilistUrl) {
+            copy_menu->addSeparator();
+        }
+
+        connect(menu_action, &QAction::triggered, this, [this, selected_media, type = action.type] {
+            switch (type) {
+                case CopyType::AnilistUrl: {
+                    QApplication::clipboard()->setText(selected_media.site_url);
+                    break;
+                }
+                case CopyType::TitleRomaji: {
+                    QApplication::clipboard()->setText(selected_media.title.romaji);
+                    break;
+                }
+                case CopyType::TitleNative: {
+                    QApplication::clipboard()->setText(selected_media.title.native);
+                    break;
+                }
+                case CopyType::TitleEnglish: {
+                    QApplication::clipboard()->setText(selected_media.title.english);
+                    break;
+                }
+                default:
+                    break;
+            }
+        });
+    }
+}
+
+void AnimeSearchView::addLinkActions(QMenu &menu, const QList<AnilistMedia> &selected_media) {
+    QAction *open_url_action = menu.addAction(
+        QIcon(AppResources::Icons::Link),
+        QStringLiteral("Open AniList url")
+    );
+
+    connect(open_url_action, &QAction::triggered, this, [this, selected_media] {
+        for (const auto &media : selected_media) {
+            if (!WebUtils::openUrl(media.site_url)) {
+                DialogUtils::warning(
+                    QStringLiteral("Open AniList url"),
+                    QStringLiteral("Failed to open: %1").arg(media.site_url),
+                    this
+                );
+            }
+        }
+    });
+}
+
+void AnimeSearchView::addAddToListActions(QMenu &menu, const QList<AnilistMedia> &selected_media) {
+    static const QList<MediaAddAction> media_add_actions{
+        { QStringLiteral("Watching"),   AnilistEntry::Status::CURRENT,   AppResources::Icons::CirclePlay },
+        { QStringLiteral("Planning"),   AnilistEntry::Status::PLANNING,  AppResources::Icons::CircleClock },
+        { QStringLiteral("Completed"),  AnilistEntry::Status::COMPLETED, AppResources::Icons::CircleCheck },
+        { QStringLiteral("Dropped"),    AnilistEntry::Status::DROPPED,   AppResources::Icons::CircleX },
+        { QStringLiteral("Paused"),     AnilistEntry::Status::PAUSED,    AppResources::Icons::CirclePause },
+        { QStringLiteral("Rewatching"), AnilistEntry::Status::REPEATING, AppResources::Icons::CircleReplay },
+    };
+
+    for (const auto &action : media_add_actions) {
+        QAction *menu_action = menu.addAction(
+            QIcon(action.icon),
+            action.name
+        );
+        connect(menu_action, &QAction::triggered, this, [this, selected_media, status = action.status] {
+            emit requestAddMedia(selected_media, status);
+        });
+    }
+}
+
 void AnimeSearchView::onCustomContextMenuRequested(const QPoint &pos) {
     const QModelIndex index = this->indexAt(pos);
 
@@ -265,26 +376,15 @@ void AnimeSearchView::onCustomContextMenuRequested(const QPoint &pos) {
 
     const bool is_single_media = selected_media.size() == 1;
     if (is_single_media) {
-        QAction *info_add_action = menu.addAction(
-            QIcon(AppResources::Icons::Info),
-            QStringLiteral("Information")
-        );
-        connect(info_add_action, &QAction::triggered, this, [this, selected_media] {
-            emit requestShowAnimeInfoEditDialog(selected_media.constFirst());
-        });
+        this->addInfoAddActions(menu, selected_media.constFirst());
         menu.addSeparator();
 
-        QAction *copy_anilist_link_action = menu.addAction(
-            QIcon(AppResources::Icons::Copy),
-            QStringLiteral("Copy AniList link")
-        );
-        connect(copy_anilist_link_action, &QAction::triggered, this, [this, selected_media] {
-            QApplication::clipboard()->setText(
-                selected_media.constFirst().site_url
-            );
-        });
+        this->addCopyActions(menu, selected_media.constFirst());
         menu.addSeparator();
     }
+
+    this->addLinkActions(menu, selected_media);
+    menu.addSeparator();
 
     QMenu *add_to_list_menu = menu.addMenu(
         QIcon(AppResources::Icons::CirclePlus),
@@ -293,24 +393,7 @@ void AnimeSearchView::onCustomContextMenuRequested(const QPoint &pos) {
     if (is_single_media && selected_media.constFirst().in_list) {
         add_to_list_menu->setEnabled(false);
     } else {
-        static const QList<MediaAddAction> media_add_actions{
-            { QStringLiteral("Watching"),   AnilistEntry::Status::CURRENT,   AppResources::Icons::CirclePlay },
-            { QStringLiteral("Planning"),   AnilistEntry::Status::PLANNING,  AppResources::Icons::CircleClock },
-            { QStringLiteral("Completed"),  AnilistEntry::Status::COMPLETED, AppResources::Icons::CircleCheck },
-            { QStringLiteral("Dropped"),    AnilistEntry::Status::DROPPED,   AppResources::Icons::CircleX },
-            { QStringLiteral("Paused"),     AnilistEntry::Status::PAUSED,    AppResources::Icons::CirclePause },
-            { QStringLiteral("Rewatching"), AnilistEntry::Status::REPEATING, AppResources::Icons::CircleReplay },
-        };
-
-        for (const auto &action : media_add_actions) {
-            QAction *menu_action = add_to_list_menu->addAction(
-                QIcon(action.icon),
-                action.name
-            );
-            connect(menu_action, &QAction::triggered, this, [this, selected_media, status = action.status] {
-                emit requestAddMedia(selected_media, status);
-            });
-        }
+        this->addAddToListActions(*add_to_list_menu, selected_media);
     }
 
     menu.exec(this->viewport()->mapToGlobal(pos));

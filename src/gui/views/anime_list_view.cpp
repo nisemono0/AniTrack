@@ -6,6 +6,8 @@
 #include "app/app_resources.hpp"
 
 #include "utils/settings.hpp"
+#include "utils/web.hpp"
+#include "utils/dialog.hpp"
 
 #include <QScrollBar>
 #include <QMenu>
@@ -21,9 +23,21 @@ struct HeaderSettings {
     bool hidden;
 };
 // Used to initialize the info/edit actions
-struct InfoEditAction{
+struct InfoEditAction {
     QString name;
     AnimeInfoEditDialog::Page page;
+    QString icon;
+};
+// Used to initialize the copy actions
+enum class CopyType {
+    AnilistUrl,
+    TitleRomaji,
+    TitleNative,
+    TitleEnglish
+};
+struct CopyActions {
+    QString name;
+    CopyType type;
     QString icon;
 };
 // Used to initialize the undo/redo actions
@@ -57,11 +71,6 @@ enum class DateActionType {
 struct DateMenuAction {
     QString name;
     DateActionType type;
-    QString icon;
-};
-// Used to initialize the score context menu
-struct ScoreAction {
-    QString name;
     QString icon;
 };
 // Used to initialize the status context menu
@@ -432,16 +441,6 @@ void AnimeListView::addInfoEditActions(QMenu &menu, const AnilistAnime &selected
     }
 }
 
-void AnimeListView::addCopyLinkActions(QMenu &menu, const AnilistAnime &selected_anime) {
-    QAction *copy_anilist_link_action = menu.addAction(
-        QIcon(AppResources::Icons::Copy),
-        QStringLiteral("Copy AniList link")
-    );
-    connect(copy_anilist_link_action, &QAction::triggered, this, [this, selected_anime] {
-        QApplication::clipboard()->setText(selected_anime.media.site_url);
-    });
-}
-
 void AnimeListView::addStateHistoryActions(QMenu &menu, const AnilistAnime &selected_anime) {
     QMenu *history_menu = menu.addMenu(
         QIcon(AppResources::Icons::History),
@@ -470,6 +469,72 @@ void AnimeListView::addStateHistoryActions(QMenu &menu, const AnilistAnime &sele
             emit requestRestoreAnimeState(selected_anime, i);
         });
     }
+}
+
+void AnimeListView::addCopyActions(QMenu &menu, const AnilistAnime &selected_anime) {
+    static const QList<CopyActions> copy_actions{
+        { QStringLiteral("AniList link"),  CopyType::AnilistUrl,   AppResources::Icons::Copy },
+        { QStringLiteral("Romaji title"),  CopyType::TitleRomaji,  AppResources::Icons::Copy },
+        { QStringLiteral("Native title"),  CopyType::TitleNative,  AppResources::Icons::Copy },
+        { QStringLiteral("English title"), CopyType::TitleEnglish, AppResources::Icons::Copy },
+    };
+
+    auto *copy_menu = menu.addMenu(
+        QIcon(AppResources::Icons::Copy),
+        QStringLiteral("Copy")
+    );
+    for (const auto &action : copy_actions) {
+        QAction *menu_action = copy_menu->addAction(
+            QIcon(action.icon),
+            action.name
+        );
+
+        if (action.type == CopyType::AnilistUrl) {
+            copy_menu->addSeparator();
+        }
+
+        connect(menu_action, &QAction::triggered, this, [this, selected_anime, type = action.type] {
+            switch (type) {
+                case CopyType::AnilistUrl: {
+                    QApplication::clipboard()->setText(selected_anime.media.site_url);
+                    break;
+                }
+                case CopyType::TitleRomaji: {
+                    QApplication::clipboard()->setText(selected_anime.media.title.romaji);
+                    break;
+                }
+                case CopyType::TitleNative: {
+                    QApplication::clipboard()->setText(selected_anime.media.title.native);
+                    break;
+                }
+                case CopyType::TitleEnglish: {
+                    QApplication::clipboard()->setText(selected_anime.media.title.english);
+                    break;
+                }
+                default:
+                    break;
+            }
+        });
+    }
+}
+
+void AnimeListView::addLinkActions(QMenu &menu, const QList<AnilistAnime> &selected_anime) {
+    QAction *open_url_action = menu.addAction(
+        QIcon(AppResources::Icons::Link),
+        QStringLiteral("Open AniList url")
+    );
+
+    connect(open_url_action, &QAction::triggered, this, [this, selected_anime] {
+        for (const auto &anime : selected_anime) {
+            if (!WebUtils::openUrl(anime.media.site_url)) {
+                DialogUtils::warning(
+                    QStringLiteral("Open AniList url"),
+                    QStringLiteral("Failed to open: %1").arg(anime.media.site_url),
+                    this
+                );
+            }
+        }
+    });
 }
 
 void AnimeListView::addUndoRedoActions(QMenu &menu, const QList<AnilistAnime> &selected_anime) {
@@ -696,10 +761,12 @@ void AnimeListView::onCustomContextMenuRequested(const QPoint &pos) {
         this->addStateHistoryActions(menu, selected_anime.constFirst());
         menu.addSeparator();
 
-        this->addCopyLinkActions(menu, selected_anime.constFirst());
+        this->addCopyActions(menu, selected_anime.constFirst());
         menu.addSeparator();
     }
 
+    this->addLinkActions(menu, selected_anime);
+    menu.addSeparator();
     this->addUndoRedoActions(menu, selected_anime);
     menu.addSeparator();
     this->addDeleteActions(menu, selected_anime);
