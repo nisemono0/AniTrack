@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 project(AniTrack
-    VERSION 1.14.1
+    VERSION 1.15.0
     LANGUAGES CXX
 )
 
