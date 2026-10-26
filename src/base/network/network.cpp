@@ -9,6 +9,7 @@ Network::Network(QObject *parent) : QObject(parent) {
 
 QNetworkReply* Network::getImage(const QString &url) {
     QNetworkRequest request(url);
+    request.setTransferTimeout(std::chrono::seconds(5));
 
     request.setRawHeader(
         QByteArray("Accept"),
