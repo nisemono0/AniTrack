@@ -57,18 +57,6 @@ ImageCache::ImageCache(
 
 }
 
-ImageCache::~ImageCache() {
-    for (auto &pending : this->pending_downloads_) {
-        if (pending.network_reply) {
-            // Disconnect before calling abort, abort instantly emits finished
-            disconnect(pending.network_reply, &QNetworkReply::finished, nullptr, nullptr);
-            pending.network_reply->abort();
-            pending.network_reply->deleteLater();
-        }
-        qDeleteAll(pending.requests);
-    }
-}
-
 bool ImageCache::init() {
     if (this->cache_dir_.exists()) {
         Log::info(
@@ -175,7 +163,7 @@ ImageRequest* ImageCache::requestPixmap(const QString &url) {
         if (this->pending_downloads_.contains(key)) {
             Log::info(
                 CONTEXT_CLASS,
-                QStringLiteral("Alredy downloading: %1 (%2)").arg(url, key)
+                QStringLiteral("Already downloading: %1 (%2)").arg(url, key)
             );
             ImageRequest *image_request = new ImageRequest(this);
             this->pending_downloads_[key].requests.append(image_request);

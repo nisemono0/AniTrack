@@ -18,7 +18,7 @@ public:
         Network *network,
         QObject *parent = nullptr
     );
-    ~ImageCache();
+    ~ImageCache() = default;
 
     bool init();
 
