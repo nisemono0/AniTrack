@@ -149,6 +149,12 @@ QVariant AnimeSearchModel::data(const QModelIndex &index, int role) const {
                     }
                     break;
                 }
+                case Columns::Score: {
+                    if (media.weighted_score <= 0) {
+                        return QBrush(Qt::gray);
+                    }
+                    break;
+                }
                 case Columns::Season: {
                     if (media.season == AnilistMedia::Season::INVALID) {
                         return QBrush(Qt::gray);
