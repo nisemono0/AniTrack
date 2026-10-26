@@ -26,6 +26,8 @@ public:
     void showAtPosition(const QPoint &global_pos);
     void updatePosition(const QPoint &global_pos);
 
+    void hideTooltip();
+
 private:
     const QPixmap no_image_ = QPixmap(AppResources::Images::NoImage);
     const QPoint cursor_offset_ = QPoint(16, 16);

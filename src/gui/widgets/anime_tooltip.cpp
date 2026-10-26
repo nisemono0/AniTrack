@@ -74,6 +74,11 @@ void AnimeTooltip::updatePosition(const QPoint &global_pos) {
     this->move(this->positionFromGlobal(global_pos));
 }
 
+void AnimeTooltip::hideTooltip() {
+    this->hide();
+    this->cover_->clear();
+}
+
 void AnimeTooltip::initWidget() {
     this->cover_ = new QLabel(this);
     this->cover_->setAlignment(Qt::AlignTop | Qt::AlignLeft);
