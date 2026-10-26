@@ -23,7 +23,7 @@ AnilistMedia AnilistMedia::fromResponseJson(const QJsonObject &json_obj) {
         AnilistMedia::Season::INVALID
     );
     media.season_year = json_obj.value(AnilistKeys::Media::SeasonYear).toInt();
-    media.average_score = json_obj.value(AnilistKeys::Media::AverageScore).toInt();
+    media.weighted_score = json_obj.value(AnilistKeys::Media::WeightedScore).toInt();
     media.site_url = json_obj.value(AnilistKeys::Media::SiteUrl).toString();
 
     const QJsonObject titles_obj = json_obj.value(AnilistKeys::Media::Title).toObject();
@@ -76,7 +76,7 @@ AnilistMedia AnilistMedia::fromDatabaseQuery(const QSqlQuery &query) {
     media.status = query.value(DatabaseColumns::Media::Status).value<AnilistMedia::Status>();
     media.season = query.value(DatabaseColumns::Media::Season).value<AnilistMedia::Season>();
     media.season_year = query.value(DatabaseColumns::Media::SeasonYear).toInt();
-    media.average_score = query.value(DatabaseColumns::Media::AverageScore).toInt();
+    media.weighted_score = query.value(DatabaseColumns::Media::WeightedScore).toInt();
     media.site_url = query.value(DatabaseColumns::Media::SiteUrl).toString();
     media.title = AnilistMedia::Title{
         query.value(DatabaseColumns::Media::TitleEnglish).toString(),

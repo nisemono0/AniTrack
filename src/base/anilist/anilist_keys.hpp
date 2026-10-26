@@ -123,7 +123,7 @@ inline const QString CountryOfOrigin = QStringLiteral("countryOfOrigin");
 inline const QString CoverImage      = QStringLiteral("coverImage");
 inline const QString Genres          = QStringLiteral("genres");
 inline const QString Studios         = QStringLiteral("studios");
-inline const QString AverageScore    = QStringLiteral("averageScore");
+inline const QString WeightedScore   = QStringLiteral("weightedScore");
 } // namespace Media
 
 namespace MediaCoverImage {

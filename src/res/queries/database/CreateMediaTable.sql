@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS media (
     media_status INTEGER NOT NULL DEFAULT 0,
     season INTEGER NOT NULL DEFAULT 0,
     season_year INTEGER NOT NULL DEFAULT 0,
-    average_score INTEGER NOT NULL DEFAULT 0,
+    weighted_score INTEGER NOT NULL DEFAULT 0,
     site_url TEXT,
     title_english TEXT,
     title_native TEXT,

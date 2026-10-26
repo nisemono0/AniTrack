@@ -740,7 +740,7 @@ void Database::bindMedia(QSqlQuery &query, const AnilistAnime &anime) {
     query.bindValue(DatabaseKeys::Media::MediaStatus, static_cast<int>(anime.media.status));
     query.bindValue(DatabaseKeys::Media::Season, static_cast<int>(anime.media.season));
     query.bindValue(DatabaseKeys::Media::SeasonYear, anime.media.season_year);
-    query.bindValue(DatabaseKeys::Media::AverageScore, anime.media.average_score);
+    query.bindValue(DatabaseKeys::Media::WeightedScore, anime.media.weighted_score);
     query.bindValue(DatabaseKeys::Media::SiteUrl, anime.media.site_url);
     query.bindValue(DatabaseKeys::Media::TitleEnglish, anime.media.title.english);
     query.bindValue(DatabaseKeys::Media::TitleNative, anime.media.title.native);

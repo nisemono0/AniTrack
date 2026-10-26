@@ -4,7 +4,7 @@ fragment MediaFields on Media {
   status(version: 2)
   season
   seasonYear
-  averageScore
+  weightedScore
   siteUrl
   title {
     english

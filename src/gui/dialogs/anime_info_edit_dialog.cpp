@@ -252,7 +252,7 @@ void AnimeInfoEditDialog::updateInfoTab() {
     this->ui_->labelStarted->setText(AnilistUtils::dateToPrettyString(media.start_date));
     this->ui_->labelEnded->setText(AnilistUtils::dateToPrettyString(media.end_date));
     this->ui_->labelOrigin->setText(media.country_of_origin);
-    this->ui_->labelScore->setText(QStringLiteral("%1%").arg(media.average_score));
+    this->ui_->labelScore->setText(QStringLiteral("%1%").arg(media.weighted_score));
     // Synopsis
     this->ui_->textEditSynopsis->setHtml(media.description);
 }

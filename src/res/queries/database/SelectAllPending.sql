@@ -19,7 +19,7 @@ SELECT
     m.media_status AS media_status,
     m.season AS media_season,
     m.season_year AS media_season_year,
-    m.average_score AS media_average_score,
+    m.weighted_score AS media_weighted_score,
     m.site_url AS media_site_url,
     m.title_english AS media_title_english,
     m.title_native AS media_title_native,

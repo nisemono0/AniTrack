@@ -74,7 +74,7 @@ public:
     Status status = Status::INVALID;
     Season season = Season::INVALID;
     int season_year = 0;
-    int average_score = 0;
+    int weighted_score = 0;
     QString site_url;
     Title title;
     QStringList synonyms;
