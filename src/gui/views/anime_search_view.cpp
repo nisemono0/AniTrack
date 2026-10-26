@@ -138,7 +138,7 @@ bool AnimeSearchView::viewportEvent(QEvent *event) {
             const QModelIndex index = this->indexAt(tooltip_event->pos());
             if (!index.isValid()) {
                 this->last_tooltip_media_id_ = AnilistMedia::InvalidId;
-                this->anime_tooltip_->hideTooltip();
+                this->anime_tooltip_->hide();
                 return true;
             }
 
@@ -167,7 +167,7 @@ bool AnimeSearchView::viewportEvent(QEvent *event) {
             return QTreeView::viewportEvent(event);
         }
         default: {
-            this->anime_tooltip_->hideTooltip();
+            this->anime_tooltip_->hide();
             return QTreeView::viewportEvent(event);
         }
     }
