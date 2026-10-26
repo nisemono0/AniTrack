@@ -72,6 +72,7 @@ QString mediaSeasonToPrettyString(AnilistMedia::Season season, int season_year);
 QString epochToPrettyString(qint64 entry_epoch, qint64 current_epoch);
 QString dateToPrettyString(const QDate &date);
 QString entryScoreToPrettyString(int score, AnilistAccount::ScoreFormat format);
+QString mediaScoreToPrettyString(int score);
 QString entryStatusToPrettyString(AnilistEntry::Status status);
 QString rewatchToPrettyString(int rewatch);
 QString mediaStatusToPrettyString(AnilistMedia::Status status);

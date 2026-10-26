@@ -105,7 +105,7 @@ QVariant AnimeSearchModel::data(const QModelIndex &index, int role) const {
         case UserRoles::ToolTipGenres:
             return media.genres.join(QStringLiteral(", "));
         case UserRoles::ToolTipScore:
-            return QStringLiteral("%1%").arg(media.weighted_score);
+            return AnilistUtils::mediaScoreToPrettyString(media.weighted_score);
         // Display role
         case Qt::DisplayRole: {
             switch (column) {
@@ -116,7 +116,7 @@ QVariant AnimeSearchModel::data(const QModelIndex &index, int role) const {
                 case Columns::Episodes:
                     return AnilistUtils::mediaEpisodesToPrettyString(media.episodes);
                 case Columns::Score:
-                    return media.weighted_score;
+                    return AnilistUtils::mediaScoreToPrettyString(media.weighted_score);
                 case Columns::Season:
                     return AnilistUtils::mediaSeasonToPrettyString(media.season, media.season_year);
                 case Columns::Status:

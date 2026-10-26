@@ -216,6 +216,14 @@ QString AnilistUtils::entryScoreToPrettyString(int score, AnilistAccount::ScoreF
     }
 }
 
+QString AnilistUtils::mediaScoreToPrettyString(int score) {
+    if (score <= 0) {
+        return QStringLiteral("-");
+    }
+
+    return QStringLiteral("%1%").arg(score);
+}
+
 QString AnilistUtils::entryStatusToPrettyString(AnilistEntry::Status status) {
     switch (status) {
         case AnilistEntry::Status::INVALID:
