@@ -249,11 +249,15 @@ void RecognitionNowPlayingPage::onPopupTimerTimeout() {
 
     // anime not in list, ask to add
     if (!this->entry_) {
-        this->openPopupDialog(
-            this->playing_title_,
-            QStringLiteral("Add to watching list"),
-            NowPlayingPopupDialog::PopupType::Add
-        );
+        if (this->is_popup_auto_accept_enabled_) {
+            this->onPopupAccepted(NowPlayingPopupDialog::PopupType::Add);
+        } else {
+            this->openPopupDialog(
+                this->playing_title_,
+                QStringLiteral("Add to watching list"),
+                NowPlayingPopupDialog::PopupType::Add
+            );
+        }
     } else {
         // anime in list, update it
         // ask to set it as completed if current episode >= total episodes
@@ -261,18 +265,26 @@ void RecognitionNowPlayingPage::onPopupTimerTimeout() {
         // don't show the popup if current episode == entry progress
         if (this->playing_episode_ >= this->media_.episodes &&
             this->media_.episodes > 0) {
-            this->openPopupDialog(
-                this->playing_title_,
-                QStringLiteral("Set as completed"),
-                NowPlayingPopupDialog::PopupType::Complete
-            );
+            if (this->is_popup_auto_accept_enabled_) {
+                this->onPopupAccepted(NowPlayingPopupDialog::PopupType::Complete);
+            } else {
+                this->openPopupDialog(
+                    this->playing_title_,
+                    QStringLiteral("Set as completed"),
+                    NowPlayingPopupDialog::PopupType::Complete
+                );
+            }
         } else if (this->playing_episode_ > this->entry_->state().progress) {
             // ask to set progress to currently playing episode
-            this->openPopupDialog(
-                this->playing_title_,
-                QStringLiteral("Set as watching and progress to: %1").arg(this->playing_episode_),
-                NowPlayingPopupDialog::PopupType::Update
-            );
+            if (this->is_popup_auto_accept_enabled_) {
+                this->onPopupAccepted(NowPlayingPopupDialog::PopupType::Update);
+            } else {
+                this->openPopupDialog(
+                    this->playing_title_,
+                    QStringLiteral("Set as watching and progress to: %1").arg(this->playing_episode_),
+                    NowPlayingPopupDialog::PopupType::Update
+                );
+            }
         }
     }
 }
@@ -309,6 +321,7 @@ void RecognitionNowPlayingPage::onPopupAccepted(NowPlayingPopupDialog::PopupType
 void RecognitionNowPlayingPage::applySettings() {
     this->is_popup_enabled_ = Settings::get(Settings::Recognition::EnableRecognitionPopup, true);
     this->is_popup_timer_enabled_ = Settings::get(Settings::Recognition::EnablePopupTimer, true);
+    this->is_popup_auto_accept_enabled_ = Settings::get(Settings::Recognition::EnableAutomaticPopupAccept, false);
 
     if (!this->is_popup_enabled_) {
         this->popup_timer_->stop();

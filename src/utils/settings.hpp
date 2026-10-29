@@ -73,6 +73,7 @@ inline const QString RecognitionSuccessMessageDialog  = QStringLiteral("Recognit
 inline const QString RecognitionFailGotoNowPlaying    = QStringLiteral("Recognition/RecognitionFailGotoNowPlaying");
 inline const QString RecognitionFailMessageDialog     = QStringLiteral("Recognition/RecognitionFailMessageDialog");
 inline const QString EnablePopupTimer                 = QStringLiteral("Recognition/EnablePopupTimer");
+inline const QString EnableAutomaticPopupAccept       = QStringLiteral("Recognition/EnableAutomaticPopupAccept");
 } // namespace Settings::Recognition
 
 // Ui settings keys

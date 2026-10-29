@@ -57,6 +57,7 @@ private:
 
     bool is_popup_enabled_ = true;
     bool is_popup_timer_enabled_ = true;
+    bool is_popup_auto_accept_enabled_ = false;
     QPointer<NowPlayingPopupDialog> popup_dialog_;
 
     QString playing_title_;

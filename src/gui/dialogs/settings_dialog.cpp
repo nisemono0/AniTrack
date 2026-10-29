@@ -58,6 +58,7 @@ void SettingsDialog::setupDialog() {
         this->ui_->checkBoxRecognitionFailGotoNowPlaying->setEnabled(recognition_enabled);
         this->ui_->checkBoxRecognitionFailMessageDialog->setEnabled(recognition_enabled);
         this->ui_->checkBoxDisplayPopupTimeLeft->setEnabled(recognition_enabled && recognition_popup_enabled);
+        this->ui_->checkBoxAutomaticPopupAccept->setEnabled(recognition_enabled && recognition_popup_enabled);
     });
 
     connect(this->ui_->checkBoxEnableRecognitionPopup, &QCheckBox::checkStateChanged, this, [this] (Qt::CheckState state) {
@@ -66,6 +67,7 @@ void SettingsDialog::setupDialog() {
 
         this->ui_->spinBoxPopupTimerDelay->setEnabled(recognition_popup_enabled);
         this->ui_->checkBoxDisplayPopupTimeLeft->setEnabled(recognition_popup_enabled);
+        this->ui_->checkBoxAutomaticPopupAccept->setEnabled(recognition_popup_enabled);
     });
 }
 
@@ -117,6 +119,9 @@ void SettingsDialog::updateRecognitionSettings() {
     );
     this->ui_->checkBoxDisplayPopupTimeLeft->setChecked(
         Settings::get(Settings::Recognition::EnablePopupTimer, true)
+    );
+    this->ui_->checkBoxAutomaticPopupAccept->setChecked(
+        Settings::get(Settings::Recognition::EnableAutomaticPopupAccept, false)
     );
 }
 
@@ -191,6 +196,10 @@ void SettingsDialog::onDialogAccepted() {
         Settings::Recognition::EnablePopupTimer,
         this->ui_->checkBoxDisplayPopupTimeLeft->isChecked()
     );
+    Settings::set(
+        Settings::Recognition::EnableAutomaticPopupAccept,
+        this->ui_->checkBoxAutomaticPopupAccept->isChecked()
+    );
 
     // Ui settings
     Settings::set(
@@ -232,6 +241,7 @@ void SettingsDialog::onResetClicked() {
     this->ui_->checkBoxRecognitionFailGotoNowPlaying->setChecked(true);
     this->ui_->checkBoxRecognitionFailMessageDialog->setChecked(true);
     this->ui_->checkBoxDisplayPopupTimeLeft->setChecked(true);
+    this->ui_->checkBoxAutomaticPopupAccept->setChecked(false);
 
     // Reset ui settings
     this->ui_->checkBoxStartMinimized->setChecked(false);

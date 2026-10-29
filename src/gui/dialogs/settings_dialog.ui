@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>585</width>
-    <height>575</height>
+    <width>590</width>
+    <height>605</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>585</width>
-    <height>575</height>
+    <width>590</width>
+    <height>605</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>585</width>
-    <height>575</height>
+    <width>590</width>
+    <height>605</height>
    </size>
   </property>
   <property name="focusPolicy">
@@ -209,6 +209,13 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxAutomaticPopupAccept">
+     <property name="text">
+      <string>Automatically accept the recognition popup</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="line_4">
