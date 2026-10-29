@@ -22,11 +22,6 @@ void AnimePlayingPage::onUserUpdated(const AnilistAccount::User &user) {
 }
 
 void AnimePlayingPage::handleAnimeAddUpdateFinished(const QList<AnilistAnime> &anime_list) {
-    auto *current_page = this->ui_->stackedWidgetAnimePlaying->currentWidget();
-    if (current_page != this->ui_->pageRecognitionNowPlaying) {
-        return;
-    }
-
     this->ui_->pageRecognitionNowPlaying->handleAnimeAddUpdateFinished(anime_list);
 }
 
