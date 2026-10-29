@@ -45,13 +45,17 @@ void RecognitionNowPlayingPage::setNowPlayingAnime(const RecognizedAnime &recogn
     this->playing_episode_ = recognized_anime.episode;
     this->release_group_ = recognized_anime.release_group;
 
+    const bool is_same_anime = this->entry_.has_value() && this->media_.id == recognized_anime.media.id;
+
     this->media_ = recognized_anime.media;
     // entry_ is nullopt if anime not in our list
     if (!recognized_anime.entry) {
         this->entry_.reset();
         this->showAdd();
     } else {
-        this->entry_ = recognized_anime.entry;
+        if (!is_same_anime) {
+            this->entry_ = recognized_anime.entry;
+        }
         this->showEdit();
     }
 
