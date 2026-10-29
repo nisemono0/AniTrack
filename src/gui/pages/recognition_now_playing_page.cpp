@@ -251,24 +251,37 @@ void RecognitionNowPlayingPage::openPopupDialog(const QString &header_text,
 void RecognitionNowPlayingPage::onPopupTimerTimeout() {
     this->display_timer_->stop();
 
+    const bool is_last_episode = this->media_.episodes > 0 && this->playing_episode_ >= this->media_.episodes;
+
     // anime not in list, ask to add
     if (!this->entry_) {
         if (this->is_popup_auto_accept_enabled_) {
-            this->onPopupAccepted(NowPlayingPopupDialog::PopupType::Add);
+            if (is_last_episode) {
+                this->onPopupAccepted(NowPlayingPopupDialog::PopupType::AddCompleted);
+            } else {
+                this->onPopupAccepted(NowPlayingPopupDialog::PopupType::AddWatching);
+            }
         } else {
-            this->openPopupDialog(
-                this->playing_title_,
-                QStringLiteral("Add to watching list"),
-                NowPlayingPopupDialog::PopupType::Add
-            );
+            if (is_last_episode) {
+                this->openPopupDialog(
+                    this->playing_title_,
+                    QStringLiteral("Add to list as completed"),
+                    NowPlayingPopupDialog::PopupType::AddCompleted
+                );
+            } else {
+                this->openPopupDialog(
+                    this->playing_title_,
+                    QStringLiteral("Add as watching and set progress to: %1").arg(this->playing_episode_),
+                    NowPlayingPopupDialog::PopupType::AddWatching
+                );
+            }
         }
     } else {
         // anime in list, update it
         // ask to set it as completed if current episode >= total episodes
         // and anime has a known number of episodes media.episodes > 0
         // don't show the popup if current episode == entry progress
-        if (this->playing_episode_ >= this->media_.episodes &&
-            this->media_.episodes > 0) {
+        if (is_last_episode) {
             if (this->is_popup_auto_accept_enabled_) {
                 this->onPopupAccepted(NowPlayingPopupDialog::PopupType::Complete);
             } else {
@@ -295,8 +308,12 @@ void RecognitionNowPlayingPage::onPopupTimerTimeout() {
 
 void RecognitionNowPlayingPage::onPopupAccepted(NowPlayingPopupDialog::PopupType popup_type) {
     switch (popup_type) {
-        case NowPlayingPopupDialog::PopupType::Add: {
-            emit requestAddMedia({this->media_}, AnilistEntry::Status::CURRENT);
+        case NowPlayingPopupDialog::PopupType::AddWatching: {
+            emit requestAddNowPlayingMedia(this->media_, this->playing_episode_);
+            break;
+        }
+        case NowPlayingPopupDialog::PopupType::AddCompleted: {
+            emit requestAddNowPlayingMedia(this->media_, this->media_.episodes);
             break;
         }
         case NowPlayingPopupDialog::PopupType::Update: {

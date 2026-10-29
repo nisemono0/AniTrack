@@ -258,6 +258,47 @@ void DatabaseController::requestSetAnimeProgress(const QList<AnilistAnime> &anim
     );
 }
 
+void DatabaseController::requestAddNowPlayingMedia(const AnilistMedia &media, int progress) {
+    AnilistAnime new_anime;
+    new_anime.media = media;
+    new_anime.media.in_list = true;
+
+    auto new_state = new_anime.entry.state();
+    new_state.pending_operation = AnilistEntry::PendingOperation::ADD;
+    new_state.updated_at = DateUtils::currentEpochTime();
+    new_state.status = AnilistEntry::Status::CURRENT;
+    new_state.started_at = DateUtils::currentDate();
+
+    int new_progress;
+    if (media.episodes > 0) {
+        new_progress = qMin(progress, media.episodes);
+    } else {
+        new_progress = progress;
+    }
+    new_state.progress = new_progress;
+
+    if (new_progress == media.episodes && media.episodes > 0 ) {
+        new_state.status = AnilistEntry::Status::COMPLETED;
+        new_state.completed_at = DateUtils::currentDate();
+    }
+
+    new_state.name = QStringLiteral("Added now playing anime");
+
+    new_anime.entry.setState(new_state);
+
+    if (!this->database_->insertAnime(new_anime)) {
+        emit errorOccurred(
+            QStringLiteral("Add anime"),
+            QStringLiteral("Failed to add playing anime")
+        );
+        return;
+    }
+
+    emit animeAddFinished({new_anime});
+
+    this->countEntriesAndNotifiy();
+}
+
 void DatabaseController::requestSetNowPlayingAnimeProgress(const AnilistAnime &anime, int progress) {
     if (progress < 0) {
         return;

@@ -14,7 +14,8 @@ class NowPlayingPopupDialog final : public QDialog {
     Q_OBJECT;
 public:
     enum class PopupType {
-        Add,
+        AddWatching,
+        AddCompleted,
         Update,
         Complete
     };

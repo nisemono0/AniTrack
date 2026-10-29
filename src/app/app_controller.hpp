@@ -59,6 +59,7 @@ signals:
 
     void requestLoadRandomAnime(std::optional<AnilistEntry::Status> status);
 
+    void requestAddNowPlayingMedia(const AnilistMedia &media, int progress);
     void requestSetNowPlayingAnimeProgress(const AnilistAnime &anime, int progress);
 
     void requestAddMedia(const QList<AnilistMedia> &media_list, AnilistEntry::Status status);

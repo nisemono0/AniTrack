@@ -39,6 +39,7 @@ signals:
     void requestShowAnimeInfoEditDialog(const AnilistAnime &anime, AnimeInfoEditDialog::Page page);
     void requestAddMedia(const QList<AnilistMedia> &media_list, AnilistEntry::Status status);
 
+    void requestAddNowPlayingMedia(const AnilistMedia &media, int progress);
     void requestSetNowPlayingAnimeProgress(const AnilistAnime &anime, int progress);
 
     void requestShowPopupRemainingTime(const QString &message, int timeout);

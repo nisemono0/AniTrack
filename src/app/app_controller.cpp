@@ -57,6 +57,7 @@ void AppController::setupDatabaseConnections() {
 
     connect(this, &AppController::requestLoadRandomAnime, this->database_controller_, &DatabaseController::requestLoadRandomAnime);
 
+    connect(this, &AppController::requestAddNowPlayingMedia, this->database_controller_, &DatabaseController::requestAddNowPlayingMedia);
     connect(this, &AppController::requestSetNowPlayingAnimeProgress, this->database_controller_, &DatabaseController::requestSetNowPlayingAnimeProgress);
 
     connect(this, &AppController::requestAddMedia, this->database_controller_, &DatabaseController::requestAddMedia);
