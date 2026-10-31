@@ -20,7 +20,7 @@
    <enum>Qt::FocusPolicy::ClickFocus</enum>
   </property>
   <property name="windowTitle">
-   <string>Anime info</string>
+   <string>Anime</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <property name="leftMargin">
