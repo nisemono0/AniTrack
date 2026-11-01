@@ -34,6 +34,11 @@ public:
     // This emits the currentItemChanged and pageChanged signals
     void setCurrentPage(ListWidgetNavigation::Page page);
 
+    // Select the next page
+    void selectNextPage();
+    // Select the previous page
+    void selectPreviousPage();
+
 signals:
     void pageChanged(ListWidgetNavigation::Page new_page);
 

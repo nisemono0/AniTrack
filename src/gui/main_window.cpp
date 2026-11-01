@@ -192,6 +192,18 @@ void MainWindow::setupNavigationListWidget() {
     // Set the default startup page to the animelist page
     this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::AnimeList);
 
+    auto *goto_next_page = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Tab), this);
+    goto_next_page->setContext(Qt::WindowShortcut);
+    connect(goto_next_page, &QShortcut::activated, this, [this] {
+        this->ui_->listWidgetNavigation->selectNextPage();
+    });
+
+    auto *goto_prev_page = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Backtab), this);
+    goto_prev_page->setContext(Qt::WindowShortcut);
+    connect(goto_prev_page, &QShortcut::activated, this, [this] {
+        this->ui_->listWidgetNavigation->selectPreviousPage();
+    });
+
     auto *goto_playing_shortcut = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_1), this);
     goto_playing_shortcut->setContext(Qt::WindowShortcut);
     connect(goto_playing_shortcut, &QShortcut::activated, this, [this] {

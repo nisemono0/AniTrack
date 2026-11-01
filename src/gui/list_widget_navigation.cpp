@@ -37,7 +37,6 @@ ListWidgetNavigation::ListWidgetNavigation(QWidget *parent) : QListWidget(parent
             current->data(UserRoles::PageType).value<Page>()
         );
     });
-
 }
 
 void ListWidgetNavigation::setCurrentPage(ListWidgetNavigation::Page page) {
@@ -46,6 +45,32 @@ void ListWidgetNavigation::setCurrentPage(ListWidgetNavigation::Page page) {
         if (item->data(UserRoles::PageType).value<Page>() == page) {
             this->setCurrentItem(item);
         }
+    }
+}
+
+void ListWidgetNavigation::selectNextPage() {
+    int next_page_row = this->currentRow() + 1;
+
+    while (next_page_row < this->count() &&
+           this->item(next_page_row)->data(UserRoles::PageType).value<Page>() == Page::Separator) {
+        next_page_row++;
+    }
+
+    if (next_page_row < this->count()) {
+        this->setCurrentRow(next_page_row);
+    }
+}
+
+void ListWidgetNavigation::selectPreviousPage() {
+    int prev_page_row = this->currentRow() - 1;
+
+    while (prev_page_row >= 0 &&
+           this->item(prev_page_row)->data(UserRoles::PageType).value<Page>() == Page::Separator) {
+        prev_page_row--;
+    }
+
+    if (prev_page_row >= 0) {
+        this->setCurrentRow(prev_page_row);
     }
 }
 
