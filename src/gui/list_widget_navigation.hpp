@@ -20,7 +20,8 @@ public:
         AnimeList,
         Statistics,
         Search,
-        Separator
+        PendingList,
+        Separator,
     };
     Q_ENUM(Page);
 

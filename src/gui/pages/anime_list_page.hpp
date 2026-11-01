@@ -20,6 +20,8 @@ public:
     void selectNextTab();
     void selectPreviousTab();
 
+    void setPendingFilter(bool filter_pending);
+
     void focusAnimeList();
 
 public slots:

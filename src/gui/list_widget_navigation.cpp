@@ -14,12 +14,14 @@ ListWidgetNavigation::ListWidgetNavigation(QWidget *parent) : QListWidget(parent
     this->setItemDelegate(this->separator_delegate_);
 
     static const QList<ListItem> list_items = {
-        { AppResources::Icons::Playing,    QStringLiteral("Playing"),    Page::Playing },
-        { "",                              "",                           Page::Separator },
-        { AppResources::Icons::List,       QStringLiteral("Anime list"), Page::AnimeList },
-        { AppResources::Icons::Statistics, QStringLiteral("Statistics"), Page::Statistics },
-        { "",                              "",                           Page::Separator },
-        { AppResources::Icons::Search,     QStringLiteral("Search"),     Page::Search },
+        { AppResources::Icons::Playing,       QStringLiteral("Playing"),      Page::Playing },
+        { "",                                 "",                             Page::Separator },
+        { AppResources::Icons::List,          QStringLiteral("Anime list"),   Page::AnimeList },
+        { AppResources::Icons::ClockQuestion, QStringLiteral("Pending list"), Page::PendingList },
+        { "",                                 "",                             Page::Separator },
+        { AppResources::Icons::Statistics,    QStringLiteral("Statistics"),   Page::Statistics },
+        { "",                                 "",                             Page::Separator },
+        { AppResources::Icons::Search,        QStringLiteral("Search"),       Page::Search },
     };
 
     for (const auto &item : list_items) {

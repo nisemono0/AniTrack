@@ -44,6 +44,8 @@ public:
     void setFilterTab(AnimeListTabBar::Tab tab);
     void setFilterText(const QString &text);
 
+    void setPendingFilter(bool filter_pending);
+
 signals:
     void requestIncreaseAnimeProgress(const QList<AnilistAnime> &anime_list);
     void requestDecreaseAnimeProgress(const QList<AnilistAnime> &anime_list);

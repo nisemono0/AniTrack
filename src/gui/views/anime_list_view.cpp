@@ -146,6 +146,10 @@ void AnimeListView::setFilterText(const QString &text) {
     this->anime_list_proxy_->setFilterText(text);
 }
 
+void AnimeListView::setPendingFilter(bool filter_pending) {
+    this->anime_list_proxy_->setPendingFilter(filter_pending);
+}
+
 void AnimeListView::wheelEvent(QWheelEvent *event) {
     if (event->modifiers().testFlag(Qt::ShiftModifier)) {
         QScrollBar *h_scroll = this->horizontalScrollBar();

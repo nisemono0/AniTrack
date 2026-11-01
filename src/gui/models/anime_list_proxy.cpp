@@ -36,6 +36,18 @@ void AnimeListProxy::setFilterTab(AnimeListTabBar::Tab tab) {
     endFilterChange(QSortFilterProxyModel::Direction::Rows);
 }
 
+void AnimeListProxy::setPendingFilter(bool filter_pending) {
+    if (this->filter_pending_ == filter_pending) {
+        return;
+    }
+
+    beginFilterChange();
+
+    this->filter_pending_ = filter_pending;
+
+    endFilterChange(QSortFilterProxyModel::Direction::Rows);
+}
+
 bool AnimeListProxy::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
     const QModelIndex index = this->sourceModel()->index(
         source_row,
@@ -45,6 +57,16 @@ bool AnimeListProxy::filterAcceptsRow(int source_row, const QModelIndex &source_
 
     if (!index.isValid()) {
         return false;
+    }
+
+    if (this->filter_pending_) {
+        const AnilistEntry::PendingOperation pending = index.data(
+            AnimeListModel::UserRoles::PendingOperation
+        ).value<AnilistEntry::PendingOperation>();
+
+        if (pending == AnilistEntry::PendingOperation::NONE) {
+            return false;
+        }
     }
 
     const AnilistEntry::Status status = index.data(AnimeListModel::UserRoles::EntryStatus).value<AnilistEntry::Status>();

@@ -204,13 +204,19 @@ void MainWindow::setupNavigationListWidget() {
         this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::AnimeList);
     });
 
-    auto *goto_statistics_shortcut = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_3), this);
+    auto *goto_pendinglist_shortcut = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_3), this);
+    goto_pendinglist_shortcut->setContext(Qt::WindowShortcut);
+    connect(goto_pendinglist_shortcut, &QShortcut::activated, this, [this] {
+        this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::PendingList);
+    });
+
+    auto *goto_statistics_shortcut = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_4), this);
     goto_animelist_shortcut->setContext(Qt::WindowShortcut);
     connect(goto_statistics_shortcut, &QShortcut::activated, this, [this] {
         this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::Statistics);
     });
 
-    auto *goto_search_shortcut = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_4), this);
+    auto *goto_search_shortcut = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_5), this);
     goto_animelist_shortcut->setContext(Qt::WindowShortcut);
     connect(goto_search_shortcut, &QShortcut::activated, this, [this] {
         this->ui_->listWidgetNavigation->setCurrentPage(ListWidgetNavigation::Page::Search);
@@ -519,6 +525,21 @@ void MainWindow::showPage(ListWidgetNavigation::Page page) {
             this->ui_->stackedWidgetMainWindow->setCurrentWidget(
                 this->ui_->pageAnimeList
             );
+
+            this->ui_->pageAnimeList->setPendingFilter(false);
+
+            if (!this->ui_->toolBarQuickActions->hasSearchFocus()) {
+                this->ui_->pageAnimeList->focusAnimeList();
+            }
+
+            break;
+        }
+        case ListWidgetNavigation::Page::PendingList: {
+            this->ui_->stackedWidgetMainWindow->setCurrentWidget(
+                this->ui_->pageAnimeList
+            );
+
+            this->ui_->pageAnimeList->setPendingFilter(true);
 
             if (!this->ui_->toolBarQuickActions->hasSearchFocus()) {
                 this->ui_->pageAnimeList->focusAnimeList();

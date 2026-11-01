@@ -15,11 +15,15 @@ public:
     void setFilterText(const QString &text);
     void setFilterTab(AnimeListTabBar::Tab tab);
 
+    void setPendingFilter(bool filter_pending);
+
 protected:
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 
 private:
     QString filter_text_;
+
+    bool filter_pending_ = false;
 
     AnimeListTabBar::Tab filter_tab_;
     AnimeListTabBar::Tab selected_tab_;

@@ -23,6 +23,10 @@ void AnimeListPage::selectPreviousTab() {
     this->ui_->widgetTabBar->selectPreviousTab();
 }
 
+void AnimeListPage::setPendingFilter(bool filter_pending) {
+    this->ui_->treeViewAnimeList->setPendingFilter(filter_pending);
+}
+
 void AnimeListPage::focusAnimeList() {
     this->ui_->treeViewAnimeList->setFocus();
 }
