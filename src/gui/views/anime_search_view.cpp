@@ -50,6 +50,7 @@ AnimeSearchView::AnimeSearchView(QWidget *parent) : QTreeView(parent) {
     this->setupDelegates();
     this->setupHeader();
 
+    connect(this, &QTreeView::doubleClicked, this, &AnimeSearchView::onDoubleClicked);
     connect(this, &QTreeView::customContextMenuRequested, this, &AnimeSearchView::onCustomContextMenuRequested);
     connect(App::instance()->settings(), &AppSettings::settingsChanged, this, &AnimeSearchView::applySettings);
 }
@@ -357,6 +358,16 @@ void AnimeSearchView::addAddToListActions(QMenu &menu, const QList<AnilistMedia>
             emit requestAddMedia(selected_media, status);
         });
     }
+}
+
+void AnimeSearchView::onDoubleClicked(const QModelIndex &index) {
+    if (!index.isValid()) {
+        return;
+    }
+
+    emit requestShowAnimeInfoEditDialog(
+        index.data(AnimeSearchModel::UserRoles::Media).value<AnilistMedia>()
+    );
 }
 
 void AnimeSearchView::onCustomContextMenuRequested(const QPoint &pos) {

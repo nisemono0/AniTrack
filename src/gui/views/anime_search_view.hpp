@@ -73,6 +73,7 @@ private:
     void addAddToListActions(QMenu &menu, const QList<AnilistMedia> &selected_media);
 
 private slots:
+    void onDoubleClicked(const QModelIndex &index);
     void onCustomContextMenuRequested(const QPoint &pos);
     void applySettings();
 };

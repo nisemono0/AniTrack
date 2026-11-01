@@ -91,6 +91,7 @@ AnimeListView::AnimeListView(QWidget *parent) : QTreeView(parent) {
     this->setupDelegates();
     this->setupHeader();
 
+    connect(this, &QTreeView::doubleClicked, this, &AnimeListView::onDoubleClicked);
     connect(this, &QTreeView::customContextMenuRequested, this, &AnimeListView::onCustomContextMenuRequested);
     connect(App::instance()->settings(), &AppSettings::settingsChanged, this, &AnimeListView::applySettings);
 }
@@ -736,6 +737,25 @@ void AnimeListView::addStatusActions(QMenu &menu, const QList<AnilistAnime> &sel
         connect(menu_action, &QAction::triggered, this, [this, selected_anime, status = action.status] {
             emit requestSetAnimeStatus(selected_anime, status);
         });
+    }
+}
+
+void AnimeListView::onDoubleClicked(const QModelIndex &index) {
+    if (!index.isValid()) {
+        return;
+    }
+
+    switch (static_cast<AnimeListModel::Columns>(index.column())) {
+        case AnimeListModel::Columns::PendingIcon:
+        case AnimeListModel::Columns::Title: {
+            emit requestShowAnimeInfoEditDialog(
+                index.data(AnimeListModel::UserRoles::Anime).value<AnilistAnime>(),
+                AnimeInfoEditDialog::Page::Info
+            );
+            break;
+        }
+        default:
+            break;
     }
 }
 

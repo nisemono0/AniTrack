@@ -120,6 +120,7 @@ private:
     void addStatusActions(QMenu &menu, const QList<AnilistAnime> &selected_anime);
 
 private slots:
+    void onDoubleClicked(const QModelIndex &index);
     void onCustomContextMenuRequested(const QPoint &pos);
     void applySettings();
 
