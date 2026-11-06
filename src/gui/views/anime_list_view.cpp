@@ -481,7 +481,7 @@ void AnimeListView::addStateHistoryActions(QMenu &menu, const AnilistAnime &sele
 
 void AnimeListView::addCopyActions(QMenu &menu, const AnilistAnime &selected_anime) {
     static const QList<CopyActions> copy_actions{
-        { QStringLiteral("AniList link"),  CopyType::AnilistUrl,   AppResources::Icons::Copy },
+        { QStringLiteral("AniList URL"),  CopyType::AnilistUrl,   AppResources::Icons::Copy },
         { QStringLiteral("Romaji title"),  CopyType::TitleRomaji,  AppResources::Icons::Copy },
         { QStringLiteral("Native title"),  CopyType::TitleNative,  AppResources::Icons::Copy },
         { QStringLiteral("English title"), CopyType::TitleEnglish, AppResources::Icons::Copy },
@@ -529,14 +529,14 @@ void AnimeListView::addCopyActions(QMenu &menu, const AnilistAnime &selected_ani
 void AnimeListView::addLinkActions(QMenu &menu, const QList<AnilistAnime> &selected_anime) {
     QAction *open_url_action = menu.addAction(
         QIcon(AppResources::Icons::Link),
-        QStringLiteral("Open AniList url")
+        QStringLiteral("Goto AniList page")
     );
 
     connect(open_url_action, &QAction::triggered, this, [this, selected_anime] {
         for (const auto &anime : selected_anime) {
             if (!WebUtils::openUrl(anime.media.site_url)) {
                 DialogUtils::warning(
-                    QStringLiteral("Open AniList url"),
+                    QStringLiteral("Goto AniList page"),
                     QStringLiteral("Failed to open: %1").arg(anime.media.site_url),
                     this
                 );
