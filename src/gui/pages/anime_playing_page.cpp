@@ -113,8 +113,8 @@ void AnimePlayingPage::setupNowPlayingPage() {
     );
 
     connect(
-        this->ui_->pageRecognitionNowPlaying, &RecognitionNowPlayingPage::requestShowPopupRemainingTime,
-        this, &AnimePlayingPage::requestShowPopupRemainingTime
+        this->ui_->pageRecognitionNowPlaying, &RecognitionNowPlayingPage::requestShowStatusBarMessage,
+        this, &AnimePlayingPage::requestShowStatusBarMessage
     );
 }
 

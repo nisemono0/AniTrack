@@ -321,7 +321,7 @@ void MainWindow::setupPlayingPage() {
 
     connect(this->ui_->pagePlaying, &AnimePlayingPage::recognizedAnimeSelected, this->app_controller_, &AppController::recognizedAnimeSelected);
 
-    connect(this->ui_->pagePlaying, &AnimePlayingPage::requestShowPopupRemainingTime, this->ui_->statusBar, &StatusBar::showMessage);
+    connect(this->ui_->pagePlaying, &AnimePlayingPage::requestShowStatusBarMessage, this->ui_->statusBar, &StatusBar::showMessage);
 }
 
 void MainWindow::setupAnimeListPage() {

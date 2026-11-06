@@ -124,7 +124,7 @@ void RecognitionNowPlayingPage::setupPage() {
     connect(this->popup_timer_, &QTimer::timeout, this, &RecognitionNowPlayingPage::onPopupTimerTimeout);
 
     connect(this->display_timer_, &QTimer::timeout, this, [this] {
-        emit requestShowPopupRemainingTime(
+        emit requestShowStatusBarMessage(
             QStringLiteral("Time until popup: %1s").arg(
                 std::chrono::duration_cast<std::chrono::seconds>(
                     this->popup_timer_->remainingTimeAsDuration()

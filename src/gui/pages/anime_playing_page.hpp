@@ -44,7 +44,7 @@ signals:
 
     void recognizedAnimeSelected(const RecognizedAnime &recognized_anime);
 
-    void requestShowPopupRemainingTime(const QString &message, int timeout);
+    void requestShowStatusBarMessage(const QString &message, int timeout);
 
 private:
     Ui::AnimePlayingWidget *ui_;

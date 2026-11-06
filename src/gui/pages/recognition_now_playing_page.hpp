@@ -42,7 +42,7 @@ signals:
     void requestAddNowPlayingMedia(const AnilistMedia &media, int progress);
     void requestSetNowPlayingAnimeProgress(const AnilistAnime &anime, int progress);
 
-    void requestShowPopupRemainingTime(const QString &message, int timeout);
+    void requestShowStatusBarMessage(const QString &message, int timeout);
 
     void requestShowSearchPage(const QString &title, int episode);
 
