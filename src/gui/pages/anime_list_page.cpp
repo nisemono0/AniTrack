@@ -93,6 +93,8 @@ void AnimeListPage::setupPage() {
     connect(this->ui_->treeViewAnimeList, &AnimeListView::requestRestoreAnimeState, this, &AnimeListPage::requestRestoreAnimeState);
 
     connect(this->ui_->treeViewAnimeList, &AnimeListView::requestShowAnimeInfoEditDialog, this, &AnimeListPage::requestShowAnimeInfoEditDialog);
+
+    connect(this->ui_->treeViewAnimeList, &AnimeListView::requestShowStatusBarMessage, this, &AnimeListPage::requestShowStatusBarMessage);
 }
 
 void AnimeListPage::onCurrentTabChanged(AnimeListTabBar::Tab tab) {

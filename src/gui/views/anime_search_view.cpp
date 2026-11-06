@@ -5,6 +5,7 @@
 #include "utils/settings.hpp"
 #include "utils/dialog.hpp"
 #include "utils/web.hpp"
+#include "utils/anilist.hpp"
 
 #include <QScrollBar>
 #include <QMenu>
@@ -263,6 +264,11 @@ QList<AnilistMedia> AnimeSearchView::selectedMedia() {
     return selected_media;
 }
 
+void AnimeSearchView::showStatusBarMessage(const QString &message) {
+    // Default 3s message timeout
+    emit requestShowStatusBarMessage(message, 3000);
+}
+
 void AnimeSearchView::addInfoAddActions(QMenu &menu, const AnilistMedia &selected_media) {
     QAction *info_add_action = menu.addAction(
         QIcon(AppResources::Icons::Info),
@@ -270,12 +276,13 @@ void AnimeSearchView::addInfoAddActions(QMenu &menu, const AnilistMedia &selecte
     );
     connect(info_add_action, &QAction::triggered, this, [this, selected_media] {
         emit requestShowAnimeInfoEditDialog(selected_media);
+        this->showStatusBarMessage(QStringLiteral("Open info page"));
     });
 }
 
 void AnimeSearchView::addCopyActions(QMenu &menu, const AnilistMedia &selected_media) {
     static const QList<CopyActions> copy_actions{
-        { QStringLiteral("AniList URL"),  CopyType::AnilistUrl,   AppResources::Icons::Copy },
+        { QStringLiteral("AniList URL"),   CopyType::AnilistUrl,   AppResources::Icons::Copy },
         { QStringLiteral("Romaji title"),  CopyType::TitleRomaji,  AppResources::Icons::Copy },
         { QStringLiteral("Native title"),  CopyType::TitleNative,  AppResources::Icons::Copy },
         { QStringLiteral("English title"), CopyType::TitleEnglish, AppResources::Icons::Copy },
@@ -299,18 +306,30 @@ void AnimeSearchView::addCopyActions(QMenu &menu, const AnilistMedia &selected_m
             switch (type) {
                 case CopyType::AnilistUrl: {
                     QApplication::clipboard()->setText(selected_media.site_url);
+                    this->showStatusBarMessage(
+                        QStringLiteral("Copy: %1").arg(selected_media.site_url)
+                    );
                     break;
                 }
                 case CopyType::TitleRomaji: {
                     QApplication::clipboard()->setText(selected_media.title.romaji);
+                    this->showStatusBarMessage(
+                        QStringLiteral("Copy: %1").arg(selected_media.title.romaji)
+                    );
                     break;
                 }
                 case CopyType::TitleNative: {
                     QApplication::clipboard()->setText(selected_media.title.native);
+                    this->showStatusBarMessage(
+                        QStringLiteral("Copy: %1").arg(selected_media.title.native)
+                    );
                     break;
                 }
                 case CopyType::TitleEnglish: {
                     QApplication::clipboard()->setText(selected_media.title.english);
+                    this->showStatusBarMessage(
+                        QStringLiteral("Copy: %1").arg(selected_media.title.english)
+                    );
                     break;
                 }
                 default:
@@ -335,6 +354,9 @@ void AnimeSearchView::addLinkActions(QMenu &menu, const QList<AnilistMedia> &sel
                     this
                 );
             }
+            this->showStatusBarMessage(
+                QStringLiteral("Goto: %1").arg(media.site_url)
+            );
         }
     });
 }
@@ -356,6 +378,11 @@ void AnimeSearchView::addAddToListActions(QMenu &menu, const QList<AnilistMedia>
         );
         connect(menu_action, &QAction::triggered, this, [this, selected_media, status = action.status] {
             emit requestAddMedia(selected_media, status);
+            this->showStatusBarMessage(
+                QStringLiteral("Add as: %1").arg(
+                    AnilistUtils::entryStatusToPrettyString(status)
+                )
+            );
         });
     }
 }
@@ -368,6 +395,7 @@ void AnimeSearchView::onDoubleClicked(const QModelIndex &index) {
     emit requestShowAnimeInfoEditDialog(
         index.data(AnimeSearchModel::UserRoles::Media).value<AnilistMedia>()
     );
+    this->showStatusBarMessage(QStringLiteral("Open info page"));
 }
 
 void AnimeSearchView::onCustomContextMenuRequested(const QPoint &pos) {

@@ -361,6 +361,8 @@ void MainWindow::setupAnimeListPage() {
 
     connect(this->ui_->pageAnimeList, &AnimeListPage::requestShowAnimeInfoEditDialog, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::showOrFocusInfoEdit);
 
+    connect(this->ui_->pageAnimeList, &AnimeListPage::requestShowStatusBarMessage, this->ui_->statusBar, &StatusBar::showMessage);
+
     auto *next_tab_shortcut = new QShortcut(
         Qt::Key_Tab,
         this
@@ -400,6 +402,8 @@ void MainWindow::setupSearchPage() {
     connect(this->app_controller_, &AppController::animeAddFinished, this->ui_->pageSearch, &AnimeSearchPage::onAnimeAddFinished);
 
     connect(this->ui_->pageSearch, &AnimeSearchPage::requestShowAnimeInfoEditDialog, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::showOrFocusAdd);
+
+    connect(this->ui_->pageSearch, &AnimeSearchPage::requestShowStatusBarMessage, this->ui_->statusBar, &StatusBar::showMessage);
 }
 
 void MainWindow::setupStatisticsPage() {
@@ -523,6 +527,10 @@ void MainWindow::openUrl(const QUrl &url) {
             QStringLiteral("Failed to open: %1").arg(url.toString())
         );
     }
+    this->ui_->statusBar->showMessage(
+        QStringLiteral("Goto: %1").arg(url.toString()),
+        3000
+    );
 }
 
 void MainWindow::showPage(ListWidgetNavigation::Page page) {

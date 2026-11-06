@@ -33,6 +33,8 @@ signals:
     void requestAddMedia(const QList<AnilistMedia> &media_list, AnilistEntry::Status status);
     void requestShowAnimeInfoEditDialog(const AnilistMedia &media);
 
+    void requestShowStatusBarMessage(const QString &message, int timeout);
+
 private:
     Ui::AnimeSearchWidget *ui_;
 

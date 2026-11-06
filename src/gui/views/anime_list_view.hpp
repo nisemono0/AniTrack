@@ -73,6 +73,8 @@ signals:
 
     void requestRestoreAnimeState(const AnilistAnime &anime, int index);
 
+    void requestShowStatusBarMessage(const QString &message, int timeout);
+
     void animeListStatusCountChanged(AnimeListModel::AnimeListStatusCount status_count);
 
 protected:
@@ -109,6 +111,8 @@ private:
     void setupHeader();
 
     QList<AnilistAnime> selectedAnime();
+
+    void showStatusBarMessage(const QString &message);
 
     void addInfoEditActions(QMenu &menu, const AnilistAnime &selected_anime);
     void addStateHistoryActions(QMenu &menu, const AnilistAnime &selected_anime);

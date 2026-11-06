@@ -44,5 +44,7 @@ void AnimeSearchPage::initPage() {
 void AnimeSearchPage::setupPage() {
     connect(this->ui_->treeViewAnimeSearch, &AnimeSearchView::requestAddMedia, this, &AnimeSearchPage::requestAddMedia);
     connect(this->ui_->treeViewAnimeSearch, &AnimeSearchView::requestShowAnimeInfoEditDialog, this, &AnimeSearchPage::requestShowAnimeInfoEditDialog);
+
+    connect(this->ui_->treeViewAnimeSearch, &AnimeSearchView::requestShowStatusBarMessage, this, &AnimeSearchPage::requestShowStatusBarMessage);
 }
 

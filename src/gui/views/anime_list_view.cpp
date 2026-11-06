@@ -8,6 +8,7 @@
 #include "utils/settings.hpp"
 #include "utils/web.hpp"
 #include "utils/dialog.hpp"
+#include "utils/anilist.hpp"
 
 #include <QScrollBar>
 #include <QMenu>
@@ -349,30 +350,46 @@ void AnimeListView::setupDelegates() {
     );
 
     connect(this->progress_delegate_, &AnimeListProgressDelegate::requestDecreaseAnimeProgress, this, [this] (const AnilistAnime &anime) {
+        this->showStatusBarMessage(QStringLiteral("Decrease progress"));
         emit requestDecreaseAnimeProgress({anime});
     });
     connect(this->progress_delegate_, &AnimeListProgressDelegate::requestIncreaseAnimeProgress, this, [this] (const AnilistAnime &anime) {
+        this->showStatusBarMessage(QStringLiteral("Increase progress"));
         emit requestIncreaseAnimeProgress({anime});
     });
     connect(this->score_delegate_, &AnimeListScoreDelegate::requestSetAnimeScore, this, [this] (const AnilistAnime &anime, int score) {
+        this->showStatusBarMessage(
+            QStringLiteral("Set score: %1").arg(score)
+        );
         emit requestSetAnimeScore({anime}, score);
     });
     connect(
         this->status_delegate_, &AnimeListStatusDelegate::requestSetAnimeStatus,
         this, [this] (const AnilistAnime &anime, AnilistEntry::Status status) {
             emit requestSetAnimeStatus({anime}, status);
+            this->showStatusBarMessage(
+                QStringLiteral("Set status: %1").arg(
+                    AnilistUtils::entryStatusToPrettyString(status)
+                )
+            );
         }
     );
     connect(
         this->started_delegate_, &AnimeListStartedDateDelegate::requestSetAnimeStartedDate,
         this, [this] (const AnilistAnime &anime, const QDate &date) {
             emit requestSetAnimeStartedDate({anime}, date);
+            this->showStatusBarMessage(
+                QStringLiteral("Set started at date: %1").arg(AnilistUtils::dateToPrettyString(date))
+            );
         }
     );
     connect(
         this->completed_delegate_, &AnimeListCompletedDateDelegate::requestSetAnimeCompletedDate,
         this, [this] (const AnilistAnime &anime, const QDate &date) {
             emit requestSetAnimeCompletedDate({anime}, date);
+            this->showStatusBarMessage(
+                QStringLiteral("Set completed at date: %1").arg(AnilistUtils::dateToPrettyString(date))
+            );
         }
     );
 }
@@ -432,6 +449,11 @@ QList<AnilistAnime> AnimeListView::selectedAnime() {
     return selected_anime;
 }
 
+void AnimeListView::showStatusBarMessage(const QString &message) {
+    // Default 3s message timeout
+    emit requestShowStatusBarMessage(message, 3000);
+}
+
 void AnimeListView::addInfoEditActions(QMenu &menu, const AnilistAnime &selected_anime) {
     static const QList<InfoEditAction> anime_info_edit_actions{
         { QStringLiteral("Information"), AnimeInfoEditDialog::Page::Info, AppResources::Icons::Info },
@@ -445,6 +467,22 @@ void AnimeListView::addInfoEditActions(QMenu &menu, const AnilistAnime &selected
         );
         connect(menu_action, &QAction::triggered, this, [this, selected_anime, page = action.page] {
             emit requestShowAnimeInfoEditDialog(selected_anime, page);
+            QString page_name;
+            switch (page) {
+                case AnimeInfoEditDialog::Page::Info: {
+                    page_name = QStringLiteral("info");
+                    break;
+                }
+                case AnimeInfoEditDialog::Page::Edit: {
+                    page_name = QStringLiteral("edit");
+                    break;
+                }
+                default:
+                    break;
+            }
+            this->showStatusBarMessage(
+                QStringLiteral("Open %1 page").arg(page_name)
+            );
         });
     }
 }
@@ -475,13 +513,14 @@ void AnimeListView::addStateHistoryActions(QMenu &menu, const AnilistAnime &sele
 
         connect(menu_action, &QAction::triggered, this, [this, selected_anime, i] {
             emit requestRestoreAnimeState(selected_anime, i);
+            this->showStatusBarMessage(QStringLiteral("Set state history"));
         });
     }
 }
 
 void AnimeListView::addCopyActions(QMenu &menu, const AnilistAnime &selected_anime) {
     static const QList<CopyActions> copy_actions{
-        { QStringLiteral("AniList URL"),  CopyType::AnilistUrl,   AppResources::Icons::Copy },
+        { QStringLiteral("AniList URL"),   CopyType::AnilistUrl,   AppResources::Icons::Copy },
         { QStringLiteral("Romaji title"),  CopyType::TitleRomaji,  AppResources::Icons::Copy },
         { QStringLiteral("Native title"),  CopyType::TitleNative,  AppResources::Icons::Copy },
         { QStringLiteral("English title"), CopyType::TitleEnglish, AppResources::Icons::Copy },
@@ -505,18 +544,30 @@ void AnimeListView::addCopyActions(QMenu &menu, const AnilistAnime &selected_ani
             switch (type) {
                 case CopyType::AnilistUrl: {
                     QApplication::clipboard()->setText(selected_anime.media.site_url);
+                    this->showStatusBarMessage(
+                        QStringLiteral("Copy: %1").arg(selected_anime.media.site_url)
+                    );
                     break;
                 }
                 case CopyType::TitleRomaji: {
                     QApplication::clipboard()->setText(selected_anime.media.title.romaji);
+                    this->showStatusBarMessage(
+                        QStringLiteral("Copy: %1").arg(selected_anime.media.title.romaji)
+                    );
                     break;
                 }
                 case CopyType::TitleNative: {
                     QApplication::clipboard()->setText(selected_anime.media.title.native);
+                    this->showStatusBarMessage(
+                        QStringLiteral("Copy: %1").arg(selected_anime.media.title.native)
+                    );
                     break;
                 }
                 case CopyType::TitleEnglish: {
                     QApplication::clipboard()->setText(selected_anime.media.title.english);
+                    this->showStatusBarMessage(
+                        QStringLiteral("Copy: %1").arg(selected_anime.media.title.english)
+                    );
                     break;
                 }
                 default:
@@ -541,6 +592,9 @@ void AnimeListView::addLinkActions(QMenu &menu, const QList<AnilistAnime> &selec
                     this
                 );
             }
+            this->showStatusBarMessage(
+                QStringLiteral("Goto: %1").arg(anime.media.site_url)
+            );
         }
     });
 }
@@ -571,10 +625,12 @@ void AnimeListView::addUndoRedoActions(QMenu &menu, const QList<AnilistAnime> &s
             switch (type) {
                 case UndoRedoType::Undo: {
                     emit requestUndoAnimeState(selected_anime);
+                    this->showStatusBarMessage(QStringLiteral("Undo history state"));
                     break;
                 }
                 case UndoRedoType::Redo: {
                     emit requestRedoAnimeState(selected_anime);
+                    this->showStatusBarMessage(QStringLiteral("Redo history state"));
                     break;
                 }
                 default:
@@ -591,6 +647,7 @@ void AnimeListView::addDeleteActions(QMenu &menu, const QList<AnilistAnime> &sel
     );
     connect(remove, &QAction::triggered, this, [this, selected_anime] {
         emit requestMarkAnimeForRemoval(selected_anime);
+        this->showStatusBarMessage(QStringLiteral("Mark for removal"));
     });
 }
 
@@ -611,18 +668,24 @@ void AnimeListView::addEpisodeActions(QMenu &menu, const QList<AnilistAnime> &se
                 auto *episode_dialog = new SetEpisodeDialog(selected_anime, this->title_language_, this);
                 connect(episode_dialog, &SetEpisodeDialog::episodeAccepted, this, [this, selected_anime] (int episode) {
                     emit requestSetAnimeProgress(selected_anime, episode);
+                    this->showStatusBarMessage(
+                        QStringLiteral("Set progress: %1").arg(episode)
+                    );
                 });
                 episode_dialog->open();
+                this->showStatusBarMessage(QStringLiteral("Open set progress dialog"));
             });
         } else {
             connect(menu_action, &QAction::triggered, this, [this, selected_anime, type = action.type] {
                 switch (type) {
                     case EpisodeActionType::IncreaseEpisode: {
                         emit requestIncreaseAnimeProgress(selected_anime);
+                        this->showStatusBarMessage(QStringLiteral("Increase progress"));
                         break;
                     }
                     case EpisodeActionType::DecreaseEpisode: {
                         emit requestDecreaseAnimeProgress(selected_anime);
+                        this->showStatusBarMessage(QStringLiteral("Decrease progress"));
                         break;
                     }
                     default:
@@ -653,10 +716,12 @@ void AnimeListView::addDateActions(QMenu &menu, const QList<AnilistAnime> &selec
             switch (type) {
                 case DateActionType::Clear: {
                     emit requestClearAnimeStartedDate(selected_anime);
+                    this->showStatusBarMessage(QStringLiteral("Clear started at date"));
                     break;
                 }
                 case DateActionType::SetFromMediaStart: {
                     emit requestSetAnimeStartedDateFromMediaStartDate(selected_anime);
+                    this->showStatusBarMessage(QStringLiteral("Set started at date to anime start date"));
                     break;
                 }
                 default:
@@ -686,14 +751,17 @@ void AnimeListView::addDateActions(QMenu &menu, const QList<AnilistAnime> &selec
             switch (type) {
                 case DateActionType::Clear: {
                     emit requestClearAnimeCompletedDate(selected_anime);
+                    this->showStatusBarMessage(QStringLiteral("Clear completed at date"));
                     break;
                 }
                 case DateActionType::SetFromLastUpdated: {
                     emit requestSetAnimeCompletedDateFromLastUpdated(selected_anime);
+                    this->showStatusBarMessage(QStringLiteral("Set completed at date to anime last updated date"));
                     break;
                 }
                 case DateActionType::SetFromMediaEnd: {
                     emit requestSetAnimeCompletedDateFromMediaEndDate(selected_anime);
+                    this->showStatusBarMessage(QStringLiteral("Set completed at date to anime end date"));
                     break;
                 }
                 default:
@@ -712,8 +780,12 @@ void AnimeListView::addScoreActions(QMenu &menu, const QList<AnilistAnime> &sele
         auto *score_dialog = new SetScoreDialog(selected_anime, this->title_language_, this->score_format_, this);
         connect(score_dialog, &SetScoreDialog::scoreAccepted, this, [this, selected_anime] (int score) {
             emit requestSetAnimeScore(selected_anime, score);
+            this->showStatusBarMessage(
+                QStringLiteral("Set score: %1").arg(score)
+            );
         });
         score_dialog->open();
+        this->showStatusBarMessage(QStringLiteral("Open set score dialog"));
     });
 }
 
@@ -740,6 +812,11 @@ void AnimeListView::addStatusActions(QMenu &menu, const QList<AnilistAnime> &sel
 
         connect(menu_action, &QAction::triggered, this, [this, selected_anime, status = action.status] {
             emit requestSetAnimeStatus(selected_anime, status);
+            this->showStatusBarMessage(
+                QStringLiteral("Set status: %1").arg(
+                    AnilistUtils::entryStatusToPrettyString(status)
+                )
+            );
         });
     }
 }
@@ -756,6 +833,7 @@ void AnimeListView::onDoubleClicked(const QModelIndex &index) {
                 index.data(AnimeListModel::UserRoles::Anime).value<AnilistAnime>(),
                 AnimeInfoEditDialog::Page::Info
             );
+            this->showStatusBarMessage(QStringLiteral("Open info page"));
             break;
         }
         default:

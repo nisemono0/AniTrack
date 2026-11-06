@@ -38,6 +38,8 @@ signals:
     void requestAddMedia(const QList<AnilistMedia> &media_list, AnilistEntry::Status status);
     void requestShowAnimeInfoEditDialog(const AnilistMedia &media);
 
+    void requestShowStatusBarMessage(const QString &message, int timeout);
+
 protected:
     void wheelEvent(QWheelEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
@@ -66,6 +68,8 @@ private:
     void setupHeader();
 
     QList<AnilistMedia> selectedMedia();
+
+    void showStatusBarMessage(const QString &message);
 
     void addInfoAddActions(QMenu &menu, const AnilistMedia &selected_media);
     void addCopyActions(QMenu &menu, const AnilistMedia &selected_media);

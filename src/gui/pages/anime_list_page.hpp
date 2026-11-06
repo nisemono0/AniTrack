@@ -63,6 +63,8 @@ signals:
 
     void requestUpdateAnime(const AnilistAnime &anime);
 
+    void requestShowStatusBarMessage(const QString &message, int timeout);
+
     void requestShowAnimeInfoEditDialog(const AnilistAnime &anime, AnimeInfoEditDialog::Page page);
 
 private:
