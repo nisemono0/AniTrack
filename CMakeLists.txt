@@ -8,37 +8,58 @@ project(AniTrack
 # Set tabler-icons version used
 set(TABLER_ICONS_VERSION "3.49.0")
 
-# Get anitomy submodule short commit
+# Set anitomy version to git tag or fallback to short commit
 execute_process(
-    COMMAND git -C "${CMAKE_SOURCE_DIR}/deps/anitomy" rev-parse --short HEAD
-    OUTPUT_VARIABLE ANITOMY_GIT_COMMIT
+    COMMAND git -C "${CMAKE_SOURCE_DIR}/deps/anitomy" describe --tags --exact-match
+    OUTPUT_VARIABLE ANITOMY_VERSION
     OUTPUT_STRIP_TRAILING_WHITESPACE
     ERROR_QUIET
 )
-if (NOT ANITOMY_GIT_COMMIT)
-    set(ANITOMY_GIT_COMMIT "unknown")
+
+if (NOT ANITOMY_VERSION)
+    execute_process(
+        COMMAND git -C "${CMAKE_SOURCE_DIR}/deps/anitomy" rev-parse --short HEAD
+        OUTPUT_VARIABLE ANITOMY_VERSION
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        ERROR_QUIET
+    )
 endif()
 
-# Get anime-relations submodule short commit
+if (NOT ANITOMY_VERSION)
+    set(ANITOMY_VERSION "unknown")
+endif()
+
+# Set anime-relations version to short commit
 execute_process(
     COMMAND git -C "${CMAKE_SOURCE_DIR}/deps/anime-relations" rev-parse --short HEAD
-    OUTPUT_VARIABLE ANIME_RELATIONS_GIT_COMMIT
+    OUTPUT_VARIABLE ANIME_RELATIONS_VERSION
     OUTPUT_STRIP_TRAILING_WHITESPACE
     ERROR_QUIET
 )
-if (NOT ANIME_RELATIONS_GIT_COMMIT)
-    set(ANIME_RELATIONS_GIT_COMMIT "unknown")
+
+if (NOT ANIME_RELATIONS_VERSION)
+    set(ANIME_RELATIONS_VERSION "unknown")
 endif()
 
-# Get utf8proc submodule short commit
+# Set utf8proc version to git tag or fallback to short commit
 execute_process(
-    COMMAND git -C "${CMAKE_SOURCE_DIR}/deps/utf8proc" rev-parse --short HEAD
-    OUTPUT_VARIABLE UTF8PROC_GIT_COMMIT
+    COMMAND git -C "${CMAKE_SOURCE_DIR}/deps/utf8proc" describe --tags --exact-match
+    OUTPUT_VARIABLE UTF8PROC_VERSION
     OUTPUT_STRIP_TRAILING_WHITESPACE
     ERROR_QUIET
 )
-if (NOT UTF8PROC_GIT_COMMIT)
-    set(UTF8PROC_GIT_COMMIT "unknown")
+
+if (NOT UTF8PROC_VERSION)
+    execute_process(
+        COMMAND git -C "${CMAKE_SOURCE_DIR}/deps/utf8proc" rev-parse --short HEAD
+        OUTPUT_VARIABLE UTF8PROC_VERSION
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        ERROR_QUIET
+    )
+endif()
+
+if (NOT UTF8PROC_VERSION)
+    set(UTF8PROC_VERSION "unknown")
 endif()
 
 # Option to enable WIP features
