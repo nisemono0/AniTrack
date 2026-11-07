@@ -61,9 +61,9 @@ void AboutDialog::setupDialog() {
 
     this->ui_->labelQtVer->setText(qVersion());
     this->ui_->labelTablerIconsVer->setText(TABLER_ICONS_VERSION);
-    this->ui_->labelAnitomyVer->setText(ANITOMY_GIT_COMMIT);
-    this->ui_->labelAnimeRelationsVer->setText(ANIME_RELATIONS_GIT_COMMIT);
-    this->ui_->labelUtf8procVer->setText(UTF8PROC_GIT_COMMIT);
+    this->ui_->labelAnitomyVer->setText(ANITOMY_VERSION);
+    this->ui_->labelAnimeRelationsVer->setText(ANIME_RELATIONS_VERSION);
+    this->ui_->labelUtf8procVer->setText(UTF8PROC_VERSION);
 
 }
 
