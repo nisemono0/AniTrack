@@ -103,7 +103,7 @@ void normalizeUnicode(QString &title) {
     );
 
     if (length < 0 || !normalized_title) {
-        free(normalized_title);
+        utf8proc_free(normalized_title);
         return;
     }
 
@@ -112,7 +112,7 @@ void normalizeUnicode(QString &title) {
         static_cast<qsizetype>(length)
     );
 
-    free(normalized_title);
+    utf8proc_free(normalized_title);
 }
 
 void convertOrdinalNumbers(QString &title) {
