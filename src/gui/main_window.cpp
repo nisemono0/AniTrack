@@ -270,7 +270,7 @@ void MainWindow::setupPlayingPage() {
                 this->showInfo(
                     QStringLiteral("Recognition"),
                     QStringLiteral(
-                        "Anime not recognized\n"
+                        "Multiple anime found\n"
                         "Please select the correct one"
                     )
                 );
