@@ -13,7 +13,7 @@ CommandLineParser::CommandLineParser(const App &app) {
     this->parser_.process(app);
 }
 
-bool CommandLineParser::isWindowOptionSet() const {
+bool CommandLineParser::isDialogOptionSet() const {
     return this->parser_.isSet(this->window_option_);
 }
 

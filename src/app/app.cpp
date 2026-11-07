@@ -1,6 +1,7 @@
 #include "app/app.hpp"
 #include "app/app_config.hpp"
 #include "app/app_resources.hpp"
+#include "app/command_line_parser.hpp"
 
 #include "utils/log.hpp"
 
@@ -9,6 +10,8 @@
 
 
 App::App(int &argc, char **argv) : QApplication(argc, argv) {
+    this->processCommandLineOptions();
+
     this->logger_ = new Logger(this);
 
     this->setupSingleInstance();
@@ -104,12 +107,22 @@ AppController* App::controller() const {
     return this->app_controller_;
 }
 
+bool App::isDialogOptionSet() const {
+    return this->is_dialog_option_set_;
+}
+
 bool App::isAlreadyRunning() const {
     return this->already_running_;
 }
 
 bool App::isInitFailed() const {
     return this->init_failed_;
+}
+
+void App::processCommandLineOptions() {
+    CommandLineParser cmdline_parser(*this);
+
+    this->is_dialog_option_set_ = cmdline_parser.isDialogOptionSet();
 }
 
 void App::setupApp() {

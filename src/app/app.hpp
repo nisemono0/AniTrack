@@ -33,6 +33,8 @@ public:
     ImageCache* imageCache() const;
     AppController* controller() const;
 
+    bool isDialogOptionSet() const;
+
     bool isAlreadyRunning() const;
     bool isInitFailed() const;
 
@@ -56,8 +58,12 @@ private:
     RecognitionManager* recognition_manager_ = nullptr;
     AppController *app_controller_ = nullptr;
 
+    bool is_dialog_option_set_ = false;
+
     bool already_running_ = false;
     bool init_failed_ = false;
+
+    void processCommandLineOptions();
 
     void setupApp();
     void setupSingleInstance();

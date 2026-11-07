@@ -1,5 +1,4 @@
 #include "app/app.hpp"
-#include "app/command_line_parser.hpp"
 #include "app/system_tray_icon.hpp"
 
 #include "utils/dialog.hpp"
@@ -24,8 +23,6 @@ int main (int argc, char *argv[]) {
         );
         return 1;
     }
-
-    CommandLineParser cmd_parser(app);
 
     MainWindow *main_window = new MainWindow(
         app.controller()
@@ -58,10 +55,10 @@ int main (int argc, char *argv[]) {
         system_tray->show();
     }
 
-    // Run the window as dialog if -w flag is set
-    // Hacky way for tiling window managers to start the window as floating
-    if (cmd_parser.isWindowOptionSet()) {
-        main_window->setWindowFlag(Qt::Dialog, true);
+    // Hacky way for some tiling window managers to start the window as floating
+    // without needing to configure custom window rules
+    if (app.isDialogOptionSet()) {
+        main_window->setWindowFlag(Qt::Dialog);
     }
 
     app.controller()->init();
