@@ -7,6 +7,7 @@
 CommandLineParser::CommandLineParser(const App &app) {
     this->parser_.setApplicationDescription(AppConfig::Description);
     this->parser_.addHelpOption();
+    this->parser_.addVersionOption();
 
     this->parser_.addOption(this->window_option_);
 

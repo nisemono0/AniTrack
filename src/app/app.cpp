@@ -10,6 +10,8 @@
 
 
 App::App(int &argc, char **argv) : QApplication(argc, argv) {
+    this->setupAppInfo();
+
     this->processCommandLineOptions();
 
     this->logger_ = new Logger(this);
@@ -20,7 +22,7 @@ App::App(int &argc, char **argv) : QApplication(argc, argv) {
     if (this->already_running_) {
         return;
     }
-    this->setupApp();
+    this->setupAppConfig();
 
     this->app_settings_ = new AppSettings(this);
 
@@ -125,12 +127,14 @@ void App::processCommandLineOptions() {
     this->is_dialog_option_set_ = cmdline_parser.isDialogOptionSet();
 }
 
-void App::setupApp() {
+void App::setupAppInfo() {
     this->setApplicationName(AppConfig::Name);
     this->setOrganizationName(AppConfig::OrgName);
 
     this->setApplicationVersion(ANITRACK_VERSION);
+}
 
+void App::setupAppConfig() {
     this->setCursorFlashTime(AppConfig::CursorFlashTime);
 
     this->setWindowIcon(QIcon(AppResources::App::Icon));

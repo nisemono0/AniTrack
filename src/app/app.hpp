@@ -65,7 +65,8 @@ private:
 
     void processCommandLineOptions();
 
-    void setupApp();
+    void setupAppInfo();
+    void setupAppConfig();
     void setupSingleInstance();
 
     QPalette darkPalette() const;
