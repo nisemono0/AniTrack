@@ -310,10 +310,18 @@ void RecognitionNowPlayingPage::onPopupAccepted(NowPlayingPopupDialog::PopupType
     switch (popup_type) {
         case NowPlayingPopupDialog::PopupType::AddWatching: {
             emit requestAddNowPlayingMedia(this->media_, this->playing_episode_);
+            emit requestShowStatusBarMessage(
+                QStringLiteral("Add playing anime as watching and set progress: %1").arg(this->playing_episode_),
+                3000
+            );
             break;
         }
         case NowPlayingPopupDialog::PopupType::AddCompleted: {
             emit requestAddNowPlayingMedia(this->media_, this->media_.episodes);
+            emit requestShowStatusBarMessage(
+                QStringLiteral("Add playing anime as completed"),
+                3000
+            );
             break;
         }
         case NowPlayingPopupDialog::PopupType::Update: {
@@ -322,6 +330,10 @@ void RecognitionNowPlayingPage::onPopupAccepted(NowPlayingPopupDialog::PopupType
                 this->media_
             };
             emit requestSetNowPlayingAnimeProgress(anime, this->playing_episode_);
+            emit requestShowStatusBarMessage(
+                QStringLiteral("Update playing anime to watching and set progress: %1").arg(this->playing_episode_),
+                3000
+            );
             break;
         }
         case NowPlayingPopupDialog::PopupType::Complete: {
@@ -334,6 +346,10 @@ void RecognitionNowPlayingPage::onPopupAccepted(NowPlayingPopupDialog::PopupType
                 this->media_
             };
             emit requestSetNowPlayingAnimeProgress(anime, anime.media.episodes);
+            emit requestShowStatusBarMessage(
+                QStringLiteral("Set playing anime as completed"),
+                3000
+            );
             break;
         }
     }
