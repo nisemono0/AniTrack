@@ -49,6 +49,12 @@ AnilistMedia AnilistMedia::fromResponseJson(const QJsonObject &json_obj) {
     );
     media.updated_at = json_obj.value(AnilistKeys::Media::UpdatedAt).toInteger();
     media.episodes = json_obj.value(AnilistKeys::Media::Episodes).toInt();
+
+    media.next_airing_episode.airing_at = json_obj.value(AnilistKeys::Media::NextAiringEpisode).toObject()
+                                                  .value(AnilistKeys::AiringSchedule::AiringAt).toInteger(AnilistMedia::InvalidNextEp);
+    media.next_airing_episode.episode = json_obj.value(AnilistKeys::Media::NextAiringEpisode).toObject()
+                                                .value(AnilistKeys::AiringSchedule::Episode).toInt(AnilistMedia::InvalidNextEp);
+
     media.country_of_origin = json_obj.value(AnilistKeys::Media::CountryOfOrigin).toString();
     media.cover_url = json_obj.value(AnilistKeys::Media::CoverImage).toObject()
                               .value(AnilistKeys::MediaCoverImage::Large).toString();
@@ -96,6 +102,9 @@ AnilistMedia AnilistMedia::fromDatabaseQuery(const QSqlQuery &query) {
     );
     media.updated_at = query.value(DatabaseColumns::Media::UpdatedAt).toLongLong();
     media.episodes = query.value(DatabaseColumns::Media::Episodes).toInt();
+    media.next_airing_episode = AnilistUtils::nextAiringEpisodeFromJsonString(
+        query.value(DatabaseColumns::Media::NextAiringEpisode).toString()
+    );
     media.country_of_origin = query.value(DatabaseColumns::Media::CountryOfOrigin).toString();
     media.cover_url = query.value(DatabaseColumns::Media::CoverUrl).toString();
     media.genres = JsonUtils::stringListFromJsonString(

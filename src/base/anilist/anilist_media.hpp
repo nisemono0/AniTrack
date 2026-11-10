@@ -16,6 +16,7 @@ public:
     static AnilistMedia fromDatabaseQuery(const QSqlQuery &query);
 
     static constexpr int InvalidId = -1;
+    static constexpr int InvalidNextEp = -1;
 
     // The enums names MUST be exactly as the ones the anilist api returns
     enum class Status {
@@ -59,6 +60,11 @@ public:
     };
     Q_ENUM(Format);
 
+    struct NextAiringEpisode {
+        qint64 airing_at = InvalidNextEp;
+        int episode = InvalidNextEp;
+    };
+
     struct Studio final {
         QString name;
         QString site_url;
@@ -84,6 +90,7 @@ public:
     QDate end_date;
     qint64 updated_at = 0;
     int episodes = 0;
+    NextAiringEpisode next_airing_episode;
     QString country_of_origin;
     QString cover_url;
     QStringList genres;

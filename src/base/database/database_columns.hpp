@@ -21,28 +21,29 @@ inline const QString PendingOperation = QStringLiteral("entry_pending_operation"
 } // namespace Entry
 
 namespace Media {
-inline const QString Id              = QStringLiteral("media_id");
-inline const QString IsAdult         = QStringLiteral("media_is_adult");
-inline const QString Status          = QStringLiteral("media_status");
-inline const QString Season          = QStringLiteral("media_season");
-inline const QString SeasonYear      = QStringLiteral("media_season_year");
-inline const QString WeightedScore   = QStringLiteral("media_weighted_score");
-inline const QString SiteUrl         = QStringLiteral("media_site_url");
-inline const QString TitleEnglish    = QStringLiteral("media_title_english");
-inline const QString TitleNative     = QStringLiteral("media_title_native");
-inline const QString TitleRomaji     = QStringLiteral("media_title_romaji");
-inline const QString Synonyms        = QStringLiteral("media_synonyms");
-inline const QString Format          = QStringLiteral("media_format");
-inline const QString Description     = QStringLiteral("media_description");
-inline const QString StartDate       = QStringLiteral("media_start_date");
-inline const QString EndDate         = QStringLiteral("media_end_date");
-inline const QString UpdatedAt       = QStringLiteral("media_updated_at");
-inline const QString Episodes        = QStringLiteral("media_episodes");
-inline const QString CountryOfOrigin = QStringLiteral("media_country_of_origin");
-inline const QString CoverUrl        = QStringLiteral("media_cover_url");
-inline const QString Genres          = QStringLiteral("media_genres");
-inline const QString Studios         = QStringLiteral("media_studios");
-inline const QString Producers       = QStringLiteral("media_producers");
+inline const QString Id                = QStringLiteral("media_id");
+inline const QString IsAdult           = QStringLiteral("media_is_adult");
+inline const QString Status            = QStringLiteral("media_status");
+inline const QString Season            = QStringLiteral("media_season");
+inline const QString SeasonYear        = QStringLiteral("media_season_year");
+inline const QString WeightedScore     = QStringLiteral("media_weighted_score");
+inline const QString SiteUrl           = QStringLiteral("media_site_url");
+inline const QString TitleEnglish      = QStringLiteral("media_title_english");
+inline const QString TitleNative       = QStringLiteral("media_title_native");
+inline const QString TitleRomaji       = QStringLiteral("media_title_romaji");
+inline const QString Synonyms          = QStringLiteral("media_synonyms");
+inline const QString Format            = QStringLiteral("media_format");
+inline const QString Description       = QStringLiteral("media_description");
+inline const QString StartDate         = QStringLiteral("media_start_date");
+inline const QString EndDate           = QStringLiteral("media_end_date");
+inline const QString UpdatedAt         = QStringLiteral("media_updated_at");
+inline const QString Episodes          = QStringLiteral("media_episodes");
+inline const QString NextAiringEpisode = QStringLiteral("media_next_airing_episode");
+inline const QString CountryOfOrigin   = QStringLiteral("media_country_of_origin");
+inline const QString CoverUrl          = QStringLiteral("media_cover_url");
+inline const QString Genres            = QStringLiteral("media_genres");
+inline const QString Studios           = QStringLiteral("media_studios");
+inline const QString Producers         = QStringLiteral("media_producers");
 } // namespace Media
 } // namespace DatabaseColumns
 

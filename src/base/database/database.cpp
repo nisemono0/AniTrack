@@ -758,6 +758,10 @@ void Database::bindMedia(QSqlQuery &query, const AnilistAnime &anime) {
     );
     query.bindValue(DatabaseKeys::Media::UpdatedAt, anime.media.updated_at);
     query.bindValue(DatabaseKeys::Media::Episodes, anime.media.episodes);
+    query.bindValue(
+        DatabaseKeys::Media::NextAiringEpisode,
+        AnilistUtils::jsonStringFromNextAiringEpisode(anime.media.next_airing_episode)
+    );
     query.bindValue(DatabaseKeys::Media::CountryOfOrigin, anime.media.country_of_origin);
     query.bindValue(DatabaseKeys::Media::CoverUrl, anime.media.cover_url);
     query.bindValue(DatabaseKeys::Media::Genres, JsonUtils::jsonStringFromStringList(anime.media.genres));

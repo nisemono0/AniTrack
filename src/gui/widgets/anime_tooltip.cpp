@@ -50,6 +50,8 @@ void AnimeTooltip::updateAnimeInfo(const QString &cover_url,
     this->title_->setText(title);
     this->format_->setText(format);
     this->episodes_->setText(episodes);
+    // TODO: Set next_airing_episode_ text
+    // this->next_airing_episode_->setText("3rd Nov. 2029 - Ep.5");
     this->status_->setText(status);
     this->season_->setText(season);
     this->genres_->setText(genres);
@@ -89,6 +91,7 @@ void AnimeTooltip::initWidget() {
 
     this->format_ = new QLabel(this);
     this->episodes_ = new QLabel(this);
+    this->next_airing_episode_ = new QLabel(this);
     this->status_ = new QLabel(this);
     this->season_ = new QLabel(this);
     this->genres_ = new QLabel(this);
@@ -107,7 +110,7 @@ void AnimeTooltip::setupWidget() {
     this->setAttribute(Qt::WA_NoMouseReplay);
     this->setAttribute(Qt::WA_NoMousePropagation);
 
-    this->setMinimumHeight(130);
+    this->setMinimumHeight(150);
     this->setMaximumWidth(450);
 
     this->setContentsMargins(0, 0, 0, 0);
@@ -159,17 +162,20 @@ void AnimeTooltip::setupLayout() {
     g_layout->addWidget(new QLabel(QStringLiteral("Episodes:"), this), 1, 0);
     g_layout->addWidget(this->episodes_, 1, 1);
 
-    g_layout->addWidget(new QLabel(QStringLiteral("Status:"), this), 2, 0);
-    g_layout->addWidget(this->status_, 2, 1);
+    g_layout->addWidget(new QLabel(QStringLiteral("Next airing:"), this), 2, 0);
+    g_layout->addWidget(this->next_airing_episode_, 2, 1);
 
-    g_layout->addWidget(new QLabel(QStringLiteral("Season:"), this), 3, 0);
-    g_layout->addWidget(this->season_, 3, 1);
+    g_layout->addWidget(new QLabel(QStringLiteral("Status:"), this), 3, 0);
+    g_layout->addWidget(this->status_, 3, 1);
 
-    g_layout->addWidget(new QLabel(QStringLiteral("Genres:"), this), 4, 0);
-    g_layout->addWidget(this->genres_, 4, 1);
+    g_layout->addWidget(new QLabel(QStringLiteral("Season:"), this), 4, 0);
+    g_layout->addWidget(this->season_, 4, 1);
 
-    g_layout->addWidget(new QLabel(QStringLiteral("Score:"), this), 5, 0);
-    g_layout->addWidget(this->score_, 5, 1);
+    g_layout->addWidget(new QLabel(QStringLiteral("Genres:"), this), 5, 0);
+    g_layout->addWidget(this->genres_, 5, 1);
+
+    g_layout->addWidget(new QLabel(QStringLiteral("Score:"), this), 6, 0);
+    g_layout->addWidget(this->score_, 6, 1);
 
     v_layout->addStretch();
 }

@@ -28,6 +28,38 @@ QJsonObject AnilistUtils::fuzzyDateFromDate(const QDate &date) {
     return fuzzy_date;
 }
 
+QString AnilistUtils::jsonStringFromNextAiringEpisode(const AnilistMedia::NextAiringEpisode next_airing_episode) {
+    if (next_airing_episode.airing_at == AnilistMedia::InvalidNextEp &&
+        next_airing_episode.episode == AnilistMedia::InvalidNextEp) {
+
+        return QString();
+    }
+
+    QJsonObject json_obj;
+    json_obj[AnilistKeys::AiringSchedule::AiringAt] = next_airing_episode.airing_at;
+    json_obj[AnilistKeys::AiringSchedule::Episode] = next_airing_episode.episode;
+
+    return QString::fromUtf8(
+        QJsonDocument(json_obj).toJson(QJsonDocument::Compact)
+    );
+}
+
+AnilistMedia::NextAiringEpisode AnilistUtils::nextAiringEpisodeFromJsonString(const QString &json_string) {
+    AnilistMedia::NextAiringEpisode next_airing_episode;
+
+    const QJsonDocument json_doc = QJsonDocument::fromJson(json_string.toUtf8());
+    if (!json_doc.isObject()) {
+        return next_airing_episode;
+    }
+
+    const QJsonObject json_obj = json_doc.object();
+
+    next_airing_episode.airing_at = json_obj.value(AnilistKeys::AiringSchedule::AiringAt).toInteger(AnilistMedia::InvalidNextEp);
+    next_airing_episode.episode = json_obj.value(AnilistKeys::AiringSchedule::Episode).toInt(AnilistMedia::InvalidNextEp);
+
+    return next_airing_episode;
+}
+
 QList<AnilistMedia::Producer> AnilistUtils::producersFromJsonArray(const QJsonArray &edges_array) {
     QList<AnilistMedia::Producer> producers;
     for (const auto &edge : edges_array) {

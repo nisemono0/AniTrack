@@ -26,6 +26,10 @@ fragment MediaFields on Media {
   }
   updatedAt
   episodes
+  nextAiringEpisode {
+    airingAt
+    episode
+  }
   countryOfOrigin
   coverImage {
     large

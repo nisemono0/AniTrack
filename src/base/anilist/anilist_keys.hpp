@@ -105,25 +105,26 @@ inline const QString Year  = QStringLiteral("year");
 } // namespace FuzzyDate
 
 namespace Media {
-inline const QString Id              = QStringLiteral("id");
-inline const QString IsAdult         = QStringLiteral("isAdult");
-inline const QString Status          = QStringLiteral("status");
-inline const QString Season          = QStringLiteral("season");
-inline const QString SeasonYear      = QStringLiteral("seasonYear");
-inline const QString SiteUrl         = QStringLiteral("siteUrl");
-inline const QString Title           = QStringLiteral("title");
-inline const QString Synonyms        = QStringLiteral("synonyms");
-inline const QString Format          = QStringLiteral("format");
-inline const QString Description     = QStringLiteral("description");
-inline const QString StartDate       = QStringLiteral("startDate");
-inline const QString EndDate         = QStringLiteral("endDate");
-inline const QString UpdatedAt       = QStringLiteral("updatedAt");
-inline const QString Episodes        = QStringLiteral("episodes");
-inline const QString CountryOfOrigin = QStringLiteral("countryOfOrigin");
-inline const QString CoverImage      = QStringLiteral("coverImage");
-inline const QString Genres          = QStringLiteral("genres");
-inline const QString Studios         = QStringLiteral("studios");
-inline const QString WeightedScore   = QStringLiteral("weightedScore");
+inline const QString Id                = QStringLiteral("id");
+inline const QString IsAdult           = QStringLiteral("isAdult");
+inline const QString Status            = QStringLiteral("status");
+inline const QString Season            = QStringLiteral("season");
+inline const QString SeasonYear        = QStringLiteral("seasonYear");
+inline const QString SiteUrl           = QStringLiteral("siteUrl");
+inline const QString Title             = QStringLiteral("title");
+inline const QString Synonyms          = QStringLiteral("synonyms");
+inline const QString Format            = QStringLiteral("format");
+inline const QString Description       = QStringLiteral("description");
+inline const QString StartDate         = QStringLiteral("startDate");
+inline const QString EndDate           = QStringLiteral("endDate");
+inline const QString UpdatedAt         = QStringLiteral("updatedAt");
+inline const QString Episodes          = QStringLiteral("episodes");
+inline const QString NextAiringEpisode = QStringLiteral("nextAiringEpisode");
+inline const QString CountryOfOrigin   = QStringLiteral("countryOfOrigin");
+inline const QString CoverImage        = QStringLiteral("coverImage");
+inline const QString Genres            = QStringLiteral("genres");
+inline const QString Studios           = QStringLiteral("studios");
+inline const QString WeightedScore     = QStringLiteral("weightedScore");
 } // namespace Media
 
 namespace MediaCoverImage {
@@ -135,6 +136,11 @@ inline const QString English = QStringLiteral("english");
 inline const QString Native  = QStringLiteral("native");
 inline const QString Romaji  = QStringLiteral("romaji");
 }; // namespace MediaTitle
+
+namespace AiringSchedule {
+inline const QString AiringAt = QStringLiteral("airingAt");
+inline const QString Episode  = QStringLiteral("episode");
+} // namespace AiringSchedule
 
 namespace StudioConnection {
 inline const QString Edges = QStringLiteral("edges");

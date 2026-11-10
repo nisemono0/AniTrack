@@ -21,6 +21,13 @@ CREATE TABLE IF NOT EXISTS media (
     -- Unix time
     updated_at INTEGER NOT NULL DEFAULT 0,
     episodes INTEGER NOT NULL DEFAULT 0,
+    -- JSON object
+    -- Example:
+    -- {
+    --   airingAt: 1794342388,
+    --   episode: 5
+    -- }
+    next_airing_episode TEXT,
     country_of_origin TEXT,
     cover_url TEXT,
     -- JSON array

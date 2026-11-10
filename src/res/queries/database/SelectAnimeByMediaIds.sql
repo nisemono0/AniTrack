@@ -30,6 +30,7 @@ SELECT
     m.end_date AS media_end_date,
     m.updated_at AS media_updated_at,
     m.episodes AS media_episodes,
+    m.next_airing_episode as media_next_airing_episode,
     m.country_of_origin AS media_country_of_origin,
     m.cover_url AS media_cover_url,
     m.genres AS media_genres,

@@ -17,6 +17,11 @@ QDate dateFromFuzzyDate(const QJsonObject &fuzzy_date_obj);
 // Returns a FuzzyDate json object from a QDate
 QJsonObject fuzzyDateFromDate(const QDate &date);
 
+// Returns a QString representing a json object from a NextAiringEpisode
+QString jsonStringFromNextAiringEpisode(const AnilistMedia::NextAiringEpisode next_airing_episode);
+// Returns a NextAiringEpisode from a json string
+AnilistMedia::NextAiringEpisode nextAiringEpisodeFromJsonString(const QString &json_string);
+
 // Return a QList of Producers from an Edges json_array
 QList<AnilistMedia::Producer> producersFromJsonArray(const QJsonArray &edges_array);
 // Return a QList of Studios from an Edges json_array
