@@ -3,6 +3,7 @@
 #include "base/anilist/anilist_media.hpp"
 #include "base/anilist/anilist_entry.hpp"
 #include "base/anilist/anilist_account.hpp"
+#include "base/anilist/anilist_keys.hpp"
 
 #include <QString>
 #include <QJsonDocument>
@@ -35,8 +36,8 @@ QString jsonStringFromStudiosProducers(const QList<T> &studios_producers) {
 
     for (const auto &item : std::as_const(studios_producers)) {
         QJsonObject json_obj;
-        json_obj[QStringLiteral("name")] = item.name;
-        json_obj[QStringLiteral("site_url")] = item.site_url;
+        json_obj[AnilistKeys::Studio::Name] = item.name;
+        json_obj[AnilistKeys::Studio::SiteUrl] = item.site_url;
 
         json_array.append(json_obj);
     }
@@ -62,8 +63,8 @@ QList<T> studiosProducersFromJsonString(const QString &json_string) {
     for (const auto &item : json_array) {
         const QJsonObject json_obj = item.toObject();
         T type;
-        type.name = json_obj.value(QStringLiteral("name")).toString();
-        type.site_url = json_obj.value(QStringLiteral("site_url")).toString();
+        type.name = json_obj.value(AnilistKeys::Studio::Name).toString();
+        type.site_url = json_obj.value(AnilistKeys::Studio::SiteUrl).toString();
 
         list.append(type);
     }
