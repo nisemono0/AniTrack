@@ -84,6 +84,7 @@ QString rewatchToPrettyString(int rewatch);
 QString mediaStatusToPrettyString(AnilistMedia::Status status);
 QString animeTitleToPrettyString(const AnilistMedia::Title &title, AnilistAccount::TitleLanguage title_language);
 QString mediaEpisodesToPrettyString(int episodes);
+QString nextAiringEpisodeToPrettyString(const AnilistMedia::NextAiringEpisode next_airing_episode);
 
 } // namespace AnilistUtils
 
