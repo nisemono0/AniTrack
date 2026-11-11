@@ -17,6 +17,7 @@ public:
         Score,
         Season,
         Status,
+        NextAiring,
         InList,
         StartDate,
         EndDate,

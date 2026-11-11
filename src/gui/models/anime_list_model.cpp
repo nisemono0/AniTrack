@@ -125,6 +125,8 @@ QVariant AnimeListModel::data(const QModelIndex &index, int role) const {
                     return static_cast<int>(anime.entry.state().status);
                 case Columns::MediaStatus:
                     return static_cast<int>(anime.media.status);
+                case Columns::NextAiring:
+                    return anime.media.next_airing_episode.airing_at;
                 case Columns::LastUpdated:
                     return anime.entry.state().updated_at;
                 case Columns::StartedAt:
@@ -161,6 +163,8 @@ QVariant AnimeListModel::data(const QModelIndex &index, int role) const {
                     return AnilistUtils::entryStatusToPrettyString(anime.entry.state().status);
                 case Columns::MediaStatus:
                     return AnilistUtils::mediaStatusToPrettyString(anime.media.status);
+                case Columns::NextAiring:
+                    return AnilistUtils::nextAiringEpisodeToPrettyString(anime.media.next_airing_episode);
                 case Columns::LastUpdated:
                     return AnilistUtils::epochToPrettyString(
                         anime.entry.state().updated_at,
@@ -208,6 +212,13 @@ QVariant AnimeListModel::data(const QModelIndex &index, int role) const {
                     }
                     break;
                 }
+                case Columns::NextAiring: {
+                    if (anime.media.next_airing_episode.airing_at == AnilistMedia::InvalidNextEp &&
+                        anime.media.next_airing_episode.episode == AnilistMedia::InvalidNextEp) {
+                        return QBrush(Qt::gray);
+                    }
+                    break;
+                }
                 case Columns::LastUpdated: {
                     if (anime.entry.state().updated_at <= 0) {
                         return QBrush(Qt::gray);
@@ -241,9 +252,16 @@ QVariant AnimeListModel::data(const QModelIndex &index, int role) const {
         case Qt::TextAlignmentRole: {
             switch (column) {
                 case Columns::Title:
-                    return QVariant(Qt::AlignLeft | Qt::AlignVCenter);
+                    return QVariant::fromValue(Qt::AlignLeft | Qt::AlignVCenter);
                 case Columns::Season:
-                    return QVariant(Qt::AlignRight | Qt::AlignVCenter);
+                    return QVariant::fromValue(Qt::AlignRight | Qt::AlignVCenter);
+                case Columns::NextAiring: {
+                    if (anime.media.next_airing_episode.airing_at == AnilistMedia::InvalidNextEp &&
+                        anime.media.next_airing_episode.episode == AnilistMedia::InvalidNextEp) {
+                        return Qt::AlignCenter;
+                    }
+                    return QVariant::fromValue(Qt::AlignLeft | Qt::AlignVCenter);
+                }
                 default:
                     return Qt::AlignCenter;
             }
@@ -293,6 +311,8 @@ QVariant AnimeListModel::headerData(int section, Qt::Orientation orientation, in
                     return QStringLiteral("Status");
                 case Columns::MediaStatus:
                     return QStringLiteral("Anime status");
+                case Columns::NextAiring:
+                    return QStringLiteral("Airing next");
                 case Columns::LastUpdated:
                     return QStringLiteral("Last updated");
                 case Columns::StartedAt:
@@ -313,6 +333,7 @@ QVariant AnimeListModel::headerData(int section, Qt::Orientation orientation, in
         case Qt::TextAlignmentRole: {
             switch (column) {
                 case Columns::Title:
+                case Columns::NextAiring:
                     return QVariant::fromValue(Qt::AlignLeft | Qt::AlignVCenter);
                 case Columns::Season:
                     return QVariant::fromValue(Qt::AlignRight | Qt::AlignVCenter);

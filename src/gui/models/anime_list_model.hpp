@@ -24,6 +24,7 @@ public:
         Season,
         EntryStatus,
         MediaStatus,
+        NextAiring,
         LastUpdated,
         StartedAt,
         CompletedAt,

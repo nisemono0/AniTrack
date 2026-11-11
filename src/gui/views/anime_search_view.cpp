@@ -219,16 +219,17 @@ void AnimeSearchView::setupDelegates() {
 void AnimeSearchView::setupHeader() {
     static const QList<HeaderSettings> header_settings{
         // column, resize mode, padding, resize, hidden
-        { AnimeSearchModel::Columns::Title,     QHeaderView::Interactive, 15, 350, false },
-        { AnimeSearchModel::Columns::Format,    QHeaderView::Interactive, 15, 75,  false },
-        { AnimeSearchModel::Columns::Episodes,  QHeaderView::Interactive, 15, 80,  false },
-        { AnimeSearchModel::Columns::Score,     QHeaderView::Interactive, 15, 55,  false },
-        { AnimeSearchModel::Columns::Season,    QHeaderView::Interactive, 15, 90,  false },
-        { AnimeSearchModel::Columns::Status,    QHeaderView::Interactive, 15, 90,  false },
-        { AnimeSearchModel::Columns::InList,    QHeaderView::Interactive, 15, 45,  false },
-        { AnimeSearchModel::Columns::IsAdult,   QHeaderView::Interactive, 15, 45,  false },
-        { AnimeSearchModel::Columns::StartDate, QHeaderView::Interactive, 15, 90,  true },
-        { AnimeSearchModel::Columns::EndDate,   QHeaderView::Interactive, 15, 90,  true },
+        { AnimeSearchModel::Columns::Title,      QHeaderView::Interactive, 15, 350, false },
+        { AnimeSearchModel::Columns::Format,     QHeaderView::Interactive, 15, 75,  false },
+        { AnimeSearchModel::Columns::Episodes,   QHeaderView::Interactive, 15, 80,  false },
+        { AnimeSearchModel::Columns::Score,      QHeaderView::Interactive, 15, 55,  false },
+        { AnimeSearchModel::Columns::Season,     QHeaderView::Interactive, 15, 90,  false },
+        { AnimeSearchModel::Columns::Status,     QHeaderView::Interactive, 15, 90,  false },
+        { AnimeSearchModel::Columns::NextAiring, QHeaderView::Interactive, 15, 150, true  },
+        { AnimeSearchModel::Columns::InList,     QHeaderView::Interactive, 15, 45,  false },
+        { AnimeSearchModel::Columns::IsAdult,    QHeaderView::Interactive, 15, 45,  false },
+        { AnimeSearchModel::Columns::StartDate,  QHeaderView::Interactive, 15, 90,  true  },
+        { AnimeSearchModel::Columns::EndDate,    QHeaderView::Interactive, 15, 90,  true  },
     };
 
     for (const auto &setting : header_settings) {
