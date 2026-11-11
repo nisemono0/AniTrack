@@ -20,6 +20,7 @@ void AnimeTooltip::updateAnimeInfo(const QString &cover_url,
                                    const QString &title,
                                    const QString &format,
                                    const QString &episodes,
+                                   const QString &next_airing_episode,
                                    const QString &status,
                                    const QString &season,
                                    const QString &genres,
@@ -50,8 +51,7 @@ void AnimeTooltip::updateAnimeInfo(const QString &cover_url,
     this->title_->setText(title);
     this->format_->setText(format);
     this->episodes_->setText(episodes);
-    // TODO: Set next_airing_episode_ text
-    // this->next_airing_episode_->setText("3rd Nov. 2029 - Ep.5");
+    this->next_airing_episode_->setText(next_airing_episode);
     this->status_->setText(status);
     this->season_->setText(season);
     this->genres_->setText(genres);
@@ -162,7 +162,7 @@ void AnimeTooltip::setupLayout() {
     g_layout->addWidget(new QLabel(QStringLiteral("Episodes:"), this), 1, 0);
     g_layout->addWidget(this->episodes_, 1, 1);
 
-    g_layout->addWidget(new QLabel(QStringLiteral("Next airing:"), this), 2, 0);
+    g_layout->addWidget(new QLabel(QStringLiteral("Airing next:"), this), 2, 0);
     g_layout->addWidget(this->next_airing_episode_, 2, 1);
 
     g_layout->addWidget(new QLabel(QStringLiteral("Status:"), this), 3, 0);

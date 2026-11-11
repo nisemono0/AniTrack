@@ -44,6 +44,7 @@ public:
         ToolTipTitle,
         ToolTipFormat,
         ToolTipEpisodes,
+        ToolTipNextAiring,
         ToolTipStatus,
         ToolTipSeason,
         ToolTipGenres,

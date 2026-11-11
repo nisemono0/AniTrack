@@ -14,11 +14,11 @@ public:
     explicit AnimeTooltip(QWidget *parent = nullptr);
     ~AnimeTooltip() = default;
 
-    // TODO: Add a next_airing_episode argument and display it
     void updateAnimeInfo(const QString &cover_url,
                          const QString &title,
                          const QString &format,
                          const QString &episodes,
+                         const QString &next_airing_episode,
                          const QString &status,
                          const QString &season,
                          const QString &genres,

@@ -100,6 +100,8 @@ QVariant AnimeSearchModel::data(const QModelIndex &index, int role) const {
             return AnilistUtils::mediaFormatToPrettyString(media.format);
         case UserRoles::ToolTipEpisodes:
             return AnilistUtils::mediaEpisodesToPrettyString(media.episodes);
+        case UserRoles::ToolTipNextAiring:
+            return AnilistUtils::nextAiringEpisodeToPrettyString(media.next_airing_episode);
         case UserRoles::ToolTipStatus:
             return AnilistUtils::mediaStatusToPrettyString(media.status);
         case UserRoles::ToolTipSeason:
