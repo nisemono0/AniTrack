@@ -325,19 +325,20 @@ QString AnilistUtils::mediaEpisodesToPrettyString(int episodes) {
     return QString::number(episodes);
 }
 
-QString AnilistUtils::nextAiringEpisodeToPrettyString(const AnilistMedia::NextAiringEpisode next_airing_episode) {
+QString AnilistUtils::mediaNextAiringEpisodeToPrettyString(const AnilistMedia::NextAiringEpisode next_airing_episode) {
     if (next_airing_episode.airing_at == AnilistMedia::InvalidNextEp &&
         next_airing_episode.episode == AnilistMedia::InvalidNextEp) {
         return QStringLiteral("-");
     }
 
-    // TODO: this is kinda fucked up and hard to read...
-    //       extract both args outside later
-    return QStringLiteral("Ep.%1 - %2").arg(
-        next_airing_episode.episode != AnilistMedia::InvalidNextEp ? QString::number(next_airing_episode.episode) : QStringLiteral("?"),
-        next_airing_episode.airing_at != AnilistMedia::InvalidNextEp ?
-            QDateTime::fromSecsSinceEpoch(next_airing_episode.airing_at).toString(QStringLiteral("ddd. dd.MMM.yyyy")) :
-            QStringLiteral("?")
-    );
+    const auto airing_at = next_airing_episode.airing_at != AnilistMedia::InvalidNextEp ?
+        QDateTime::fromSecsSinceEpoch(next_airing_episode.airing_at).toString(QStringLiteral("ddd. dd.MMM.yyyy")) :
+        QStringLiteral("?");
+
+    const auto episode = next_airing_episode.episode != AnilistMedia::InvalidNextEp ?
+        QString::number(next_airing_episode.episode) :
+        QStringLiteral("?");
+
+    return QStringLiteral("Ep.%1 - %2").arg(episode, airing_at);
 }
 

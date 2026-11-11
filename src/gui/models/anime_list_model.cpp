@@ -99,7 +99,7 @@ QVariant AnimeListModel::data(const QModelIndex &index, int role) const {
         case UserRoles::ToolTipEpisodes:
             return AnilistUtils::mediaEpisodesToPrettyString(anime.media.episodes);
         case UserRoles::ToolTipNextAiring:
-            return AnilistUtils::nextAiringEpisodeToPrettyString(anime.media.next_airing_episode);
+            return AnilistUtils::mediaNextAiringEpisodeToPrettyString(anime.media.next_airing_episode);
         case UserRoles::ToolTipStatus:
             return AnilistUtils::mediaStatusToPrettyString(anime.media.status);
         case UserRoles::ToolTipSeason:
@@ -166,7 +166,7 @@ QVariant AnimeListModel::data(const QModelIndex &index, int role) const {
                 case Columns::MediaStatus:
                     return AnilistUtils::mediaStatusToPrettyString(anime.media.status);
                 case Columns::NextAiring:
-                    return AnilistUtils::nextAiringEpisodeToPrettyString(anime.media.next_airing_episode);
+                    return AnilistUtils::mediaNextAiringEpisodeToPrettyString(anime.media.next_airing_episode);
                 case Columns::LastUpdated:
                     return AnilistUtils::epochToPrettyString(
                         anime.entry.state().updated_at,
