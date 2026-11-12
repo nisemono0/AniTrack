@@ -203,6 +203,9 @@ void RecognitionNowPlayingPage::updateNowPlayingInfo() {
     this->ui_->labelEpisodes->setText(
         AnilistUtils::mediaEpisodesToPrettyString(media.episodes)
     );
+    this->ui_->labelAiringNext->setText(
+        AnilistUtils::mediaNextAiringEpisodeToPrettyString(media.next_airing_episode)
+    );
     this->ui_->labelStatus->setText(
         AnilistUtils::mediaStatusToPrettyString(media.status)
     );
