@@ -74,10 +74,14 @@ void AnimeSearchView::updateUserPreferences(const AnilistAccount::User &user) {
 
 void AnimeSearchView::setExistingMediaIds(const QList<AnilistAnime> &anime_list) {
     this->anime_search_model_->setExistingMediaIds(anime_list);
+
+    this->last_tooltip_media_id_ = AnilistMedia::InvalidId;
 }
 
 void AnimeSearchView::setMedia(const QList<AnilistMedia> &media_list) {
     this->anime_search_model_->setMedia(media_list);
+
+    this->last_tooltip_media_id_ = AnilistMedia::InvalidId;
 }
 
 void AnimeSearchView::updateAddedAnime(const QList<AnilistAnime> &anime_list) {

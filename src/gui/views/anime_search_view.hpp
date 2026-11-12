@@ -56,7 +56,7 @@ private:
     AnimeSearchAdultDelegate *adult_delegate_;
     AnimeSearchInListDelegate *in_list_delegate_;
 
-    int last_tooltip_media_id_;
+    int last_tooltip_media_id_ = AnilistMedia::InvalidId;
     AnimeTooltip *anime_tooltip_;
 
     bool save_load_header_state_ = false;

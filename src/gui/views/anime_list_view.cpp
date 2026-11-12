@@ -115,6 +115,8 @@ void AnimeListView::updateUserPreferences(const AnilistAccount::User &user) {
 void AnimeListView::setAnime(const QList<AnilistAnime> &anime_list) {
     this->anime_list_model_->setAnime(anime_list);
 
+    this->last_tooltip_media_id_ = AnilistMedia::InvalidId;
+
     emit animeListStatusCountChanged(this->anime_list_model_->statusCount());
 }
 
