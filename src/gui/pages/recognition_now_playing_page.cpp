@@ -28,6 +28,10 @@ void RecognitionNowPlayingPage::updateUserPreferences(const AnilistAccount::User
 }
 
 void RecognitionNowPlayingPage::handleAnimeLoadAddUpdateFinished(const QList<AnilistAnime> &anime_list) {
+    if (!this->anime_recognized_) {
+        return;
+    }
+
     for (const auto &anime : anime_list) {
         if (anime.media.id != this->media_.id) {
             continue;
@@ -39,6 +43,10 @@ void RecognitionNowPlayingPage::handleAnimeLoadAddUpdateFinished(const QList<Ani
 
         this->updateNowPlayingInfo();
     }
+}
+
+void RecognitionNowPlayingPage::setAnimeRecognized(bool anime_recognized) {
+    this->anime_recognized_ = anime_recognized;
 }
 
 void RecognitionNowPlayingPage::setNowPlayingAnime(const RecognizedAnime &recognized_anime, const QString &title) {

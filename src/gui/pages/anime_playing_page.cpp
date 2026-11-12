@@ -31,7 +31,7 @@ void AnimePlayingPage::showNoMatchPage(const QString &message) {
         this->ui_->pageRecognitionNoMatch
     );
 
-    this->stopNowPlayingTimer();
+    this->stopNowPlaying();
 }
 
 void AnimePlayingPage::showIdlePage() {
@@ -39,7 +39,7 @@ void AnimePlayingPage::showIdlePage() {
         this->ui_->pageRecognitionIdle
     );
 
-    this->stopNowPlayingTimer();
+    this->stopNowPlaying();
 }
 
 void AnimePlayingPage::showSelectAnimePage(const QList<RecognizedAnime> &recognized_anime,
@@ -54,7 +54,7 @@ void AnimePlayingPage::showSelectAnimePage(const QList<RecognizedAnime> &recogni
         this->ui_->pageRecognitionSelectAnime
     );
 
-    this->stopNowPlayingTimer();
+    this->stopNowPlaying();
 }
 
 void AnimePlayingPage::showNowPlayingPage(const RecognizedAnime &recognized_anime, const QString &title) {
@@ -66,7 +66,7 @@ void AnimePlayingPage::showNowPlayingPage(const RecognizedAnime &recognized_anim
         this->ui_->pageRecognitionNowPlaying
     );
 
-    this->startNowPlaingTimer();
+    this->startNowPlaying();
 }
 
 void AnimePlayingPage::showSearchPage(const QString &title, int episode) {
@@ -75,7 +75,7 @@ void AnimePlayingPage::showSearchPage(const QString &title, int episode) {
         this->ui_->pageRecognitionSearch
     );
 
-    this->stopNowPlayingTimer();
+    this->stopNowPlaying();
 }
 
 void AnimePlayingPage::setupPage() {
@@ -122,11 +122,13 @@ void AnimePlayingPage::setupSearchPage() {
     connect(this->ui_->pageRecognitionSearch, &RecognitionSearchPage::requestQuietAnimeSearch, this, &AnimePlayingPage::requestQuietAnimeSearch);
 }
 
-void AnimePlayingPage::startNowPlaingTimer() {
+void AnimePlayingPage::startNowPlaying() {
     this->ui_->pageRecognitionNowPlaying->startPopupTimer();
+    this->ui_->pageRecognitionNowPlaying->setAnimeRecognized(true);
 }
 
-void AnimePlayingPage::stopNowPlayingTimer() {
+void AnimePlayingPage::stopNowPlaying() {
     this->ui_->pageRecognitionNowPlaying->stopPopupTimer();
+    this->ui_->pageRecognitionNowPlaying->setAnimeRecognized(false);
 }
 

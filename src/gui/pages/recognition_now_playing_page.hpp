@@ -30,6 +30,8 @@ public:
     void updateUserPreferences(const AnilistAccount::User &user);
     void handleAnimeLoadAddUpdateFinished(const QList<AnilistAnime> &anime_list);
 
+    void setAnimeRecognized(bool anime_recognized);
+
     void setNowPlayingAnime(const RecognizedAnime &recognized_anime, const QString &title);
 
     void startPopupTimer();
@@ -52,6 +54,8 @@ private:
     const QPixmap no_image_ = QPixmap(AppResources::Images::NoImage);
 
     AnilistAccount::TitleLanguage title_language_;
+
+    bool anime_recognized_ = false;
 
     QTimer *popup_timer_;
     QTimer *display_timer_;

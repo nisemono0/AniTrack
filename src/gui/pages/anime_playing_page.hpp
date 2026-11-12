@@ -55,7 +55,7 @@ private:
     void setupNowPlayingPage();
     void setupSearchPage();
 
-    void startNowPlaingTimer();
-    void stopNowPlayingTimer();
+    void startNowPlaying();
+    void stopNowPlaying();
 };
 
