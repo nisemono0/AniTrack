@@ -28,7 +28,7 @@ public:
 
 public slots:
     void onUserUpdated(const AnilistAccount::User &user);
-    void handleAnimeAddUpdateFinished(const QList<AnilistAnime> &anime_list);
+    void handleAnimeLoadAddUpdateFinished(const QList<AnilistAnime> &anime_list);
 
     void showOrFocus();
     void showOrFocusInfoEdit(const AnilistAnime &anime, AnimeInfoEditDialog::Page page);

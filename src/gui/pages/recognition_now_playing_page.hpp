@@ -28,7 +28,7 @@ public:
     ~RecognitionNowPlayingPage();
 
     void updateUserPreferences(const AnilistAccount::User &user);
-    void handleAnimeAddUpdateFinished(const QList<AnilistAnime> &anime_list);
+    void handleAnimeLoadAddUpdateFinished(const QList<AnilistAnime> &anime_list);
 
     void setNowPlayingAnime(const RecognizedAnime &recognized_anime, const QString &title);
 

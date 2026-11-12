@@ -241,8 +241,9 @@ void MainWindow::setupStatusBar() {
 
 void MainWindow::setupPlayingPage() {
     connect(this->app_controller_, &AppController::userUpdated, this->ui_->pagePlaying, &AnimePlayingPage::onUserUpdated);
-    connect(this->app_controller_, &AppController::animeUpdateFinished, this->ui_->pagePlaying, &AnimePlayingPage::handleAnimeAddUpdateFinished);
-    connect(this->app_controller_, &AppController::animeAddFinished, this->ui_->pagePlaying, &AnimePlayingPage::handleAnimeAddUpdateFinished);
+    connect(this->app_controller_, &AppController::animeUpdateFinished, this->ui_->pagePlaying, &AnimePlayingPage::handleAnimeLoadAddUpdateFinished);
+    connect(this->app_controller_, &AppController::animeAddFinished, this->ui_->pagePlaying, &AnimePlayingPage::handleAnimeLoadAddUpdateFinished);
+    connect(this->app_controller_, &AppController::animeLoadFinished, this->ui_->pagePlaying, &AnimePlayingPage::handleAnimeLoadAddUpdateFinished);
 
     connect(
         this->app_controller_, &AppController::requestShowNoMatchPage,
@@ -425,8 +426,9 @@ void MainWindow::setupLoginTokenDialog() {
 
 void MainWindow::setupAnimeInfoEditDialog() {
     connect(this->app_controller_, &AppController::userUpdated, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::onUserUpdated);
-    connect(this->app_controller_, &AppController::animeUpdateFinished, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::handleAnimeAddUpdateFinished);
-    connect(this->app_controller_, &AppController::animeAddFinished, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::handleAnimeAddUpdateFinished);
+    connect(this->app_controller_, &AppController::animeUpdateFinished, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::handleAnimeLoadAddUpdateFinished);
+    connect(this->app_controller_, &AppController::animeAddFinished, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::handleAnimeLoadAddUpdateFinished);
+    connect(this->app_controller_, &AppController::animeLoadFinished, this->anime_info_edit_dialog_, &AnimeInfoEditDialog::handleAnimeLoadAddUpdateFinished);
 
     connect(this->app_controller_, &AppController::randomAnimeLoadFinished, this, [this] (const AnilistAnime &anime) {
         this->anime_info_edit_dialog_->showOrFocusInfoEdit(anime, AnimeInfoEditDialog::Page::Info);

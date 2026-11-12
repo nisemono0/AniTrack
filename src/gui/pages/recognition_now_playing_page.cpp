@@ -27,7 +27,7 @@ void RecognitionNowPlayingPage::updateUserPreferences(const AnilistAccount::User
     this->updateNowPlayingInfo();
 }
 
-void RecognitionNowPlayingPage::handleAnimeAddUpdateFinished(const QList<AnilistAnime> &anime_list) {
+void RecognitionNowPlayingPage::handleAnimeLoadAddUpdateFinished(const QList<AnilistAnime> &anime_list) {
     for (const auto &anime : anime_list) {
         if (anime.media.id != this->media_.id) {
             continue;

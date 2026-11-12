@@ -21,7 +21,7 @@ public:
 
 public slots:
     void onUserUpdated(const AnilistAccount::User &user);
-    void handleAnimeAddUpdateFinished(const QList<AnilistAnime> &anime_list);
+    void handleAnimeLoadAddUpdateFinished(const QList<AnilistAnime> &anime_list);
 
     void showNoMatchPage(const QString &message);
     void showIdlePage();

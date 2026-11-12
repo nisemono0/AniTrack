@@ -21,8 +21,8 @@ void AnimePlayingPage::onUserUpdated(const AnilistAccount::User &user) {
     this->ui_->pageRecognitionSelectAnime->updateUserPreferences(user);
 }
 
-void AnimePlayingPage::handleAnimeAddUpdateFinished(const QList<AnilistAnime> &anime_list) {
-    this->ui_->pageRecognitionNowPlaying->handleAnimeAddUpdateFinished(anime_list);
+void AnimePlayingPage::handleAnimeLoadAddUpdateFinished(const QList<AnilistAnime> &anime_list) {
+    this->ui_->pageRecognitionNowPlaying->handleAnimeLoadAddUpdateFinished(anime_list);
 }
 
 void AnimePlayingPage::showNoMatchPage(const QString &message) {

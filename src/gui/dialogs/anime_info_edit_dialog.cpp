@@ -56,7 +56,7 @@ void AnimeInfoEditDialog::onUserUpdated(const AnilistAccount::User &user) {
     this->updateEditTab();
 }
 
-void AnimeInfoEditDialog::handleAnimeAddUpdateFinished(const QList<AnilistAnime> &anime_list) {
+void AnimeInfoEditDialog::handleAnimeLoadAddUpdateFinished(const QList<AnilistAnime> &anime_list) {
     if (!this->isVisible()) {
         return;
     }
