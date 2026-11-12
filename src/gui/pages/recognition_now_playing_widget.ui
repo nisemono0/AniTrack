@@ -111,6 +111,9 @@
              <pointsize>9</pointsize>
             </font>
            </property>
+           <property name="cursor">
+            <cursorShape>IBeamCursor</cursorShape>
+           </property>
            <property name="text">
             <string>PlayingTitle</string>
            </property>
@@ -154,6 +157,9 @@
          </item>
          <item row="1" column="1">
           <widget class="QLabel" name="labelProgressText">
+           <property name="cursor">
+            <cursorShape>IBeamCursor</cursorShape>
+           </property>
            <property name="text">
             <string>AnimeProgress</string>
            </property>
@@ -228,6 +234,9 @@
          </property>
          <item row="2" column="1">
           <widget class="QLabel" name="labelTitleNative">
+           <property name="cursor">
+            <cursorShape>IBeamCursor</cursorShape>
+           </property>
            <property name="text">
             <string>Native</string>
            </property>
@@ -241,6 +250,9 @@
          </item>
          <item row="0" column="1">
           <widget class="QLabel" name="labelTitleRomaji">
+           <property name="cursor">
+            <cursorShape>IBeamCursor</cursorShape>
+           </property>
            <property name="text">
             <string>Romaji</string>
            </property>
@@ -254,6 +266,9 @@
          </item>
          <item row="1" column="1">
           <widget class="QLabel" name="labelTitleEnglish">
+           <property name="cursor">
+            <cursorShape>IBeamCursor</cursorShape>
+           </property>
            <property name="text">
             <string>English</string>
            </property>
@@ -448,6 +463,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="cursor">
+              <cursorShape>IBeamCursor</cursorShape>
+             </property>
              <property name="text">
               <string>Genres</string>
              </property>
@@ -466,6 +484,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="cursor">
+              <cursorShape>IBeamCursor</cursorShape>
              </property>
              <property name="text">
               <string>Ended</string>
@@ -536,6 +557,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="cursor">
+              <cursorShape>IBeamCursor</cursorShape>
+             </property>
              <property name="text">
               <string>Producers</string>
              </property>
@@ -558,6 +582,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="cursor">
+              <cursorShape>IBeamCursor</cursorShape>
+             </property>
              <property name="text">
               <string>Season</string>
              </property>
@@ -576,6 +603,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="cursor">
+              <cursorShape>IBeamCursor</cursorShape>
              </property>
              <property name="text">
               <string>Origin</string>
@@ -646,6 +676,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="cursor">
+              <cursorShape>IBeamCursor</cursorShape>
+             </property>
              <property name="text">
               <string>Studios</string>
              </property>
@@ -692,6 +725,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="cursor">
+              <cursorShape>IBeamCursor</cursorShape>
              </property>
              <property name="text">
               <string>Started</string>
@@ -787,6 +823,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="cursor">
+              <cursorShape>IBeamCursor</cursorShape>
+             </property>
              <property name="text">
               <string>Episodes</string>
              </property>
@@ -806,6 +845,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="cursor">
+              <cursorShape>IBeamCursor</cursorShape>
+             </property>
              <property name="text">
               <string>Score</string>
              </property>
@@ -824,6 +866,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="cursor">
+              <cursorShape>IBeamCursor</cursorShape>
              </property>
              <property name="text">
               <string>Status</string>
@@ -869,6 +914,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="cursor">
+              <cursorShape>IBeamCursor</cursorShape>
+             </property>
              <property name="text">
               <string>Format</string>
              </property>
@@ -885,12 +933,27 @@
              <property name="text">
               <string>Airing next:</string>
              </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+             <property name="textInteractionFlags">
+              <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+             </property>
             </widget>
            </item>
            <item row="2" column="1">
             <widget class="QLabel" name="labelAiringNext">
+             <property name="cursor">
+              <cursorShape>IBeamCursor</cursorShape>
+             </property>
              <property name="text">
               <string>AiringNext</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+             <property name="textInteractionFlags">
+              <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
              </property>
             </widget>
            </item>
